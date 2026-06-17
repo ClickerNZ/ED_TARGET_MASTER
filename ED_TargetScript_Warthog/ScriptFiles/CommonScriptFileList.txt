@@ -1,0 +1,9 @@
+Common SCript files:
+
+ED_ScriptDefines.ttm	Identical
+ED_GameBindings.ttn		WARTHOG file contains optional WARTHOG DX Mappings which could be augmented with T16000/TWCS DX mappings and moved into a Support\Mappings folder
+ED_GlobalVars.tmh		WARTHOG file contains 1x LED variable
+ED_Macros.tmh			Identical
+ED_Toggles.tmh			WARTHOG Version is newer and contains WARTHOG 'S1' debounce logic
+ED_StateTracker.tmh		WARTHOG file newer and contains LED calls
+ED_Functions.tmh		WARTHOG file newer and contains LED calls

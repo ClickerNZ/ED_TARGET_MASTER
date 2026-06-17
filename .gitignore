@@ -1,0 +1,29 @@
+DO THIS BEFORE PUBLISHING.txt
+*.docx
+ED_Launcher-TEST.cmd
+ED_Launcher.cmd
+ScriptFiles/ED_Development.*
+Common/Output/MyJournalData.json
+Output/Tracking.json
+Common/Output/TTSQueue/*.*
+Common/Output/TTSQueue/Archive/*.*
+Output/
+Archive/
+*.log
+*.tmp
+ED_TargetScript_Warthog/ScriptFiles/TARGET_Session
+ED_TargetScript_T16000/ScriptFiles/TARGET_Session
+Common/PowerShell/Autopilot Functions.ps1
+Common/PowerShell/TTSMonitor-v21.ps1
+Common/PowerShell/TTSMonitor-v20.ps1
+Common/PowerShell/ProcessJournal-v33.ps1
+Common/PowerShell/ProcessJournal-v32.ps1
+Common/ED_Launcher_2.cmd
+*.orig
+*.bak
+Build-Index.ps1
+ScriptFiles/ED_UserSettings.tmh
+SupportFiles/ED_Launcher_WARTHOG.cmd
+SyncScriptWH.cmd
+TARGET_Script_Analyzer_v8.4.ps1
+SyncScript.cmd
