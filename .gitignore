@@ -27,3 +27,4 @@ SupportFiles/ED_Launcher_WARTHOG.cmd
 SyncScriptWH.cmd
 TARGET_Script_Analyzer_v8.4.ps1
 SyncScript.cmd
+/Common/Piper/ATCChatter
