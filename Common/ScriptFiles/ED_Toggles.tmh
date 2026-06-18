@@ -824,18 +824,32 @@
 	// Parameter:	Action - ON or OFF
 
 	int tgGALMap (int action) {
+		
 		int GUIMode = stfnProcessGuiFocus();
+
 		if (GUIMode != GUI_GalaxyMap) {
-	//		if (action == ON) {
+			if(WARTHOG) {
+				if (action == ON) {	
+					ActKey(KEYON+PULSE+GalMap);
+					printf("==	Galaxy Map:		ON\x0a");
+				}
+			}
+			else {
 				ActKey(KEYON+PULSE+GalMap);
-				printf("==	Galaxy Map:		ON\x0a");
-	//		}
+				printf("==	Galaxy Map:		ON\x0a");				
+			}
 		}
 		if (GUIMode == GUI_GalaxyMap) {
-	//		if (action == OFF) {
+			if(WARTHOG) {
+				if (action == OFF) {
+					ActKey(KEYON+PULSE+GalMap);
+					printf("==	Galaxy Map:		OFF\x0a");
+				}
+			}
+			else {
 				ActKey(KEYON+PULSE+GalMap);
-				printf("==	Galaxy Map:		OFF\x0a");
-	//		}
+				printf("==	Galaxy Map:		OFF\x0a");								
+			}
 		}		
 	}
 
@@ -844,18 +858,32 @@
 	// Parameter:	Action - ON or OFF
 
 	int tgSYSMap (int action) {
+
 		int GUIMode = stfnProcessGuiFocus();
+
 		if (GUIMode != GUI_SystemMap) {
-	//		if (action == ON) {
+			if(WARTHOG) {
+				if (action == ON) {	
+					ActKey(KEYON+PULSE+SystemMap);
+					printf("==	System Map:		ON\x0a");
+				}
+			}
+			else {
 				ActKey(KEYON+PULSE+SystemMap);
-				printf("==	System Map:		ON\x0a");
-	//		}
+				printf("==	System Map:		ON\x0a");				
+			}
 		}
 		if (GUIMode == GUI_SystemMap) {
-	//		if (action == OFF) {
+			if(WARTHOG) {
+				if (action == OFF) {
+					ActKey(KEYON+PULSE+SystemMap);
+					printf("==	System Map:		OFF\x0a");
+				}
+			}
+			else {
 				ActKey(KEYON+PULSE+SystemMap);
-				printf("==	System Map:		OFF\x0a");
-	//		}
+				printf("==	System Map:		OFF\x0a");								
+			}
 		}			
 	}
 
