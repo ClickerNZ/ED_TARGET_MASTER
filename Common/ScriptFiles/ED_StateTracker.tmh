@@ -733,6 +733,7 @@
 				printf("==	Liftoff @ %s\x0a", &LiftoffTOD);
 				if (fSRV | fOnFoot) {
 					if (!ShipDismissed) {
+						fnOverlay("Ship departed", 15, 610, 980, 3);		// TTL=15 seconds, pos=centre-bottom, colour=yellow
 						fnVPOutput("Ship has departed");
 					}
 					
