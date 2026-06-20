@@ -208,7 +208,7 @@
 			MapKeyUMD(&MyJoystick, B5, 
 				EXEC("fnVPOutput(\"not used\");"),									// U - 
 //				PULSE+GalMap,														// M - LeftShift+';'
-				EXEC("tgGALMap();"),												// M - Sys Map On/Off 
+				EXEC("tgGALMap(TOGGLE);"),												// M - Sys Map On/Off 
 				EXEC("fnVPOutput(\"not used\");")									// D - 
 				);
 		}
@@ -264,7 +264,7 @@
 			MapKeyUMD(&MyJoystick, B10,
 				EXEC("fnVPOutput(\"not used\");"),									// U - 
 //				PULSE+SystemMap,													// M - ';' 
-				EXEC("tgSYSMap();"),												// M - Sys Map On/Off
+				EXEC("tgSYSMap(TOGGLE);"),												// M - Sys Map On/Off
 				EXEC("fnStateDump();")												// D - Debug function. Prints States Banner
 				);
 		}
