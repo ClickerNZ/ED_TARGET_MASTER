@@ -1364,6 +1364,7 @@
 			ActKey(KEYON+PULSE+LED(&MyThrottle, LED_ONOFF, LED_CURRENT-LED0)); 						// set GLOBAL LED OFF.   IF THIS DOESN'T SET ALL LEDS OFF UN COMMENT THE ABOVE 2 LINES
 					
 			if (mode == 0) {
+				fnOverlay("Menulog to Open", 20, 607, 980, 2);										// TTL=20 seconds, pos=centre-bottom, colour=blue  
 				fnVPOutput("Menu log to open selected.. please wait for game reload", 0, 1);			
 				ActKey(KEYON+PULSE+m_FastModeSwitch0);												// Selects OPEN mode
 			}
@@ -1373,17 +1374,21 @@
 				fnVPOutput(&PVTGRP, 0, 1);
 				
  				if (PrivateGroup == 1) {
+					fnOverlay("Menulog to private group 1", 20, 592, 980, 2);						// TTL=20 seconds, pos=centre-bottom, colour=blue  
 					ActKey(KEYON+PULSE+m_FastModeSwitch1a);											// Selects 1st option in PRIVATE GROUP
 				}
 				else if (PrivateGroup == 2) {
+					fnOverlay("Menulog to private group 2", 20, 592, 980, 2);						// TTL=20 seconds, pos=centre-bottom, colour=blue  
 					ActKey(KEYON+PULSE+m_FastModeSwitch1b);											// Selects 2nd option in PRIVATE GROUP 					
 				}
 				else if (PrivateGroup == 3) {
+					fnOverlay("Menulog to private group 3", 20, 592, 980, 2);						// TTL=20 seconds, pos=centre-bottom, colour=blue  
 					ActKey(KEYON+PULSE+m_FastModeSwitch1c);											// Selects 3rd option in PRIVATE GROUP
 				}
 				else reason = "Set PrivateGroup Varaibal to 1, 2 or 3 in USer settings";
 			}
 			else {
+				fnOverlay("Menulog to solo", 20, 607, 980, 2);										// TTL=20 seconds, pos=centre-bottom, colour=blue  
 				fnVPOutput("Menu log to solo selected.. please wait for game reload", 0, 1);			
 				ActKey(KEYON+PULSE+m_FastModeSwitch2);												// Selects SOLO mode
 			}
