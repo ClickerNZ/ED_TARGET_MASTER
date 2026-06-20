@@ -378,7 +378,8 @@ function Clear-ATCChatterQueue {
 }
 
 function Update-ATCChatterMuteState {
-  $newMuted = ($script:IsDocked -or $script:IsOnFoot -or $script:IsInFSS)
+#  $newMuted = ($script:IsDocked -or $script:IsOnFoot -or $script:IsInFSS)
+  $newMuted = ($script:IsOnFoot -or $script:IsInFSS)  # unmute ATCChatter when docked
   $changed = ($newMuted -ne $script:Muted)
   $script:Muted = $newMuted
   if ($changed -and $script:Muted) { Clear-ATCChatterQueue }
