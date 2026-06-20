@@ -48,18 +48,6 @@ Import-Module ATCChatter			-ErrorAction Stop
 # Enables ATC Chatter function for ReceiveText trap 
 $Global:ATCChatter = $true
 
-<#
-# DEBUG: Testing the ATCChatter module...
-Add-ATCChatter "ATC chatter test one" "Station"
-Add-ATCChatter "ATC chatter test two" "Traffic"
-Add-ATCChatter "ATC chatter test three" "Security"
-
-# Invoke-ATCChatter is no longer used. Use external helper script instead
-#Invoke-ATCChatter
-#Invoke-ATCChatter
-#Invoke-ATCChatter
-#>
-
 # TTS startup
 # The following voice should be installed on your Windows PC to work as intended.
 # If this voice is unavailable the default Windows TTS voice will be used.
@@ -67,24 +55,10 @@ Add-ATCChatter "ATC chatter test three" "Security"
 # https://support.microsoft.com/en-nz/help/22805/windows-10-supported-narrator-languages-voices 
 # https://www.ghacks.net/2018/08/11/unlock-all-windows-10-tts-voices-system-wide-to-get-more-of-them/
 
-
 $voice = "Microsoft Catherine"
 $rate  = 1
 $volume= 80
 [TTS]::SpeakText("Journal processor version $MyVersion loading", $voice, $rate, $volume)
-
-<#
-[TTS]::SpeakText("Catherine, Journal processor version $MyVersion loading", "Microsoft Catherine", $rate, $volume)
-[TTS]::SpeakText("James, Journal processor version $MyVersion loading", "Microsoft James", $rate, $volume)
-[TTS]::SpeakText("David, Journal processor version $MyVersion loading", "Microsoft David Desktop", $rate, $volume)
-[TTS]::SpeakText("Zira, Journal processor version $MyVersion loading", "Microsoft Zira Desktop", $rate, $volume)
-[TTS]::SpeakText("Heera, Journal processor version $MyVersion loading", "Microsoft Heera", $rate, $volume)
-[TTS]::SpeakText("Ravi, Journal processor version $MyVersion loading", "Microsoft Ravi", $rate, $volume)
-[TTS]::SpeakText("Sean, Journal processor version $MyVersion loading", "Microsoft Sean", $rate, $volume)
-[TTS]::SpeakText("Richard, Journal processor version $MyVersion loading", "Microsoft Richard", $rate, $volume)
-[TTS]::SpeakText("Linda, Journal processor version $MyVersion loading", "Microsoft Linda", $rate, $volume)
-[TTS]::SpeakText("Mark, Journal processor version $MyVersion loading", "Microsoft Mark", $rate, $volume)
-#>
 
 # Set window title
 try { $host.UI.RawUI.WindowTitle = "Journal Processor v$MyVersion" } catch {}
@@ -797,10 +771,7 @@ function Process-NewLines {
 			}
         }
     }
-
-#	Invoke-ATCChatter no longer used. Reqs external helper script.
-#	Invoke-ATCChatter
-			
+	
     # update tracker
     Update-LastLineCount $fileName $total
 	
@@ -942,10 +913,7 @@ function Invoke-AutopilotTick {
 	
 	if (Test-Path $script:StatusPath) {
 		try {
-#			$status = Get-Content -Path $script:StatusPath -Raw -Encoding ascii | ConvertFrom-Json
 			$status = Get-Content $script:StatusPath -Raw | ConvertFrom-Json
-
-#			$hasAltitudeData = ($status.Flags -band 0x20000000) -ne 0
 
 			# Validate planetary surface condition
 			if (( $status.Flags -band 0x000001 ) -eq 1) {
@@ -953,12 +921,6 @@ function Invoke-AutopilotTick {
 				$Global:autopilotEnabled = $false
 				break
 			}
-
-#			if (-not $hasAltitudeData) {
-#				Write-Host "[$localtime] : Autopilot disabled -- altitude data not present."
-#				$Global:autopilotEnabled = $false
-#				break
-#			}
 
 			# Extract and validate core values
 			$currentLat     = $status.Latitude
