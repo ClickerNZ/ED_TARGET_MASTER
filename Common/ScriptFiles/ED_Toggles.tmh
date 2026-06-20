@@ -821,70 +821,46 @@
 
 	
 	// TOGGLE:		Toggle Galaxy Map ON/OFF
-	// Parameter:	Action - ON or OFF
+	// Parameter:	Action - ON, OFF (parsed by WATHOG only) or TOGGLE (parsed by T16000)
 
 	int tgGALMap (int action) {
-		
+	
 		int GUIMode = stfnProcessGuiFocus();
 
 		if (GUIMode != GUI_GalaxyMap) {
-			if(WARTHOG) {
-				if (action == ON) {	
-					ActKey(KEYON+PULSE+GalMap);
-					printf("==	Galaxy Map:		ON\x0a");
-				}
-			}
-			else {
+			if ((action == ON) | (action == TOGGLE)) {	
+				printf("==	Galaxy Map:		ON\x0a");
 				ActKey(KEYON+PULSE+GalMap);
-				printf("==	Galaxy Map:		ON\x0a");				
 			}
 		}
 		if (GUIMode == GUI_GalaxyMap) {
-			if(WARTHOG) {
-				if (action == OFF) {
-					ActKey(KEYON+PULSE+GalMap);
-					printf("==	Galaxy Map:		OFF\x0a");
-				}
-			}
-			else {
+			if ((action == OFF) | (action == TOGGLE)) {
+				printf("==	Galaxy Map:		OFF\x0a");
 				ActKey(KEYON+PULSE+GalMap);
-				printf("==	Galaxy Map:		OFF\x0a");								
 			}
-		}		
+		}				
 	}
 
 
 	// TOGGLE:		Toggle System Map ON/OFF
-	// Parameter:	Action - ON or OFF
+	// Parameter:	Action - ON, OFF or TOGGLE 
 
 	int tgSYSMap (int action) {
 
 		int GUIMode = stfnProcessGuiFocus();
 
 		if (GUIMode != GUI_SystemMap) {
-			if(WARTHOG) {
-				if (action == ON) {	
-					ActKey(KEYON+PULSE+SystemMap);
-					printf("==	System Map:		ON\x0a");
-				}
-			}
-			else {
+			if ((action == ON) | (action == TOGGLE)) {	
+				printf("==	System Map:		ON\x0a");
 				ActKey(KEYON+PULSE+SystemMap);
-				printf("==	System Map:		ON\x0a");				
 			}
 		}
 		if (GUIMode == GUI_SystemMap) {
-			if(WARTHOG) {
-				if (action == OFF) {
-					ActKey(KEYON+PULSE+SystemMap);
-					printf("==	System Map:		OFF\x0a");
-				}
-			}
-			else {
+			if ((action == OFF) | (action == TOGGLE)) {
+				printf("==	System Map:		OFF\x0a");
 				ActKey(KEYON+PULSE+SystemMap);
-				printf("==	System Map:		OFF\x0a");								
 			}
-		}			
+		}		
 	}
 
 
