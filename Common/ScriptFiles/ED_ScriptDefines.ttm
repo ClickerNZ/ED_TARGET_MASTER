@@ -71,6 +71,7 @@
 			
 	define OFF						0
 	define ON						1
+	define TOGGLE					3
 	
 	define LOG						2						// DEBUG Levels
 	define VERBOSE					3						// DEBUG Levels
