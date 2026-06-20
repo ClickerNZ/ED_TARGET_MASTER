@@ -1,0 +1,28 @@
+
+// Version 600
+
+	Cargo Scoop retracts when you escape to menu - ED issue.
+		Work around via ModeSwitch macro timing
+		TEST: 
+		
+	Status LEDs Flash ON but do not Flash OFF
+		- fnSetLEDs() turn off all LEDs before flashing any that are set in Flags
+		- perhaps I need to write a fnResetLEDs() function, or...
+		- call fnFlashLED() each time state changes from 1 to 0
+		TEST: 
+	
+	Alternate method to invoke DSSMode (SAAMode) ?
+		- currently activated via initial press of Advanced System Scanner (via trigger)
+		TEST: 
+		
+	SRV Recovery unreliable	
+		- sometimes selects "Dismiss Ship"
+		- currently set to position selection only but not select
+		- need to spend some time testing this
+		TEST: 
+		
+	Exit FSS or DSS (SAA) Mode
+		- can use both U+H1U (RSHIFT+/) and D+H1U (Backspace)?
+		- difference being one might put HUDMode into Combat
+		TEST: 
+		
