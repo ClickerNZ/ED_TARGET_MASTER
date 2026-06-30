@@ -681,7 +681,7 @@
 		MapKey(&MyThrottle, IDLEROFF, 0);																	// <not currently used>
 
 		// MapKeys FINISHED - Print current mode to console 
-		printf("\x0a\++	HOTAS Mode:		LIVE\x0a");
+		printf("\x0a\++	HOTAS Mode:		LIVE\x0a\x0a");
 		
 	}	// end of LiveKeyMap
 	
@@ -1312,7 +1312,7 @@
 		MapKey(&MyThrottle, IDLEROFF, 0);				// <not used>
 
 		// MapKeys FINISHED - Print current mode to console 
-		printf("\x0a\++	HOTAS Mode:		TRAINING - Press a button or flick a switch to see or hear what it does.\x0a");
+		printf("\x0a\++	HOTAS Mode:		TRAINING - Press a button or flick a switch to see or hear what it does.\x0a\x0a");
 
 	}	// end of TrainingKeyMap
 

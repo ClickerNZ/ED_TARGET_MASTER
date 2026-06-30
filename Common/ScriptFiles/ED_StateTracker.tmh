@@ -357,7 +357,7 @@
 		else if(jsonfile == 2) {
 			strcpy(&KVJson, &MyStatesJson);
 		}
-		else printf(!!	DEBUG: stfnGetKeyValue() Invalid JSON file requested = %d\x0a", jsonfile);
+		else printf("!!	DEBUG: stfnGetKeyValue() Invalid JSON file requested = %d\x0a", jsonfile);
 		
 		// Find the Key (pattern) ...
 
@@ -1393,7 +1393,7 @@
 
 			if (fRESERVED24 != lRESERVED24) {
 				if (fRESERVED24) {
-					fnOverlay("F2 BIT 24 Detected", 15, 603, 980, 3 "Newflag"); 
+					fnOverlay("F2 BIT 24 Detected", 15, 603, 980, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 24");
 				}
 				else {
@@ -1403,7 +1403,7 @@
 
 			if (fRESERVED25 != lRESERVED25) {
 				if (fRESERVED25) {
-					fnOverlay("F2 BIT 25 Detected", 15, 603, 980, 3 "Newflag"); 
+					fnOverlay("F2 BIT 25 Detected", 15, 603, 980, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 25");
 				}
 				else {
@@ -1413,7 +1413,7 @@
 			
 			if (fRESERVED26 != lRESERVED26) {
 				if (fRESERVED26) {
-					fnOverlay("F2 BIT 26 Detected", 15, 603, 980, 3 "Newflag"); 
+					fnOverlay("F2 BIT 26 Detected", 15, 603, 980, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 26");
 				}
 				else {
@@ -1423,7 +1423,7 @@
 
 			if (fRESERVED27 != lRESERVED27) {
 				if (fRESERVED27) {
-					fnOverlay("F2 BIT 27 Detected", 15, 603, 980, 3 "Newflag"); 
+					fnOverlay("F2 BIT 27 Detected", 15, 603, 980, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 27");
 				}
 				else {
@@ -1433,7 +1433,7 @@
 
 			if (fRESERVED28 != lRESERVED28) {
 				if (fRESERVED28) {
-					fnOverlay("F2 BIT 28 Detected", 15, 603, 980, 3 "Newflag"); 
+					fnOverlay("F2 BIT 28 Detected", 15, 603, 980, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 28");
 				}
 				else {
@@ -1443,7 +1443,7 @@
 
 			if (fRESERVED29 != lRESERVED29) {
 				if (fRESERVED29) {
-					fnOverlay("F2 BIT 29 Detected", 15, 603, 980, 3 "Newflag"); 
+					fnOverlay("F2 BIT 29 Detected", 15, 603, 980, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 29");
 				}
 				else {
@@ -1453,7 +1453,7 @@
 			
 			if (fRESERVED30 != lRESERVED30) {
 				if (fRESERVED30) {
-					fnOverlay("F2 BIT 30 Detected", 15, 603, 980, 3 "Newflag"); 
+					fnOverlay("F2 BIT 30 Detected", 15, 603, 980, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 30");
 				}
 				else {
@@ -1463,7 +1463,7 @@
 
 			if (fRESERVED31 != lRESERVED31) {
 				if (fRESERVED31) {
-					fnOverlay("F2 BIT 31 Detected", 15, 603, 980, 3 "Newflag"); 
+					fnOverlay("F2 BIT 31 Detected", 15, 603, 980, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 31");
 				}
 				else {
@@ -1473,7 +1473,7 @@
 
 			if (fRESERVED32 != lRESERVED32) {
 				if (fRESERVED32) {
-					fnOverlay("F2 BIT 32 Detected", 15, 603, 980, 3 "Newflag"); 
+					fnOverlay("F2 BIT 32 Detected", 15, 603, 980, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 32");
 				}
 				else {
