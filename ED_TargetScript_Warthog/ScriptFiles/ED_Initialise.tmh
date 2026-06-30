@@ -1,7 +1,7 @@
 
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 	//		  CMDR Clicker's Elite Dangerous Enhanced Thrustmaster TARGET Script			//
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 
 	//									WARTHOG REQUIRED									//
 
@@ -9,29 +9,29 @@
 
 /*
 	Index:				FUNCTION
-	Line    53: 		int CheckControllers() {
-	Line   167: 		int initJoystickAxis() {
-	Line   187: 		int initThrottleAxis() {
-	Line   204: 		int initSliderAxis() {
-	Line   220: 		int initSlewAxis() {
-	Line   237: 		int initRudderAxis() {	
-	Line   256: 		int initCurves(int profile, int print=NO, int announce=YES, int SaveCurveInfo=TRUE) {
-	Line   333: 		int initSliderCurve(int x) {
-	Line   365: 		int initTextToSpeech() {
-	Line   377: 		int initSoundFX() {
-	Line   437: 		int initUserSettings(int dummy = 0) {
-	Line   495: 		int fnResetUserSettings(int dummy = 0) {
-	Line   541: 		int fnEncodeUserSettings(int dummy = 0) {
-	Line   577: 		int fnDecodeUserSettings(int DecodeSettings) {
-	Line   609: 		int fnUserSettingsDelta(int dummy = 0)	{
-	Line   657: 		int fnCompareIntSettings(int dummy = 0) {
+	Line    52: 		int CheckControllers() {
+	Line   166: 		int initJoystickAxis() {
+	Line   186: 		int initThrottleAxis() {
+	Line   203: 		int initSliderAxis() {
+	Line   219: 		int initSlewAxis() {
+	Line   236: 		int initRudderAxis() {
+	Line   255: 		int initCurves(int profile, int print=NO, int announce=YES, int SaveCurveInfo=TRUE) {
+	Line   332: 		int initSliderCurve(int x) {
+	Line   364: 		int initTextToSpeech() {
+	Line   376: 		int initSoundFX() {
+	Line   436: 		int initUserSettings(int dummy = 0) {
+	Line   494: 		int fnResetUserSettings(int dummy = 0) {
+	Line   540: 		int fnEncodeUserSettings(int dummy = 0) {
+	Line   576: 		int fnDecodeUserSettings(int DecodeSettings) {
+	Line   608: 		int fnUserSettingsDelta(int dummy = 0)	{
+	Line   656: 		int fnCompareIntSettings(int dummy = 0) {
 */
 
 	// START
 
-	//----------------------------------------------------------------------//
+	// -------------------------------------------------------------------- //
 	// SCRIPT VERSION VARIABLES (Prev = 5.1.0)                              //
-	//----------------------------------------------------------------------//
+	// -------------------------------------------------------------------- //
 	
 	// GLOBAL
 	
@@ -40,13 +40,12 @@
 	define VPoint					0						// Script Version Point Update			ie. xx4
 	define VBranch					"0"						// Script Version Branch				ie. xxx.01
 	
-	//--------------------------//
+	// ------------------------ //
 	// INITIALISATION FUNCTIONS //
-	//--------------------------//
+	// ------------------------ //
 
 	// Check what controllers we have connected
 	// Define All Axis Curves/Trim/Deadzones for Included Devices
-
 		
 	//   !!!   THE SCRIPT WILL ABORT IF NO COMPATIBLE JOYSTICK OR THROTTLE IS FOUND   !!!																					  
 
@@ -102,7 +101,7 @@
 			}
 		}
 
-	//===================================================================================================
+	// ===================================================================================================
 
 		// There is only one Throttle compatible with this script...
 		
@@ -127,7 +126,7 @@
 			printf("++	Connected throttle	is WARTHOG Replica A-10C Throttle\x0a");
 		}
 
-	//===================================================================================================
+	// ===================================================================================================
 
 		// If no rudder is found the script will not abort.
 		// There are two Rudders compatible with this script...
@@ -152,15 +151,15 @@
 		}
 	}
 
-	//----------------------//
+	// -------------------- //
 	// End CheckControllers //
-	//----------------------//
+	// -------------------- //
 
 	// ------------------- //
 	// INITIALISE all AXES //
 	// ------------------- //
 
-//	REVIEW:	If only called once, perhaps we include a call to initCurves() in each block???
+//-	REVIEW:	If only called once, perhaps we include a call to initCurves() in each block???
 
 	// FUNCTION: Initialise Joystick Axes 
 	
@@ -182,7 +181,7 @@
 	}
 
 
-	//FUNCTION: Initialise Throttle Axes
+	// FUNCTION: Initialise Throttle Axes
 	
 	int initThrottleAxis() {																	// Set Default Throttle Axis
 		
@@ -267,19 +266,19 @@
 			JSCurveSetting = "NONE";
 			VoiceTxt = "Curves None";
 		}
-		if (profile == MILD) {
+		else if (profile == MILD) {
 			JSCurveSetting = "MILD";
 			VoiceTxt = "Curves mild";
 		}
-		if (profile == MEDIUM) {
+		else if (profile == MEDIUM) {
 			JSCurveSetting = "MEDIUM";
 			VoiceTxt = "Curves medium";			
 		}
-		if (profile == SLOW) {
+		else if (profile == SLOW) {
 			JSCurveSetting = "SLOW";
 			VoiceTxt = "Curves slow";					
 		}
-		if (profile == SLOWEST) {
+		else if (profile == SLOWEST) {
 			JSCurveSetting = "SLOWEST";
 			VoiceTxt = "Curves slowest";					
 		}
@@ -339,13 +338,14 @@
 			SetJCurve(&MyThrottle, THR_FC, 50, 50);						// Linear progression. Low sensitivity
 			SliderProfile = "FSS Mode";
 		}
-		if (x == 1)	{													// Normal flight
+		else if (x == 1)	{													// Normal flight
 			SliderCurve = LIST(0,0, 40,25, 75,50, 85,75, 100,100);		// TESTING 
 	//-		SliderCurve = LIST(0,0, 25,25, 50,50, 75,75, 100,100);		// Linear 
 			SetCustomCurve(&MyThrottle, THR_FC, SliderCurve);
 			SliderProfile = "Normal Flight";			
 		}
-		if (x == 2)	{													// Supercruise or SAA Mode
+//		if (x == 2)	{													// Supercruise or SAA Mode
+		else {
 			SliderCurve = LIST(0,0, 50,10, 75,30, 90,50, 100,100);		// TESTING 
 	//-		SliderCurve = LIST(0,0, 25,25, 50,50, 75,75, 100,100);		// Linear 
 			SetCustomCurve(&MyThrottle, THR_FC, SliderCurve);
@@ -477,15 +477,15 @@
 		
 		printf("++	User Settings recorded\x0a");
 		
-		if (DEBUG == 0) DEBUGMODE = "OFF";
-		if (DEBUG == 1) DEBUGMODE = "ON";
-		if (DEBUG == 2) DEBUGMODE = "LOG";
-		if (DEBUG == 3) DEBUGMODE = "VERBOSE";
-		if (DEBUG > 3 | DEBUG < 0)	DEBUGMODE = "NOT SET";
+		if (DEBUG == 0)					DEBUGMODE = "OFF";
+		else if (DEBUG == 1)			DEBUGMODE = "ON";
+		else if (DEBUG == 2)			DEBUGMODE = "LOG";
+		else if (DEBUG == 3)			DEBUGMODE = "VERBOSE";
+		else if (DEBUG > 3 | DEBUG < 0)	DEBUGMODE = "NOT SET";
 		
 		// --- Reset Trip timers
 		fnSetOriginStation(0);
-				
+
 	}
 	
 	

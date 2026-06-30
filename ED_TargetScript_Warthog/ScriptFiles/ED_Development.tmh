@@ -84,6 +84,7 @@
 			LOCK);
 	}
 	
+	//	NOTE:		This functionality is available via SRVSurvey
 	//	FUNCTION:	Autopilot guides ship in direction of target using 'DestHeading' and 'DestDistance' from MyJournalData.json - UNDER DEVELOPMENT 
 	//	USAGE:		Use "!set <command>" in ED Chat window to enter an input command
 	//				Example: "!set LAT -17.536" then "!set LON 54.321"
@@ -109,12 +110,13 @@
 			printf("!!	DEBUG:	fnAutoPilot() - destDistance	= %d\x0a", destDistance);
 		}
 
-		// sprintf char array or alias to say "Head <destHeading>"
-		// sprintf char array or alias to say "Distance is <destDistance>"
+		// sprintf char array or alias to say or overlay "Head: <destHeading>"
+		// sprintf char array or alias to say or overlay "Dist: <destDistance>"
 	
 	}
 
 
+	//	NOTE:		This functionality is available via SRVSurvey
 	//	TOGGLE:		Toggle Auto Pilot ON/OFF 
 	//	Parameter:	dummy - enables delayed or repeat calls from REXEC() and DeferCall()
 	
@@ -202,21 +204,21 @@
 	}
 
 	int fnLowAltitude() {
-		fnSoundFX("AltWarning");					// Warning horn (duration 1 second) - may need tweaking
+		fnSoundFX("AltWarning");							// Warning horn (duration 1 second) - may need tweaking
 		printf("^^	Pull up	^^\x0a");
 		// Increase altitude using PitchUp and ThrustUp
-		ActKey(KEYON+m_PullUp);						// Duration = DelayTime(100)*3 + 1000 = 1300
+		ActKey(KEYON+PULSE+m_PullUp);						// Duration = DelayTime(100)*3 + 1000 = 1300
 	}
 	
 	int fnAscend() {
 		printf("^^	Increase altitude	^^\x0a");
 		// Increase altitude using PitchUp and ThrustUp
-		ActKey(KEYON+m_Ascend);						// Duration = DelayTime(100)*3 + 1000 = 1300	
+		ActKey(KEYON+PULSE+m_Ascend);						// Duration = DelayTime(100)*3 + 1000 = 1300	
 	}
 	
 	int fnDescend() {
 		printf("--	Decrease Altitude	--\x0a");
 		// Decrease altitude using PitchDown and ThrustDown
-		ActKey(KEYON+m_Descend);					// Duration = DelayTime(100)*3 + 500 = 800
+		ActKey(KEYON+PULSE+m_Descend);						// Duration = DelayTime(100)*3 + 500 = 800
 	}
 

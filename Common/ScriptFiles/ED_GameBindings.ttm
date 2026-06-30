@@ -1,7 +1,7 @@
 
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 	//		  CMDR Clicker's Elite Dangerous Enhanced Thrustmaster TARGET Script			//
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 
 	//							This file: ED_GameBindings.ttm								//
 
@@ -34,9 +34,9 @@
 
 	// START
 
-	//----------------------------------------------------------------------//
+	// -------------------------------------------------------------------- //
 	// BINDINGS SECTION STARTS HERE											//
-	//----------------------------------------------------------------------//
+	// -------------------------------------------------------------------- //
 
 	// WEAPON CONTROL //
 	define PrimaryFire 							DX1						// JOY1
@@ -247,50 +247,50 @@
 	define StrafeRight							USB[0x07]				// d
 	define TurnLeft														// Mouse Left
 	define TurnRight													// Mouse Right 
-//	define Sprint 								USB[0x0D] 				// j
-//	define Walk									USB[0x1C]				// y
-//	define Crouch		 						USB[0x06] 				// c
+//-	define Sprint 								USB[0x0D] 				// j
+//-	define Walk									USB[0x1C]				// y
+//-	define Crouch		 						USB[0x06] 				// c
 	define Jump 								USB[0x2C] 				// Space
 	define Interact								USB[0x08]				// e
-//	define SecondaryInteract					USB[0x2B]				// TAB
+//-	define SecondaryInteract					USB[0x2B]				// TAB
 	define Reload								USB[0x15]				// r
 	define SelectTool							USB[0x17]				// t
-//	define FlashLight 							USB[0x49] 				// INSERT
-//	define SelectSuitTool						USB[0x09]				// f
+//-	define FlashLight 							USB[0x49] 				// INSERT
+//-	define SelectSuitTool						USB[0x09]				// f
 	define InsightHub 							USB[0x0B]				// h
-//	define EnergyLink 							USB[0x0F] 				// l
-//	define Melee 								USB[0x10] 				// m
-//	define ProfileAnalyzer						USB[0x13]				// p
-//	define ToggleShields 						USB[0x19] 				// v 
-//	define ClearAuthLevel						L_ALT+USB[0x04]			// LALT+a
-//	define EnergyCell 							USB[0x34]				// '
-//	define HealthPack		 					L_ALT+USB[0x06]			// LALT+c
+//-	define EnergyLink 							USB[0x0F] 				// l
+//-	define Melee 								USB[0x10] 				// m
+//-	define ProfileAnalyzer						USB[0x13]				// p
+//-	define ToggleShields 						USB[0x19] 				// v 
+//-	define ClearAuthLevel						L_ALT+USB[0x04]			// LALT+a
+//-	define EnergyCell 							USB[0x34]				// '
+//-	define HealthPack		 					L_ALT+USB[0x06]			// LALT+c
 
 	define EnergyCell 							USB[0x24]				// 7
 	define HealthPack		 					USB[0x23]				// 6
 	
-//	define ThrowGrenade							USB[0x1B]				// x
-//	define NextGrenadeType						L_ALT+USB[0x36]			// LALT+,
-//	define PrevGrenadeType 						L_ALT+USB[0x37]			// LALT+.
-//	define EMPGrenade							L_ALT+USB[0x08]			// LALT+e
-//	define FragGrenade							L_ALT+USB[0x09]			// LALT+f
-//	define ShieldGrenade						L_ALT+USB[0x16]			// LALT+s
-//	define PrimaryWeapon						L_ALT+USB[0x1E]			// LALT+1
-//	define SecondaryWeapon						L_ALT+USB[0x1F]			// LALT+2
-//	define SwitchWeapon							USB[0x1D]				// z
-//	define NextWeapon							USB[0x36]				// ,
-//	define PrevWeapon 							USB[0x37]				// .
+//-	define ThrowGrenade							USB[0x1B]				// x
+//-	define NextGrenadeType						L_ALT+USB[0x36]			// LALT+,
+//-	define PrevGrenadeType 						L_ALT+USB[0x37]			// LALT+.
+//-	define EMPGrenade							L_ALT+USB[0x08]			// LALT+e
+//-	define FragGrenade							L_ALT+USB[0x09]			// LALT+f
+//-	define ShieldGrenade						L_ALT+USB[0x16]			// LALT+s
+//-	define PrimaryWeapon						L_ALT+USB[0x1E]			// LALT+1
+//-	define SecondaryWeapon						L_ALT+USB[0x1F]			// LALT+2
+//-	define SwitchWeapon							USB[0x1D]				// z
+//-	define NextWeapon							USB[0x36]				// ,
+//-	define PrevWeapon 							USB[0x37]				// .
 	define HolsterWeapon 						USB[0x18] 				// u
-//	define AimSights							USB[0x14]				// q
+//-	define AimSights							USB[0x14]				// q
 	define FireWeapon							L_ALT+USB[0x28]			// LALT+Enter - used on Mouse Button 1
-//	define ItemWheelUp							L_ALT+USB[0x52]			// LALT+UP Arrow
-//	define ItemWheelDown						L_ALT+USB[0x51]			// LALT+DOWN Arrow
-//	define ItemWheelLeft						L_ALT+USB[0x50]			// LALT+LEFT Arrow
-//	define ItemWheelRight						L_ALT+USB[0x4F]			// LALT+RIGHT Arrow
-//	define ItemWheelSelect						L_ALT+USB[0x2C]			// LALT+Space - used on Mouse Button 3
-//	define BattleStats							USB[0x05]				// b
-//	define tgToolMode							USB[0x0A]				// g
-//	define tgHelp								L_ALT+USB[0x0B]			// LALT+h
+//-	define ItemWheelUp							L_ALT+USB[0x52]			// LALT+UP Arrow
+//-	define ItemWheelDown						L_ALT+USB[0x51]			// LALT+DOWN Arrow
+//-	define ItemWheelLeft						L_ALT+USB[0x50]			// LALT+LEFT Arrow
+//-	define ItemWheelRight						L_ALT+USB[0x4F]			// LALT+RIGHT Arrow
+//-	define ItemWheelSelect						L_ALT+USB[0x2C]			// LALT+Space - used on Mouse Button 3
+//-	define BattleStats							USB[0x05]				// b
+//-	define tgToolMode							USB[0x0A]				// g
+//-	define tgHelp								L_ALT+USB[0x0B]			// LALT+h
 
 
 	// MISCELLANEOUS //
@@ -312,27 +312,27 @@
 	define GPUCaptureVideoAuto 					L_ALT+USB[0x43] 		// LALT+F10		(Note: Default NVidia Capture of ALT+F10 conflicts with HiRes Screenshots)
 	define GPUCaptureManual 					L_ALT+USB[0x42]			// LALT+F9		(Map this & above to your NVidia/AMD/Fraps capture software)
 
-	//----------------------------------------------------------------------//
+	// -------------------------------------------------------------------- //
 	// BINDINGS SECTION ENDS HERE											//
-	//----------------------------------------------------------------------//
+	// -------------------------------------------------------------------- //
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//--------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------------ //
 	// REFERENCE: DEFAULT THRUSTMASTER WARTHOG DX MAPPINGS //																										//
-	//--------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------------ //
 	//																																								//
 	//	JOYSTICK:	//			//	Trim Control: //		//	TMS Hat:	//		//	DMS Hat:	//		//	CMS Hat:	//										//
-	//	------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	//	----------------------------------------------------------------------------------------------------------------------------------------------------------- //
 	//	TG1 = DX1					H1U = DXHATUP				H2U = DX7				H3U = DX11				H4U = DX15											//
 	//	TG2 = DX6					H1D = DXHATDOWN				H2D = DX9				H3D = DX13				H4D = DX17											//
 	//	S1  = DX5					H1L = DXHATLEFT				H2L = DX10				H3L = DX14				H4L = DX18											//
 	//	S2  = DX2					H1R = DXHATRIGHT			H2R = DX8				H3R = DX12				H4R = DX16											//
 	//	S3  = DX3																								H4P (Hat4 pressed down) = DX19						//
 	//	S4  = DX4																																					//
-	//	------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	//	----------------------------------------------------------------------------------------------------------------------------------------------------------- //
 	//																																								//
 	//	THROTTLE:	//			//	Mic Switch:	//			//	Coolie Hat Switch:	//	Autopilot Switches:	//	Engine Fuel Flow: // FLAPS:	//	//	IDLE:	//		//
-	//	------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	//	----------------------------------------------------------------------------------------------------------------------------------------------------------- //
 	//	SC (slew pressed in) = DX1	MSP (mic pressed in) = DX2	CSU = DXHATUP			APENG = DX26			EFLNORM  = DX16		FLAPU = DX22	IDLERON = DX29	//
 	//	LTB  = DX15					MSU = DX3					CSR = DXHATRIGHT		APPAT = DX27			EOLMOTOR = DX18		FLAPD = DX23	IDLELON = DX30	//
 	//	SPDF = DX7					MSR = DX4					CSD = DXHATDOWN			APALT = DX28			EFRNORM  = DX17										//
@@ -340,27 +340,27 @@
 	//	BSF  = DX9					MSL = DX6																														//
 	//	BSB  = DX10																																					//
 	//	CHF  = DX11				//	EAC On/Off:	//	//	Engine Oper Ign/Norm:	//	//	APU Start Switch:	//	RDR/NORM:	//	//	Landing Gear/Warning:	//		//
-	//	CHB  = DX12				------------------------------------------------------------------------------------------------------------------------------------//
+	//	CHB  = DX12				----------------------------------------------------------------------------------------------------------------------------------- //
 	//	PSF  = DX13				//	EACON  = DX24		EOLIGN = DX31					APUON = DX20			RDRNRM = DX25		LDGH = DX21						//
 	//	PSB  = DX14				//						EORIGN = DX32																								//
-	//	------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	//	----------------------------------------------------------------------------------------------------------------------------------------------------------- //
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//--------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------------ //
 	// REFERENCE: DEFAULT THRUSTMASTER COMBINED DX MAPPINGS //	target.tmh  //  DX marked with * cannot be used in Elite:Dangerous due to its 32 DX limit			//
-	//--------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------------ //
 	//																																								//
 	//	JOYSTICK:	//			//	Trim Control: //		//	TMS Hat:	//		//	DMS Hat:	//		//	CMS Hat:	//										//
-	//	------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	//	----------------------------------------------------------------------------------------------------------------------------------------------------------- //
 	//	TG1 = DX1					H1U = DXHATUP				H2U = DX7				H3U = DX11				H4U = DX15											//
 	//	TG2 = DX6					H1D = DXHATDOWN				H2D = DX9				H3D = DX13				H4D = DX17											//
 	//	S1  = DX5					H1L = DXHATLEFT				H2L = DX10				H3L = DX14				H4L = DX18											//
 	//	S2  = DX2					H1R = DXHATRIGHT			H2R = DX8				H3R = DX12				H4R = DX16											//
 	//	S3  = DX3																								H4P (Hat4 pressed down) = DX19						//
 	//	S4  = DX4																																					//
-	//	------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	//	----------------------------------------------------------------------------------------------------------------------------------------------------------- //
 	//																																								//
 	//	THROTTLE:	//			//	Mic Switch:	//			//	Coolie Hat Switch:	//	Autopilot Switches:	//	Engine Fuel Flow: // FLAPS:	//	//	IDLE:	//		//
-	//	------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	//	----------------------------------------------------------------------------------------------------------------------------------------------------------- //
 	//	SC (slew pressed in) = DX21	MSP (mic pressed in) = DX26	CSU = DX22				APENG = DX39*			EFLNORM  = DX42*	FLAPU = DX46*	IDLERON = DX48*	//
 	//	LTB  = DX20					MSU = DX27					CSR = DX23				APPAT = DX40*			EOLMOTOR = DX43*	FLAPD = DX47*	IDLELON = DX49*	//
 	//	SPDF = DX31					MSR = DX28					CSD = DX24				APALT = DX41*			EFRNORM  = DX44*									//
@@ -368,14 +368,14 @@
 	//	BSF  = DX33*				MSL = DX30 																														//
 	//	BSB  = DX34*																																				//
 	//	CHF  = DX35*			//	EAC On/Off:	//	//	Engine Oper Ign/Norm:	//	//	APU Start Switch:	//	RDR/NORM:	//	//	Landing Gear/Warning:	//		//
-	//	CHB  = DX36*			------------------------------------------------------------------------------------------------------------------------------------//
+	//	CHB  = DX36*			----------------------------------------------------------------------------------------------------------------------------------- //
 	//	PSF  = DX37*			//	EACON  = DX50*		EOLIGN = DX52*					APUON = DX53*		  RDRNRM = DX54* 			LDGH = DX55*				//
 	//	PSB  = DX38*			//						EORIGN = DX51*																								//
-	//	------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	//	----------------------------------------------------------------------------------------------------------------------------------------------------------- //
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//--------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------------ //
 	// REFERENCE: USB KEY DEFINITIONS //																															//
-	//--------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------------ //
 	//																																								//
 	//	A	USB[0x04]		1	USB[0x1E]		ENTER		USB[0x28]		PRINT SCREEN	USB[0x46]		NUMPAD /	USB[0x54]		F1		USB[0x3A]			//
 	//	B	USB[0x05]		2	USB[0x1F]		ESCAPE		USB[0x29]		SCROLL LOCK		USB[0x47]		NUMPAD *	USB[0x55]		F2		USB[0x3B]			//
@@ -404,7 +404,7 @@
 	//	Y	USB[0x1C]							R_SHIFT		USB[0xE5]																								//
 	//	Z	USB[0x1D]							R_ALT		USB[0xE6]																								//
 	//											R_WIN		USB[0xE7]	** Further Special Keyboard Commands on page 54/60 of Target Script Editor Manual **		//
-	//--------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------------ //
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//	END 

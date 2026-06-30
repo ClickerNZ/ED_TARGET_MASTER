@@ -1,9 +1,9 @@
 
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 	//		  CMDR Clicker's Elite Dangerous Enhanced Thrustmaster TARGET Script			//
 	//																						//
 	//		   Contact:  https://forums.frontier.co.uk/members/clicker.19039/				//
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 
 	//							THRUSTMASTER WARTHOG REQUIRED								//
 
@@ -37,19 +37,18 @@
 
 	This script is provided as is and without any warranties, explicit or implied.
 
+	This script serves to create additional functionality and immersion within the game as well as serve as a reference on how better to utilise
+	TARGET script beyond what is supplied in the basic scripting guide provided by Thrustmaster.
+
 	This package contains a single required '.tmc' file (this is it), a '.ttm' which defines MANY constants and variables used by the rest
 	of the script. The whole package is coded within multiple '.tmh' files in order to (hopefully) make the code easier to follow and maintain.
 
-	The included change log file is no longer used to document where I've added features (intended and unintended!) 
 	Please refer to the github repository to understand changes made.
 	
 	A sample Windows batch file is included in the package to assist in lanching this script the game itself and any attendant
 	apps you may wish to use at run time.
 
 	Indexes near the top of each code file should assist in finding functions of interest.
-
-	This script serves to create additional functionality and immersion within the game as well as serve as a reference on how better to utilise
-	TARGET script beyond what is supplied in the basic scripting guide provided by Thrustmaster.
 
 	Enjoy.
 
@@ -73,11 +72,11 @@
 
 	/////////////////////////////////////////////////////////////////////////////
 	///                                                                       ///
-	///    !!! DO NOT EDIT TARGET.TMH, DEFINES.TMH, SYS.TMH OR HID.TMH !!!    ///
+	///   !!! DO NOT MODIFY TARGET.TMH, DEFINES.TMH, SYS.TMH OR HID.TMH !!!   ///
 	///                                                                       ///
 	/////////////////////////////////////////////////////////////////////////////
 
-	include "..\\..\\Common\\ScriptFiles\\ED_ScriptDefines.ttm"			// The order that these files are 'included' matters
+	include "..\\..\\Common\\ScriptFiles\\ED_ScriptDefines.ttm"					// The order that these files are 'included' matters
 	include "..\\..\\Common\\ScriptFiles\\ED_GameBindings.ttm"
 	include "..\\..\\Common\\ScriptFiles\\ED_GlobalVars.tmh"
 	include "ED_UserSettings.tmh"
@@ -93,9 +92,9 @@
 	include "ED_Development.tmh"
 //-	DEBUG	+++++
 		
-	//--------------//
+	// ------------ //
 	// Main Program //
-	//--------------//
+	// ------------ //
 	
 	int main() {
 	
@@ -155,9 +154,6 @@
 		fnPIPMode(RESET);														// Reset PIPMode before calling stfnMyStates(LOAD). Refer ED_UserSettings.tmh to set your preferred default PIP Mode
 																				
 		initUserSettings(0);													// Save default user settings. On the fly customisation available for most settings.
-		
-//		printf("\x0a\++	Load MyStates from file...\x0a");
-//		stfnMyStates(LOAD);														// Load script status variables (not covered in status.json) and modified User Settings 
 		
 		fnLEDBrightness();														// Set initial LED Brightness levels
 

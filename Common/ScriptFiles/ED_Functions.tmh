@@ -1,64 +1,65 @@
 
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 	//		  CMDR Clicker's Elite Dangerous Enhanced Thrustmaster TARGET Script			//
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 
-	//							This file: ED_Functions.tmh								//
+	//					   		 This file: ED_Functions.tmh								//
 /*
 	Index:				FUNCTION
-	Line    67: 		int fnNotValid(int fnName, int reason=0) {
-	Line    85: 		int fnStartupMapKeyMode() {
-	Line   111: 		int fnGetFlightMode() {
-	Line   141: 		int fnLEDBrightness(int x = NOCHANGE) {
-	Line   161: 		int fnFlashLED(int x) {	
-	Line   178: 		int fnSetLEDs(int dummy=NUL) {
-	Line   211: 		int fnFlashStart() {
+	Line    68: 		int fnNotValid(int fnName, int reason=0) {
+	Line    86: 		int fnStartupMapKeyMode() {
+	Line   112: 		int fnGetFlightMode() {
+	Line   142: 		int fnLEDBrightness(int x = NOCHANGE) {
+	Line   162: 		int fnFlashLED(int x) {	
+	Line   179: 		int fnSetLEDs(int dummy=NUL) {
+	Line   212: 		int fnFlashStart() {
 	Line   261: 		int fnTextToSpeech(int text, int VolumeOverride=0, int Voice=DefaultVoice) {
-	Line   332: 		int fnVoiceVolume(int x) {
-	Line   390: 		int fnOverlay(int OverlayText, int OverlayTTL=10, int OverlayX=600, int OverlayY=200, int OverlayColor=3) {
-	Line   466: 		int fnSoundFX(int wavfile, int vol = 100, int loops = 1) {
-	Line   492: 		int fnGameStarted(int dummy = 0) {
-	Line   609: 		int fnPIPMode(int x) {
-	Line   660: 		int fnPIPManager(int PwrPriority) {
-	Line   697: 		int fnPIPMapper(int maxPIPx=0, int minPIPy=0, int balPIPz=0) {
-	Line   737: 		int fnAdvFireControl(int x) {
-	Line   818: 		int fnAdvancedSCB(int x = 0) {
-	Line   876: 		int fnHeatsink(int param = 0) {
-	Line   915: 		int fnChaff(int dummy = 0) {
-	Line   943: 		int fnDeploySRV(int x) {
-	Line   995: 		int fnDeployFighter(int x) {
-	Line  1051: 		int fnDRShip() {
-	Line  1074: 		int fnRequestDock() {
-	Line  1098: 		int fnHangarServices(int x) {
-	Line  1174: 		int fnIdleLock(int x) {
-	Line  1209: 		int fnCheckFSDCharge(int EngineText) {
-	Line  1240: 		int fnCheckFiregroup() {
-	Line  1256: 		int fnClearChatBox(int mode = 0) {
-	Line  1320: 		int fnModeSwitch(int mode) {
-	Line  1418: 		int fnVPOutput(int VPOutput, int VolumeOverride=0, int Type=0) {
-	Line  1440: 		int fnPrintState() {
-	Line  1451: 		int fnStateDump() {
-	Line  1617: 		int fnGetTOD() {
-	Line  1671: 		int fnMyName() {
-	Line  1700: 		int	fnGreetCMDR(int dummy = 0) {
-	Line  1757: 		int fnSelectFiregroup(int fg) {
-	Line  1796: 		int fnGetStationName(int dummy=0) {
-	Line  1820: 		int fnDockingStatus(int dummy) {
-	Line  1959: 		int fnEngageDC(int dummy) {
-	Line  1976: 		int fnFighterStatus(int dummy = 0) {
-	Line  1997: 		int fnPANIC(int panic = 0) {
-	Line  2034: 		int fnInputCMD(int dummy = 0) {
-	Line  2103: 		int fnTripTime(int dummy = 0) {
-	Line  2203: 		int fnSetOriginStation(int action) {
-	Line  2255: 		int fnGetShipType(int dummy=0) {
-	Line  2290: 		int fnDEBUG(int dummy = 0) {
-	Line  2315: 		int findstr(alias string, alias substring) {
-	Line  2340: 		int strcpy(alias dst, alias src) {
+	Line   303: 		int fnVoiceVolume(int x) {
+	Line   365: 		int fnOverlay(int OverlayText, int OverlayTTL=10, int OverlayX=600, int OverlayY=980, int OverlayColor=3, int OverlayID=0, int OverlaySize=3) {
+	Line   417: 		int fnWriteTTSQueue(alias TTSExport) {
+	Line   469: 		int fnSoundFX(int wavfile, int vol = 100, int loops = 1) {
+	Line   495: 		int fnGameStarted(int dummy = 0) {
+	Line   612: 		int fnPIPMode(int x) {
+	Line   663: 		int fnPIPManager(int PwrPriority) {
+	Line   700: 		int fnPIPMapper(int maxPIPx=0, int minPIPy=0, int balPIPz=0) {
+	Line   740: 		int fnAdvFireControl(int x) {
+	Line   821: 		int fnAdvancedSCB(int x = 0) {
+	Line   879: 		int fnHeatsink(int param = 0) {
+	Line   918: 		int fnChaff(int dummy = 0) {
+	Line   946: 		int fnDeploySRV(int x) {
+	Line   998: 		int fnDeployFighter(int x) {
+	Line  1053: 		int fnDRShip() {
+	Line  1076: 		int fnRequestDock() {
+	Line  1100: 		int fnHangarServices(int x) {
+	Line  1176: 		int fnIdleLock(int x) {
+	Line  1211: 		int fnCheckFSDCharge(int EngineText) {
+	Line  1242: 		int fnCheckFiregroup() {
+	Line  1258: 		int fnClearChatBox(int mode = 0) {
+	Line  1322: 		int fnModeSwitch(int mode) {
+	Line  1425: 		int fnVPOutput(int VPOutput, int VolumeOverride=0, int Type=0) {
+	Line  1447: 		int fnPrintState() {
+	Line  1458: 		int fnStateDump() {
+	Line  1624: 		int fnGetTOD() {
+	Line  1658: 		int fnMyName() {
+	Line  1687: 		int fnGreetCMDR(int dummy = 0) {
+	Line  1740: 		int fnSelectFiregroup(int fg) {
+	Line  1781: 		int fnGetStationName(int dummy=0) {
+	Line  1805: 		int fnDockingStatus(int dummy) {
+	Line  1950: 		int fnEngageDC(int dummy) {
+	Line  1966: 		int fnFighterStatus(int dummy = 0) {
+	Line  1987: 		int fnPANIC(int panic = 0) {
+	Line  2024: 		int fnInputCMD(int dummy = 0) {
+	Line  2093: 		int fnTripTime(int dummy = 0) {
+	Line  2193: 		int fnSetOriginStation(int action) {
+	Line  2245: 		int fnGetShipType(int dummy=0) {
+	Line  2279: 		int fnDEBUG(int dummy = 0) {
+	Line  2302: 		int findstr(alias string, alias substring) {
+	Line  2327: 		int strcpy(alias dst, alias src) {
 */
 	
-	//------------------//
+	// ---------------- //
 	// CUSTOM FUNCTIONS //
-	//------------------//
+	// ---------------- //
 
 	// FUNCTION:	Announce if function called is not valid
 	// Parameters:	fnName = calling function. 
@@ -123,7 +124,7 @@
 		 	FlightMode = 0;										// FSSMode = ON
 			ModeTxt = "FSS Flight Mode";
 		}
-		if (GUIMode == GUI_SAAMode) {
+		else if (GUIMode == GUI_SAAMode) {
 			FlightMode = 2;										// DSSMode = ON
 			ModeTxt = "SAA Flight Mode";
 		}
@@ -143,7 +144,7 @@
 			LEDLevel = LEDLevel + 1;
 			if (LEDLevel > 5) LEDLevel = 0;								// Wraps around to 0 if > 5
 		}
-		if (x == DECREASE) {
+		else if (x == DECREASE) {
 			LEDLevel = LEDLevel - 1;
 			if (LEDLevel < 0) LEDLevel = 5;								// Wraps around to 5 if < 0
 		}
@@ -257,12 +258,8 @@
 	alias	TTSFilename = "TTSMsg0000.json";	// Creates the TTS queue file template
 	char	TTSFile;							// Dynamic incrementing char array for actual file names
 
-
 	int fnTextToSpeech(int text, int VolumeOverride=0, int Voice=DefaultVoice) {
 
-		int 	fp;
-		int 	buf;
-		int		myResult;
 		int		volume;
 		int 	rate = VoiceRate;
 
@@ -295,33 +292,7 @@
 
 			sprintf(&TTSExport, "{ \"TTSSeq\":%d, \"TTSString\":\"%s\", \"TTSVoice\":%s, \"TTSRate\":%d, \"TTSVolume\":%d }\x0a",TTSSeq, text, Voice, rate, volume);
 
-			buf = strlen(&TTSExport);
-
-			// Build sequential filename using 4 digits
-
-			sprintf(&TTSFilename, "TTSMsg%04d.json", TTSSeq);
-
-			Dim(&TTSFile, strlen(&TTSQueue)+strlen(&TTSFilename)+1);
-			TTSFile[0] = 0;
-
-			sprintf(&TTSFile, "%s%s", &TTSQueue, &TTSFilename);
-			TTSFile[strlen(&TTSFile)] = 0;
-
-			fp = fopen(&TTSFile, "w");
-			if (fp) {
-				myResult = fwrite(&TTSExport, 1, buf, fp);
-				fclose(fp);
-			}
-			else {
-				printf("!! ERROR: File open error TTSQueue file in fnTextToSpeech() !!!\x0a");
-			}
-
-			if (myResult <= 0) {
-				printf("!! ERROR: File write error TTSQueue file in fnTextToSpeech() !!!\x0a");
-			}
-			else {
-				TTSSeq = TTSSeq + 1;
-			}
+			fnWriteTTSQueue(&TTSExport);
 		}
 	}
 
@@ -371,15 +342,19 @@
 
 	// FUNCTION: 	EDMCOverlay using external TTSMonitor powershell script
 	// Parameter:	'OverlayText" string to send to EDMCOverlay
-	//				Optional	- 'OverlayTTL' integer for Overlay message to remain displayed on screen
-	//				Optional	- 'OverlayX' integer for X screen placement
-	//				Optional	- 'OverlayY' integer for Y screen placement
+	//				Optional	- 'OverlayTTL' integer for Overlay message to remain displayed on screen (default = 10)
+	//				Optional	- 'OverlayX' integer for X screen placement (default = 600)
+	//				Optional	- 'OverlayY' integer for Y screen placement (default = 980)
 	//				Optional	- 'OverlayColor' integer for color
 	//								- 0 Red
 	//								- 1 Green
 	//								- 2 Blue
-	//								- 3 Yellow
-	//							- Canvas size = 1280x960
+	//								- 3 Yellow (default)
+	//				Optional	- 'OverlayID' string. same IDs clobber previous message
+	//				Optional	- 'OverlaySize' integer for color
+	//								- 0 tiny 
+	//								- 1 normal (default)
+	//								- 2 large
 	//
 	// Usage1:		fnTextToSpeech("This is test number 1");	// says the text at current value of 'VoiceVolume' in %
 	//
@@ -387,14 +362,12 @@
 	//				Expected JSON format:
 	//				{ "TTSSeq":1, "OverlayText":"text to say", "OverlayTTL":10, "OverlayX":600, "OverlayY":700, "OverlayColor":"Yellow" }
 	
-	int fnOverlay(int OverlayText, int OverlayTTL=10, int OverlayX=600, int OverlayY=200, int OverlayColor=3) {
+	int fnOverlay(int OverlayText, int OverlayTTL=10, int OverlayX=600, int OverlayY=980, int OverlayColor=3, int OverlayID=0, int OverlaySize=3) {
 
-		int 	fp;
-		int 	buf;
-		int		myResult;
 
 		int		OVRColor;
-
+		int 	OVRID;
+		int		OVRSize;
 
 		char	TTSExport;
 		Dim(&TTSExport, 256);					// Cater for Overlay keys
@@ -403,51 +376,81 @@
 		if (OverlayColor == 0) 		OVRColor	= "red";
 		else if (OverlayColor == 1) OVRColor	= "green";
 		else if (OverlayColor == 2) OVRColor	= "blue";
-		else if (OverlayColor == 3) OVRColor	= "yellow";
+		else OVRColor = "yellow";
 
+		if (OverlayID == 0) {
+			OVRID = "fnOverlay";
+		}
+		else {
+			OVRID = OverlayID;
+		}
+		
+		if (OverlaySize == 0)		OVRSize		= "tiny";
+		else if (OverlaySize == 1)	OVRSize		= "small";
+		else if (OverlaySize == 2)	OVRSize		= "normal";
+		else						OVRSize		= "large";
+		
 		if (EnableOverlay) {
 
 			if (DEBUG >= LOG) {
+				printf("!!	DEBUG:	fnOverlay() - OverlayID = %s\x0a", OVRID);
 				printf("!!	DEBUG:	fnOverlay() - OverlayText = %s\x0a", OverlayText);
 				printf("!!	DEBUG:	fnOverlay() - text length = %d\x0a", strlen(OverlayText));
 				printf("!!	DEBUG:	fnOverlay() - OverlayTTL = %d\x0a", OverlayTTL);
 				printf("!!	DEBUG:	fnOverlay() - OverlayX = %d\x0a", OverlayX);
 				printf("!!	DEBUG:	fnOverlay() - OverlayY = %d\x0a", OverlayY);
-				printf("!!	DEBUG:	fnOverlay() - OverlayColor = %s\x0a\x0a", OVRColor);
+				printf("!!	DEBUG:	fnOverlay() - OverlayColor = %s\x0a", OVRColor);
+				printf("!!	DEBUG:	fnOverlay() - OverlaySize = %s\x0a\x0a", OVRSize);
 			}
 
-			sprintf(&TTSExport, "{ \"TTSSeq\":%d, \"OverlayText\":\"%s\", \"OverlayTTL\":%d, \"OverlayX\":%d, \"OverlayY\":%d, \"OverlayColor\":\"%s\" }\x0a", TTSSeq, OverlayText, OverlayTTL, OverlayX, OverlayY, OVRColor);
+			sprintf(&TTSExport, "{ \"TTSSeq\":%d, \"OverlayID\":\"%s\", \"OverlayText\":\"%s\", \"OverlayTTL\":%d, \"OverlayX\":%d, \"OverlayY\":%d, \"OverlayColor\":\"%s\", \"OverlaySize\":\"%s\" }\x0a", TTSSeq, OVRID, OverlayText, OverlayTTL, OverlayX, OverlayY, OVRColor, OVRSize);
 
-			buf = strlen(&TTSExport);
-
-			// Build sequential filename using 4 digits
-
-			sprintf(&TTSFilename, "TTSMsg%04d.json", TTSSeq);
-
-			Dim(&TTSFile, strlen(&TTSQueue)+strlen(&TTSFilename)+1);
-			TTSFile[0] = 0;
-
-			sprintf(&TTSFile, "%s%s", &TTSQueue, &TTSFilename);
-			TTSFile[strlen(&TTSFile)] = 0;
-
-			fp = fopen(&TTSFile, "w");
-			if (fp) {
-				myResult = fwrite(&TTSExport, 1, buf, fp);
-				fclose(fp);
-			}
-			else {
-				printf("!! ERROR: File open error TTSQueue file in fnOverlay() !!!\x0a");
-			}
-
-			if (myResult <= 0) {
-				printf("!! ERROR: File write error TTSQueue file in fnOverlay() !!!\x0a");
-			}
-			else {
-				TTSSeq = TTSSeq + 1;
-			}
+			fnWriteTTSQueue(&TTSExport);
 		}
 	}
 
+
+	//	FUNCTION:	Writes TTSExport char array as JSON to the TTSQueue
+	//	Parmeters:	Char array TTSExport parsed from fnTextToSpeech() or fvOverlay()
+	//	NOTE:		This was common code within fnTextToSpeech() and fnOverlay()7 in order to write JSON into the common TTSQueue file.
+	
+	int fnWriteTTSQueue(alias TTSExport) {
+
+		int fp;
+		int buf;
+		int myResult=0;
+
+		buf = strlen(&TTSExport);
+
+		sprintf(&TTSFilename, "TTSMsg%04d.json", TTSSeq);
+
+		Dim(&TTSFile, strlen(&TTSQueue)+strlen(&TTSFilename)+1);
+		TTSFile[0] = 0;
+
+		sprintf(&TTSFile, "%s%s", &TTSQueue, &TTSFilename);
+		TTSFile[strlen(&TTSFile)] = 0;
+
+		if (DEBUG >= LOG) {
+			printf("!!	DEBUG: fnWriteTTSQueue - TTSExport = %s\x0a", &TTSExport);
+			printf("!!	DEBUG: fnWriteTTSQueue - TTSFilename = %s\x0a", &TTSFilename);
+			printf("!!	DEBUG: fnWriteTTSQueue - TTSFile = %s\x0a", &TTSFile);			
+		}
+		
+		fp = fopen(&TTSFile, "w");
+		if (fp) {
+			myResult = fwrite(&TTSExport, 1, buf, fp);
+			fclose(fp);
+		}
+		else {
+			printf("!! ERROR: File open error TTSQueue file in fnWriteTTSQueue() !!!\x0a");
+		}
+
+		if (myResult <= 0) {
+			printf("!! ERROR: File write error TTSQueue file in fnWriteTTSQueue() !!!\x0a");
+		}
+
+		TTSSeq = TTSSeq + 1;
+	}	
 
 	// FUNCTION:	Play WAV file sound effects
 	// Parameter:	wavfile = Name of wav file to be played. '.wav' is optional
@@ -496,7 +499,7 @@
 		
 		printf("\x0a++	GAME STARTED @	%s\x0a\x0a", fnGetTOD());
 		
-		GameLoaded = YES;
+		GameLoaded = YES;				// Could we use just the one of these?
 		StartupLock = OFF;
 
 		Dim(&lastJournalData, 1);		// Initialise &lastJournalData alias prior to calling stfnReadMyJournalData() for the first time 
@@ -508,12 +511,12 @@
 		if(WARTHOG) fnFlashStart();													// Flash LEDs on Throttle Base to alert user game has started
 
 		if (EnableOverlay) {
-			fnOverlay("TARGET Script overlay function: ENABLED", 20, 575, 980);
+			fnOverlay("TARGET Script overlay function: ENABLED", 20, 575, 980, 3, "OvrEnabled");
 		}
 		
 		if (!ConnectionStatus) {
-	//		ActKey(KEYON+PULSE+ShowConnectionStatus);								// ...turn on connection status. Alternate="m_ShowGameStats()"
-	//		ActKey(KEYON+PULSE+ShowFramerate);										// ...turn on frame rate. Alternate="m_ShowGameStats()"			
+	//-		ActKey(KEYON+PULSE+ShowConnectionStatus);								// ...turn on connection status. Alternate="m_ShowGameStats()"
+	//-		ActKey(KEYON+PULSE+ShowFramerate);										// ...turn on frame rate. Alternate="m_ShowGameStats()"			
 			ConnectionStatus = ON;													// tracks if above has already been turned on
 		}
 
@@ -541,7 +544,7 @@
 		stfnMyStates(LOAD);															// Load script status variables (not covered in status.json) and modified User Settings 
 		
 		
-//-	DEBUG:	Customised for my personal use...
+//-	DEBUG:	Customised for my personal use...below
 
 		if(strcmp(&CMDRName, "Clicker") == 0) {
 			PrivateGroup = 2;
@@ -552,7 +555,7 @@
 			if(DEBUG>0) fnVPOutput("Private Group set to 1");			
 		}
 
-//-	DEBUG:	Customised for my personal use...
+//-	DEBUG:	Customised for my personal use...above
 		
 		Flags2 = stfnGetKeyValue("Flags2", INTEGER);								// Check if running Odyssey or Legacy Horizons
 		if (Flags2 == -1) {															// That is, keyname not found 
@@ -613,11 +616,11 @@
 		if (x == NOCHANGE) {
 			PIPMode = DefaultPIPMode;			// Set in ED_UserSettings.tmh
 		}
-		if (x == INCREASE) {
+		else if (x == INCREASE) {
 			PIPMode = PIPMode + 1;
 			if (PIPMode > 5) PIPMode = 0;		// Test and wrap around to 0 if > 5
 		}
-		if (x == DECREASE) {
+		else if (x == DECREASE) {
 			PIPMode = PIPMode - 1;
 			if (PIPMode < 0) PIPMode = 5;		// Test and wrap around to 5 if < 0
 		}
@@ -626,23 +629,23 @@
 			PIPTxt = "Single	";
 			VoiceTxt = "Pipmode 0 Single";
 		}
-		if (PIPMode == 1) {										
+		else if (PIPMode == 1) {										
 			PIPTxt = "Double	";
 			VoiceTxt = "Pipmode 1 Double";
 		}
-		if (PIPMode == 2) {
+		else if (PIPMode == 2) {
 			PIPTxt = "Attack	";
 			VoiceTxt = "Pipmode 2 Attack";
 		}
-		if (PIPMode == 3) {
+		else if (PIPMode == 3) {
 			PIPTxt = "Defend	";
 			VoiceTxt = "Pipmode 3 Defend";
 		}
-		if (PIPMode == 4) {
+		else if (PIPMode == 4) {
 			PIPTxt = "Recharge";
 			VoiceTxt = "Pipmode 4 Recharge";
 		}
-		if (PIPMode == 5) {
+		else if (PIPMode == 5) {
 			PIPTxt = "GP 3+3	";
 			VoiceTxt = "Pipmode 5 3+3";
 		}
@@ -660,33 +663,33 @@
 	int fnPIPManager(int PwrPriority) {
 		if (PIPMode == 0) {		// Single PIP 
 			if (PwrPriority == SYS) ActKey(KEYON+PULSE+PowerSys);
-			if (PwrPriority == ENG) ActKey(KEYON+PULSE+PowerEng);
-			if (PwrPriority == WEP) ActKey(KEYON+PULSE+PowerWep);
+			else if (PwrPriority == ENG) ActKey(KEYON+PULSE+PowerEng);
+			else if (PwrPriority == WEP) ActKey(KEYON+PULSE+PowerWep);
 		}
-		if (PIPMode == 1) {		// Double PIP 
+		else if (PIPMode == 1) {		// Double PIP 
 			if (PwrPriority == SYS) ActKey(KEYON+CHAIN(PULSE+PowerSys, D(), PULSE+PowerSys));
-			if (PwrPriority == ENG) ActKey(KEYON+CHAIN(PULSE+PowerEng, D(), PULSE+PowerEng));
-			if (PwrPriority == WEP) ActKey(KEYON+CHAIN(PULSE+PowerWep, D(), PULSE+PowerWep));
+			else if (PwrPriority == ENG) ActKey(KEYON+CHAIN(PULSE+PowerEng, D(), PULSE+PowerEng));
+			else if (PwrPriority == WEP) ActKey(KEYON+CHAIN(PULSE+PowerWep, D(), PULSE+PowerWep));
 		}
-		if (PIPMode == 2) {		// Attack: 4+2 (ENG/WEP)
+		else if (PIPMode == 2) {		// Attack: 4+2 (ENG/WEP)
 			if (PwrPriority == SYS) fnPIPMapper(SYS,WEP);			// [4,0,2]
-			if (PwrPriority == ENG) fnPIPMapper(ENG,WEP);			// [0,4,2]
-			if (PwrPriority == WEP) fnPIPMapper(WEP,ENG);			// [0,2,4]
+			else if (PwrPriority == ENG) fnPIPMapper(ENG,WEP);			// [0,4,2]
+			else if (PwrPriority == WEP) fnPIPMapper(WEP,ENG);			// [0,2,4]
 		}
-		if (PIPMode == 3) {		// Defend: 4+2 (SYS/ENG)
+		else if (PIPMode == 3) {		// Defend: 4+2 (SYS/ENG)
 			if (PwrPriority == SYS) fnPIPMapper(SYS,ENG);			// [4,2,0]
-			if (PwrPriority == ENG) fnPIPMapper(ENG,SYS);			// [2,4,0]
-			if (PwrPriority == WEP) fnPIPMapper(WEP,SYS);			// [2,0,4]
+			else if (PwrPriority == ENG) fnPIPMapper(ENG,SYS);			// [2,4,0]
+			else if (PwrPriority == WEP) fnPIPMapper(WEP,SYS);			// [2,0,4]
 		}
-		if (PIPMode == 4) {		// Recharge: 4+1+1
+		else if (PIPMode == 4) {		// Recharge: 4+1+1
 			if (PwrPriority == SYS) fnPIPMapper(SYS);				// [4,1,1]
-			if (PwrPriority == ENG) fnPIPMapper(ENG);				// [1,4,1]
-			if (PwrPriority == WEP) fnPIPMapper(WEP);				// [1,1,4]
+			else if (PwrPriority == ENG) fnPIPMapper(ENG);				// [1,4,1]
+			else if (PwrPriority == WEP) fnPIPMapper(WEP);				// [1,1,4]
 		}
-		if (PIPMode == 5) {		// General Purpose 3+3
+		else if (PIPMode == 5) {		// General Purpose 3+3
 			if (PwrPriority == SYS) fnPIPMapper(SYS,ENG,MID);		// [3,3,0]
-			if (PwrPriority == ENG) fnPIPMapper(ENG,WEP,MID);		// [0,3,3]
-			if (PwrPriority == WEP) fnPIPMapper(WEP,SYS,MID);		// [3,0,3]
+			else if (PwrPriority == ENG) fnPIPMapper(ENG,WEP,MID);		// [0,3,3]
+			else if (PwrPriority == WEP) fnPIPMapper(WEP,SYS,MID);		// [3,0,3]
 		}		
 	}
 
@@ -748,7 +751,7 @@
 				ActKey(KEYON+PrimaryFire);	 											// Press to fire...
 				DeferCall(DiscoDelay, &ActKey, PrimaryFire);							// Release automatically after 6.1 seconds
 			}
-			if (FireModeP == 1) {
+			else if (FireModeP == 1) {
 				if (!TriggerStateP) {
 					ActKey(KEYON+DOWN+PrimaryFire);										// Press to fire...
 				}
@@ -757,7 +760,7 @@
 				}
 				TriggerStateP = !TriggerStateP;				
 			}
-			if (FireModeP == 2) {
+			else if (FireModeP == 2) {
 				if (!TriggerStateP) {
 					AutoRepeat(hPWS, 7000, &ActKey, KEYON+PULSE+PrimaryFire);			// Pulse Wave Scanner. Press 'fire' every 7 seconds 
 				}
@@ -766,17 +769,17 @@
 				}
 				TriggerStateP = !TriggerStateP;								
 			}
-			if (FireModeP == 3) {
+			else if (FireModeP == 3) {
 				ActKey(KEYON+PrimaryFire);	 											// Press to fire...
 				DeferCall(WakeScanDelay, &ActKey, PrimaryFire);							// Release automatically after 10.1 seconds
 			}
 		}
 		
 		// Secondary Trigger Action
-		if (x == 2) {
+		else if (x == 2) {
 			ActKey(KEYON+SecondaryFire);												// Normal press to fire, release to stop firing
 		}
-		if (x == 3) {
+		else if (x == 3) {
 			if (fSupercruise & FireModeS) {
 				tgTriggerMode(2);
 			}
@@ -784,7 +787,7 @@
 				ActKey(KEYON+SecondaryFire); 											// Press to fire...
 				DeferCall(DiscoDelay, &ActKey, SecondaryFire);							// Release automatically after 6.1 seconds
 			}
-			if (FireModeS == 1) {
+			else if (FireModeS == 1) {
 				if (!TriggerStateS) {
 					ActKey(KEYON+DOWN+SecondaryFire);									// Press to fire...
 				}
@@ -793,7 +796,7 @@
 				}
 				TriggerStateS = !TriggerStateS;
 			}
-			if (FireModeS == 2) {
+			else if (FireModeS == 2) {
 				if (!TriggerStateS) {
 					AutoRepeat(hPWS, 7000, &ActKey, KEYON+PULSE+SecondaryFire);			// Pulse Wave Scanner
 				}
@@ -802,10 +805,10 @@
 				}
 				TriggerStateS = !TriggerStateS;			
 			}
-			if (FireModeS == 3) {
+			else if (FireModeS == 3) {
 				ActKey(KEYON+SecondaryFire); 											// Press to fire...
 				DeferCall(WakeScanDelay, &ActKey, SecondaryFire);						// Release automatically after 10.1 seconds
-			}			
+			}
 		}
 	}
 
@@ -832,7 +835,7 @@
 						ActKey(KEYON+PULSE+UseShieldCell);
 						printf("!!    SCB  Fired    !!\x0a");
 					}
-					if (x == 1) {											// 1x SCB w/cooling (if available)
+					else if (x == 1) {											// 1x SCB w/cooling (if available)
 						ActKey(KEYON+PULSE+UseShieldCell);
 						printf("!!    SCB  Fired    !!\x0a");
 						if (fHeatsinkPresent) {
@@ -843,7 +846,7 @@
 							fnVPOutput("No Heatsink launcher installed");
 						}
 					}
-					if (x == 2) {											// 2x SCB w/cooling (don't fire second SCB if no cooling available)
+					else if (x == 2) {											// 2x SCB w/cooling (don't fire second SCB if no cooling available)
 						ActKey(KEYON+PULSE+UseShieldCell);
 						printf("!!    SCB  Fired    !!!\x0a");
 						if (fHeatsinkPresent) {
@@ -886,7 +889,7 @@
 				fnVPOutput("Auto Heatsink reset");				
 			}
 		}
-		if (param == 0) {
+		else if (param == 0) {
 			if (fMainShip & !fDocked & !fLanded) {
 				stfnProcessGuiFocus();		
 				if(FSSMode) {
@@ -923,11 +926,11 @@
 			}
 			else {
 				if (fSupercruise)	reason = "we are in supercruise";
-				if (fDocked)		reason = "we are docked";
-				if (fLanded)		reason = "we are landed";	
-				if (fSRV)			reason = "we are in the SRV";
-				if (fFighter)		reason = "I don't think the fighter has chaff";
-				if (fOnFoot)		reason = "we are on foot";
+				else if (fDocked)		reason = "we are docked";
+				else if (fLanded)		reason = "we are landed";	
+				else if (fSRV)			reason = "we are in the SRV";
+				else if (fFighter)		reason = "I don't think the fighter has chaff";
+				else if (fOnFoot)		reason = "we are on foot";
 			}
 		}
 		else {
@@ -1015,11 +1018,11 @@
 					}
 					else {
 						if (!fMainShip)			reason = "we are not in the ship";
-						if (fSupercruise)		reason = "we are in super cruise";
-						if (fDocked) 			reason = "we are docked";
-						if (fLanded)			reason = "we are landed";
-						if (fFighter)			reason = "we are already in the fighter";
-						if (ActiveFighter)		reason = "fighter already deployed";
+						else if (fSupercruise)		reason = "we are in super cruise";
+						else if (fDocked) 			reason = "we are docked";
+						else if (fLanded)			reason = "we are landed";
+						else if (fFighter)			reason = "we are already in the fighter";
+						else if (ActiveFighter)		reason = "fighter already deployed";
 					}
 				}
 				else {																							// RECOVER
@@ -1040,7 +1043,6 @@
 	}
 
 
-	
 	// FUNCTION: 	Dismiss/Recall Ship
 	// NOTE:		1. Use to manually dismiss/recall the ship from SRV or on-foot 
 	//				2. Console messages may be wrong if ship leaves automatically
@@ -1333,13 +1335,13 @@
 		if (fMainShip) {
 			printf("==	Menulog from Ship\x0a");
 		}
-		if (fSRV) {
+		else if (fSRV) {
 			printf("==	Menulog from SRV\x0a");
 		}
-		if (fOnFoot) {
+		else if (fOnFoot) {
 			printf("==	Menulog on foot\x0a");
 		}
-		if (fFighter) {
+		else if (fFighter) {
 			printf("==	Menulog from fighter\x0a");
 		}
 		Sleep(1000);
@@ -1364,7 +1366,7 @@
 			ActKey(KEYON+PULSE+LED(&MyThrottle, LED_ONOFF, LED_CURRENT-LED0)); 						// set GLOBAL LED OFF.   IF THIS DOESN'T SET ALL LEDS OFF UN COMMENT THE ABOVE 2 LINES
 					
 			if (mode == 0) {
-				fnOverlay("Menulog to Open", 20, 607, 980, 2);										// TTL=20 seconds, pos=centre-bottom, colour=blue  
+				fnOverlay("Menulog to Open", 20, 607, 980, 2, "Menulog");										// TTL=20 seconds, pos=centre-bottom, colour=blue  
 				fnVPOutput("Menu log to open selected.. please wait for game reload", 0, 1);			
 				ActKey(KEYON+PULSE+m_FastModeSwitch0);												// Selects OPEN mode
 			}
@@ -1374,21 +1376,21 @@
 				fnVPOutput(&PVTGRP, 0, 1);
 				
  				if (PrivateGroup == 1) {
-					fnOverlay("Menulog to private group 1", 20, 592, 980, 2);						// TTL=20 seconds, pos=centre-bottom, colour=blue  
+					fnOverlay("Menulog to private group 1", 20, 592, 980, 2, "Menulog");						// TTL=20 seconds, pos=centre-bottom, colour=blue  
 					ActKey(KEYON+PULSE+m_FastModeSwitch1a);											// Selects 1st option in PRIVATE GROUP
 				}
 				else if (PrivateGroup == 2) {
-					fnOverlay("Menulog to private group 2", 20, 592, 980, 2);						// TTL=20 seconds, pos=centre-bottom, colour=blue  
+					fnOverlay("Menulog to private group 2", 20, 592, 980, 2, "Menulog");						// TTL=20 seconds, pos=centre-bottom, colour=blue  
 					ActKey(KEYON+PULSE+m_FastModeSwitch1b);											// Selects 2nd option in PRIVATE GROUP 					
 				}
 				else if (PrivateGroup == 3) {
-					fnOverlay("Menulog to private group 3", 20, 592, 980, 2);						// TTL=20 seconds, pos=centre-bottom, colour=blue  
+					fnOverlay("Menulog to private group 3", 20, 592, 980, 2, "Menulog");						// TTL=20 seconds, pos=centre-bottom, colour=blue  
 					ActKey(KEYON+PULSE+m_FastModeSwitch1c);											// Selects 3rd option in PRIVATE GROUP
 				}
 				else reason = "Set PrivateGroup Varaibal to 1, 2 or 3 in USer settings";
 			}
 			else {
-				fnOverlay("Menulog to solo", 20, 607, 980, 2);										// TTL=20 seconds, pos=centre-bottom, colour=blue  
+				fnOverlay("Menulog to solo", 20, 607, 980, 2, "Menulog");										// TTL=20 seconds, pos=centre-bottom, colour=blue  
 				fnVPOutput("Menu log to solo selected.. please wait for game reload", 0, 1);			
 				ActKey(KEYON+PULSE+m_FastModeSwitch2);												// Selects SOLO mode
 			}
@@ -1436,9 +1438,9 @@
 	}
 
 
-	//----------------------//
+	// -------------------- //
 	// REPORT SCRIPT STATES //										// (Optimised Formatting for TARGET GUI)
-	//----------------------//
+	// -------------------- //
 
 	// FUNCTION: Display header for the status of the macro toggles & user preferences at script start
 
@@ -1515,10 +1517,10 @@
 			printf("\x0aShip System States @ %s       JSON-Timestamp: %s       Flags: %u\x0a", fnGetTOD(), &TimeStamp, Flags);
 			printf("-----------------------------------------------------------------------------------------------------------------------------------------------\x0a");
 			if (fMainShip) {
-				SP = "IN SPACE";					// Default, unless...
-				if (fLanded)						SP = "LANDED  ";
-				if (fDocked)						SP = "DOCKED  ";
-				if (!fLanded & !fDocked & fLatLong)	SP = "ORBIT   ";
+				SP = "IN SPACE";							// Default, unless...
+				if (fLanded)								SP = "LANDED  ";
+				else if (fDocked)							SP = "DOCKED  ";
+				else if (!fLanded & !fDocked & fLatLong)	SP = "ORBIT   ";
 
 				printf("MAIN SHIP:	%s	Shields:		%s		Mass Locked:	%s\x0a", SP, SH, ML);
 				if (fLatLong) {
@@ -1624,13 +1626,11 @@
 		// --- NOTE: On my PC Windows CMD statement time /t now returns the 24 horu formatted time since upgrading to Win11
 		
 		int	TOD	= "##:## ##";								// Set type and am/pm format
-		int AmPm = "##";
 		int HH = "##";
 		int MM = "###";										// includes leading ':'
 		int SS = "###";										// includes leading ':'
 
-//		system("time /T > c:\\tod.txt");					// Create local timestamp and write to a file at C:\
-		system("powershell -NoProfile -Command \"Get-Date -Format HH:mm:ss\" > c:\\tod.txt");
+		system("powershell -NoProfile -Command \"Get-Date -Format HH:mm:ss\" > c:\\tod.txt");	// Writes 24hr clock time
 
 		int fp = fopen("c:\\tod.txt", "r");					// Open the file to read
 
@@ -1642,27 +1642,9 @@
 			strsub(MM, TOD, 2, 4);							// Extract ":MM'
 			strsub(SS, TOD, 5, 7);							// Extract ":SS"
 			
-			strsub(AmPm, TOD, 6, 7); 						// Extract 'AM' or 'PM' if present
-			if (strcmp(AmPm, "PM") == 0) {					// If so...convert 'HH' to 24hr equivalent. No need to check/convert 12PM
-				if (strcmp(HH, "01") == 0) HH = "13";		
-				if (strcmp(HH, "02") == 0) HH = "14";		
-				if (strcmp(HH, "03") == 0) HH = "15";		
-				if (strcmp(HH, "04") == 0) HH = "16";		
-				if (strcmp(HH, "05") == 0) HH = "17";		
-				if (strcmp(HH, "06") == 0) HH = "18";		
-				if (strcmp(HH, "07") == 0) HH = "19";		
-				if (strcmp(HH, "08") == 0) HH = "20";		
-				if (strcmp(HH, "09") == 0) HH = "21";		
-				if (strcmp(HH, "10") == 0) HH = "22";		
-				if (strcmp(HH, "11") == 0) HH = "23";		
-			}
-			else if (strcmp(AmPm, "AM") == 0){				// AM 
-				if (strcmp(HH, "12") == 0) HH = "00";		
-			}
-
-			sprintf(&TOD24, "%s%s%s", HH, MM, SS);				// Reconstruct TOD as TOD24
+			sprintf(&TOD24, "%s%s%s", HH, MM, SS);			// Reconstruct TOD as TOD24
 			return &TOD24;									// Return the result
-		}	
+		}
 	}
 
 	
@@ -1709,16 +1691,12 @@
 		alias part1 = "All hands announcement, Commander ";
 		alias part2 = " on board!";
 
-	//	if (DEBUG >= LOG) printf("!!	DEBUG:	fnGreetCMDR() - Calling fnGetStationName line 1627\x0a");
-	//	fnGetStationName(0);			// this was turned off after experiencing "not set" messages for Station name when undocking prior to the delayed greeting
-	//	if (DEBUG >= LOG) printf("!!	DEBUG:	fnGreetCMDR() - Return from fnGetStationName line 1627\x0a");
-
-//	DEBUG	+++++
+//-	DEBUG	+++++
 		if (DEBUG >= LOG) {
 			if (strlen(&CMDRName) == 0) 	printf("!!	DEBUG:	fnGreetCMDR() - CMDRName is null (fnGreetCMDR)\x0a");
 			if (strlen(&StationName) == 0)	printf("!!	DEBUG:	fnGreetCMDR() - StationName is null (fnGreetCMDR)\x0a");
 		}
-//	DEBUG	+++++
+//-	DEBUG	+++++
 
 		Dim(&TTSMsg, (strlen(&part1)+strlen(&CMDRName)+strlen(&part2)+strlen(&StationName)+1));
 		TTSMsg[0] = 0;
@@ -1746,12 +1724,12 @@
 		TTSMsg[strlen(&TTSMsg)] = NUL;
 		fnTextToSpeech(&TTSMsg, 100);	
 
-//	DEBUG	+++++
+//-	DEBUG	+++++
 		if (DEBUG >= LOG) {
 			printf("!!	DEBUG:	fnGreetCMDR() - Calling fnTextToSpeech() line 1742\x0a");
 			printf("!!	DEBUG:	fnGreetCMDR() - TTSMsg = %s\x0a", &TTSMsg);
 		}
-//	DEBUG	+++++
+//-	DEBUG	+++++
 
 	}
 
@@ -1771,16 +1749,18 @@
 			if (fg > currentfg) {									// Gives us an absolute integer 
 				difference = fg-currentfg;
 			}
-			if (fg < currentfg) {
+			else if (fg < currentfg) {
 				difference = currentfg-fg;
 			}
 
-			while(difference > 0) {									//
+			while(difference > 0) {									// macro calls here versus using CHAINs ... hmmm
 				if(currentfg > fg) {
-					ActKey(KEYON+m_PrevFG);							// 
-				}
-				if(currentfg < fg) {				
-					ActKey(KEYON+m_NextFG);
+//-					ActKey(KEYON+m_PrevFG);							// m_NextFG = CHAIN(PULSE+NextFireGroup, D(400));
+					ActKey(KEYON+CHAIN(PULSE+PrevFireGroup, D(400)));
+				}													//
+				else if(currentfg < fg) {				
+//-					ActKey(KEYON+m_NextFG);
+					ActKey(KEYON+CHAIN(PULSE+NextFireGroup, D(400)));
 				}
 				difference = difference - 1;
 								
@@ -1860,17 +1840,17 @@
 			if (DEBUG > 0) {			//	TESTING Screen Overlay - screen canvas = 480 chars across
 				if (AutoHangar) {
 					// sprintf &ArrivalTXT instead
-					fnOverlay("Arrival mode: Station Services", 20, 587, 990, 3); // x = (470 - strlen)/2 * 2.67 to centre text string
+					fnOverlay("Arrival mode: Station Services", 20, 587, 990, 3, "DockingStatus"); // x = (470 - strlen)/2 * 2.67 to centre text string
 					fnTextToSpeech("Arrival mode: Station Services");
 				}
 				else if (AutoDisembark) {
 					// sprintf &ArrivalTXT instead
-					fnOverlay("Arrival mode: Disembark", 20, 596, 990, 3);
+					fnOverlay("Arrival mode: Disembark", 20, 596, 990, 3, "DockingStatus");
 					fnTextToSpeech("Arrival mode: Disembark");
 				}
 				else {
 					// sprintf &ArrivalTXT instead
-					fnOverlay("Arrival mode: Surface", 20, 598, 990, 3);
+					fnOverlay("Arrival mode: Surface", 20, 598, 990, 3, "DockingStatus");
 					fnTextToSpeech("Arrival mode: Surface");
 				}
 			}
@@ -1917,41 +1897,47 @@
 			}
 			else if (strcmp(DeniedReason, "NoSpace") == 0) {
 				printf("==	All hangar bays are occupied.\x0a");
-				fnOverlay("Docking Denied: No Space", 15, 595, 980, 0);							// TTL 15 seconds, Centre, Bottom, Red 
+				fnOverlay("Docking Denied: No Space", 15, 595, 980, 0, "DockingStatus");							// TTL 15 seconds, Centre, Bottom, Red 
 				fnTextToSpeech("No space. All hangar bays are full");
 			}
 			else if (strcmp(DeniedReason, "TooLarge") == 0) {
 				printf("==	No large landing pads available.\x0a");
-				fnOverlay("Dockiing Denied: No Large Pads", 15, 587, 980, 0);				
+				fnOverlay("Dockiing Denied: No Large Pads", 15, 587, 980, 0, "DockingStatus");				
 				fnTextToSpeech("Too Large. No large landing pads available");
 			}
 			else if (strcmp(DeniedReason, "Hostile") == 0) {
 				printf("==	Try to improve your reputation before trying to land here.\x0a");
-				fnOverlay("Docking Denied: Hostile", 15, 596, 980, 0);				
+				fnOverlay("Docking Denied: Hostile", 15, 596, 980, 0, "DockingStatus");				
 				fnTextToSpeech("Hostile. Let's find somewhere else to dock");
 			}
 			else if (strcmp(DeniedReason, "Offences") == 0) {
 				printf("==	Pay your fines before trying to land here.\x0a");
-				fnOverlay("Docking Denied: Outstanding Fines", 15, 583, 980, 0);				
+				fnOverlay("Docking Denied: Outstanding Fines", 15, 583, 980, 0, "DockingStatus");				
 				fnTextToSpeech("Outstanding offences. Let's pay our fines then come back.");
 			}
 			else if (strcmp(DeniedReason, "NoReason") == 0) {
 				printf("==	Maybe we just don't like you?\x0a");
-				fnOverlay("Docking Denied: No Reason", 15, 594, 980, 0);				
+				fnOverlay("Docking Denied: No Reason", 15, 594, 980, 0, "DockingStatus");				
 				fnTextToSpeech("No reason given. Perhaps they just don't like us.");
 			}
 			else if (strcmp(DeniedReason, "Distance") == 0) {
 				printf("==	Move to within 7.5k and request docking clearance again.\x0a");
-				fnOverlay("Docking Denied: Move Closer", 15, 591, 980, 0);				
+				fnOverlay("Docking Denied: Move Closer", 15, 591, 980, 0, "DockingStatus");				
 				fnTextToSpeech("We need to move in a little closer commander");
 			}
 			else {
-				fnOverlay("Docking Denied: Reason unknown", 15, 587, 980, 0);				
+				fnOverlay("Docking Denied: Reason unknown", 15, 587, 980, 0, "DockingStatus");
 				fnVPOutput("Docking Denied, reason unknown");			// "Do not meet set permissions"
 			}
 		}
-		else if (strcmp(&DockingStatus, "TimeOut") == 0)	printf("==	Docking request timed out\x0a");
-		else if (strcmp(&DockingStatus, "Cancelled") == 0)	printf("==	Docking request cancelled\x0a");
+		else if (strcmp(&DockingStatus, "TimeOut") == 0) {
+			fnOverlay("Docking Denied: Timeout", 15, 597, 980, 0, "DockingStatus");
+			printf("==	Docking request timed out\x0a");
+		}
+		else if (strcmp(&DockingStatus, "Cancelled") == 0) {
+			fnOverlay("Docking Denied: cancelled", 15, 594, 980, 0, "DockingStatus");
+			printf("==	Docking request cancelled\x0a");
+		}
 	}
 
 
@@ -1966,12 +1952,11 @@
 		if (fMassLocked) {
 			ActKey(KEYON+PULSE+SetSpeed0);
 			AutoDC = 0;
-	//		fnVPOutput("Auto dock engaged");
+			fnOverlay("Auto dock engaged", 10, 605, 980, 3, "AutoDock");		// 15 seconds, centre, near bottom, yellow, id 
 		}
 		else {
 			AutoDC = 1;							// wait for masslock and retry
-	//		fnVPOutput("Auto D C awaiting mass lock");
-		}		
+		}
 	}
 
 
@@ -2189,7 +2174,7 @@
 			OVRLen = strlen(&TT);
 			TT[OVRLen+1] = 0;
 			OVRX = ((470-OVRLen)/2)*2.67;
-			fnOverlay(&TT, 20, OVRX, 980);
+			fnOverlay(&TT, 20, OVRX, 980, 3, "TripTime");
 			DeferCall(16000, &fnTextToSpeech, &TT);
 			
 		}		// --- Reset Original Station and timers
@@ -2231,7 +2216,7 @@
 			AnnounceTripTime = 0;
 		}
 		
-		if (action == 1) {
+		else if (action == 1) {
 			if (fDocked) {
 				Dim(&oStation, strlen(&StationName)+1);
 				oStation[0] = 0;
@@ -2263,7 +2248,7 @@
 		Dim(&ShipType, strlen(&keyvalue)+1);						// init our ShipType char array 
 
 		if (strcmp(&keyvalue, &ShipType)==0) {						// Do nothing if &ShipType already matches what's in MyJournalData.json ...
-			// do nothing, or maybe "return 0"
+			return 0;
 		}
 		else {														// ... otherwise update our variable etc.
 			ShipType[0] = 0;										// Resets char array
@@ -2278,10 +2263,9 @@
 					printf("!!	DEBUG: fnGetShipType() - ShipType = %s\x0a", &ShipType);
 				}
 			}
+	//-		Specific shiptype code goes here, example...
+	//-		Call KeyMap Profile or set "MapKeyProfile" for specific ship			
 		}
-	//		Specific shiptype code goes here, example...
-	//		Call KeyMap Profile or set "MapKeyProfile" for specific ship
-	
 	}
 
 
@@ -2298,14 +2282,12 @@
 		
 		// Issue: joystick unresponsive
 		if (DEBUG > 0) {
-			fnVPOutput("DEBUG: Reinitialising controllers", 0, 2);					// DEBUG message
+			fnVPOutput("DEBUG: Reinitialising Joystick", 0, 2);					// DEBUG message
 			
 			initJoystickAxis();
-			initThrottleAxis();
-			initSliderAxis();
-			initSlewAxis();
-			initRudderAxis();
-			initCurves(NONE, PRINT, YES, FALSE);									// Parameters: Curve profile=NONE, Print to console=NO, TTS Announce= YES, Save Curves = FALSE 
+			DefEventHandler(EV_HID_INPUT_DATA, &MyJoystick, JOYX);
+			DefEventHandler(EV_HID_INPUT_DATA, &MyJoystick, JOYY);
+
 		}
 		else reason = "Debug must be set greater than 0";
 		

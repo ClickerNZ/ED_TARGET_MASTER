@@ -1,7 +1,7 @@
 
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 	//		  CMDR Clicker's Elite Dangerous Enhanced Thrustmaster TARGET Script			//
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 
 	//							This file: ED_ScriptDefines.ttm								//
 
@@ -23,9 +23,9 @@
 	
 	define	ControllerCheck			ENABLED					// ENABLED:		Abort script if compatible Joystick or Throttle not found during CheckControllers() function at script start
 
-	//---------//
+	// ------- //
 	// Timings //
-	//---------//
+	// ------- //
 
 	// These delay settings affect how fast the script executes key press sequences etc.
 	// If you find the macros are dropping characters, then the delay is too short.
@@ -43,18 +43,18 @@
 	define	WakeScanDelay			10100					// Wake Scanner			'hold-trigger' timer (10.1 seconds)	- VERIFIED
 	define	ManifestScanDelay		9000					// Manifest Scanner		'hold-trigger' timer (9 seconds)
 	
-	//-------------------//
+	// ----------------- //
 	// PIPMAPPER DEFINES //
-	//-------------------//
+	// ----------------- //
 
 	define SYS						1						// Used in fnPIPMapper for managing System  PIPs (see EDFunctions.tmh) (DO NOT modify!)
 	define ENG						2						// Used in fnPIPMapper for managing Engine  PIPs (see EDFunctions.tmh) (DO NOT modify!)
 	define WEP						3						// Used in fnPIPMapper for managing Weapon  PIPs (see EDFunctions.tmh) (DO NOT modify!)
 	define MID						4						// Used in fnPIPMapper for managing Balance PIPs (see EDFunctions.tmh) (DO NOT modify!)
 
-	//------------------------------//
+	// ---------------------------- //
 	// REXEC and AutoRepeat Handles //
-	//------------------------------//
+	// ---------------------------- //
 
 	define hPWS						0						// Used in ED_Functions.tmh						- PWS fire option on primary/secondary trigger
 	define hReadStatusJson			1						// Used in ED_StateTracker.tmh					- main read ststus.json background loop
@@ -65,9 +65,9 @@
 	define hReadMyJournalData		6						// Used in ED_StateTracker.tmh					- main read MyJournalData.json background loop
 	define hTerrain					7						// 
 	
-	//----------------------------------------------------------------------//
+	// -------------------------------------------------------------------- //
 	// SCRIPT BOOLEAN and STATE DEFINES										//
-	//----------------------------------------------------------------------//
+	// -------------------------------------------------------------------- //
 			
 	define OFF						0
 	define ON						1
@@ -129,28 +129,28 @@
 	define LOAD						0						// used in stfnMyStates()	
 	define SAVE						1						// used in stfnMyStates()
 
-	//---------------//
+	// ------------- //
 	// DEBUG DEFINES //										// Options = OFF (0), ON (1),  LOG (2), VERBOSE (3). 
-	//---------------//
+	// ------------- //
 
 	// Select one by removing comment marker
 	
-//	int		DEBUG					= OFF;					// No DEBUG. InputCMD disabled. DEBUG outputs supressed
+//-	int		DEBUG					= OFF;					// No DEBUG. InputCMD disabled. DEBUG outputs supressed
 	int		DEBUG					= ON;					// Basic Development/DEBUG Mode. example InputCMD enabled 
-//	int		DEBUG					= LOG;					// Many DEBUG outputs go to console
-//	int		DEBUG					= VERBOSE;				// Many DEBUG outputs go to console and TTS
+//-	int		DEBUG					= LOG;					// Many DEBUG outputs go to console
+//-	int		DEBUG					= VERBOSE;				// Many DEBUG outputs go to console and TTS
 
-	//-----------------------------------------------------------------------------------------------------------------------------//
+	// --------------------------------------------------------------------------------------------------------------------------- //
 	//                                                                                                                             //
 	//   The following defines align to the FLAGS and FLAGS2 bitmasks within status.json as defined in the Journal Documentation   //
 	//                                                                                                                             //
 	//        STATUS.JSON : Refer Section 14 in http://hosting.zaonce.net/community/journal/v37/Journal_Manual_v37.pdf             //
 	//                                                                                                                             //
-	//-----------------------------------------------------------------------------------------------------------------------------//
+	// --------------------------------------------------------------------------------------------------------------------------- //
 
-	//-------------//
+	// ----------- //
 	// FLAGS MASKS //
-	//-------------//
+	// ----------- //
 
 	define ED_Docked               	0x0000000000000001
 	define ED_Landed               	0x0000000000000002
@@ -192,9 +192,9 @@
 	define ED_FSDJump				0x0000000040000000	
 	define ED_SRVHiBeam				0x0000000080000000			// Need to test if this bitmask can be used. We use negative value of Flags to indicate fSRVHiBeam
 
-	//---------------------------------//
+	// ------------------------------- //
 	//  Corresponding Flags Variables  //
-	//---------------------------------//
+	// ------------------------------- //
 
 	// These variables are used to check state of each of the above flags whilst game is running
 
@@ -281,9 +281,9 @@
 	int lFSDJump				=	0;
 	int lSRVHiBeam				=	0;
 
-	//--------------//
+	// ------------ //
 	// FLAGS2 MASKS //
-	//--------------//
+	// ------------ //
 
 	define ED_OnFoot               	0x0000000000000001
 	define ED_InTaxi               	0x0000000000000002
@@ -325,9 +325,9 @@
 	define ED_RESERVED31			0x0000000040000000	
 	define ED_RESERVED32			0x0000000080000000				// Not tested. We use negative value of Flags2 to dermine value of fRESERVED32
 
-	//----------------------------------//
+	// -------------------------------- //
 	//  Corresponding Flags2 Variables  //
-	//----------------------------------//
+	// -------------------------------- //
 
 	int Flags2					=	0;		// contains the Flags2 key value integer 
 	int OldFlags2				=	0;		// track when Flags2 key value changes 
@@ -413,9 +413,9 @@
 	int lRESERVED32				= 	0;
 
 
-	//---------------//
+	// ------------- //
 	// MODULES MASKS //					// BCD encoded value within 'Modules' key in MyJournalData.json 
-	//---------------//					// These are updated by the PS_Journal helper script each time the 'Loadout' event appears in the ED Journal 
+	// ------------- //					// These are updated by the PS_Journal helper script each time the 'Loadout' event appears in the ED Journal 
 
 	define ED_SCOPresent				0x0000000000000001	// 1	- Supercruise Overdrive Capable Frame Shift  Drive is installed 
 	define ED_FighterPresent			0x0000000000000002	// 2	- Fighter Bay (not actual fighter is installed on ship 
@@ -428,13 +428,13 @@
 	define ED_LimpetPresent				0x0000000000000080	// 128	- Limpet controller installed on ship
 
 	define ED_AdvDockingPresent			0x0000000000000100	// 256	- Advanced Docking Computer installed on ship
-//	define ED_ReservedModule			0x0000000000000200	// 512	- 
-//	define ED_ReservedModule			0x0000000000000400	// 1024	- 
-//	define ED_ReservedModule			0x0000000000000800	// 2048	- 
+//-	define ED_ReservedModule			0x0000000000000200	// 512	- 
+//-	define ED_ReservedModule			0x0000000000000400	// 1024	- 
+//-	define ED_ReservedModule			0x0000000000000800	// 2048	- 
 
-	//-----------------------------------//
+	// --------------------------------- //
 	//  Corresponding MODULES Variables  //
-	//-----------------------------------//
+	// --------------------------------- //
 
 	int Modules					=	0;						//  Read from MyJournalData.json 
 	int oldModules				=	0;						//	Track when changed via stfnProcessMyJournalData()
@@ -450,9 +450,9 @@
 	int fLimpetPresent			=	0;
 
 	int fAdvDockingPresent		=	0;
-//	int fReservedModule			=	0;
-//	int fReservedModule			=	0;
-//	int fReservedModule			=	0;
+//-	int fReservedModule			=	0;
+//-	int fReservedModule			=	0;
+//-	int fReservedModule			=	0;
 
 // --
 
@@ -467,13 +467,13 @@
 	int lLimpetPresent			=	0;
 
 	int lAdvDockingPresent		=	0;
-//	int lReservedModule			=	0;
-//	int lReservedModule			=	0;
-//	int lReservedModule			=	0;
+//-	int lReservedModule			=	0;
+//-	int lReservedModule			=	0;
+//-	int lReservedModule			=	0;
 	
-	//--------------------//
+	// ------------------ //
 	// GUIFocus Variables //
-	//--------------------//
+	// ------------------ //
 
 	define GUI_None				0
 	define GUI_SystemPanel		1

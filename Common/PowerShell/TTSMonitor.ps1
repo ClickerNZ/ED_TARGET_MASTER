@@ -222,7 +222,7 @@ $volume = 80
 try {
     [TTS]::SpeakText("Text to speech monitor, version $MyVersion loading.", $voice, $rate, $volume)
     Start-Sleep -Milliseconds 500	
-    [TTS]::SpeakText("Processing T T S, and A T C queues.", $voice, $rate, $volume)
+    [TTS]::SpeakText("Processing T T S, A T C and overlay queue.", $voice, $rate, $volume)
 }
 catch {
     Write-Host "Startup TTS failed: $_" -ForegroundColor Red

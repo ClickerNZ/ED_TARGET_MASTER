@@ -1,7 +1,7 @@
 
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 	//		  CMDR Clicker's Elite Dangerous Enhanced Thrustmaster TARGET Script			//
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 
 	//								T16000 + TWCS REQUIRED									//
 
@@ -14,10 +14,10 @@
 	Index:			FUNCTION
 	Line 31: 		int LiveKeyMap() {
 	Line 44:			Joystick Buttons
-	Line 339:			Throttle Buttons 
-	Line 599: 		int TrainingKeyMap() {
-	Line 609:			Joystick buttons
-	Line 894:			Throttle buttons
+	Line 338:			Throttle Buttons 
+	Line 596: 		int TrainingKeyMap() {
+	Line 606:			Joystick Buttons
+	Line 891:			Throttle Buttons
 */
 
 	// START
@@ -207,8 +207,7 @@
 		else {
 			MapKeyUMD(&MyJoystick, B5, 
 				EXEC("fnVPOutput(\"not used\");"),									// U - 
-//				PULSE+GalMap,														// M - LeftShift+';'
-				EXEC("tgGALMap(TOGGLE);"),												// M - Sys Map On/Off 
+				EXEC("tgGALMap(TOGGLE);"),											// M - Sys Map On/Off 
 				EXEC("fnVPOutput(\"not used\");")									// D - 
 				);
 		}
@@ -263,8 +262,7 @@
 		else {
 			MapKeyUMD(&MyJoystick, B10,
 				EXEC("fnVPOutput(\"not used\");"),									// U - 
-//				PULSE+SystemMap,													// M - ';' 
-				EXEC("tgSYSMap(TOGGLE);"),												// M - Sys Map On/Off
+				EXEC("tgSYSMap(TOGGLE);"),											// M - Sys Map On/Off
 				EXEC("fnStateDump();")												// D - Debug function. Prints States Banner
 				);
 		}
@@ -297,7 +295,6 @@
 		else {
 			MapKeyUMD(&MyJoystick, B13,
 				EXEC("fnVPOutput(\"not used\");"),									// U - 
-//-				SEQ(PULSE+m_NAVBeaconWing, PULSE+m_NAVBeaconOff),					// M - My NAV Beacon - ON/OFF
 				EXEC("tgWingBeacon(0);"),											// M - My NAV Beacon - ON/OFF
 				EXEC("fnVPOutput(\"not used\");")									// D -
 				);

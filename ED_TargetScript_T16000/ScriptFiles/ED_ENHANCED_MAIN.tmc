@@ -1,9 +1,9 @@
 
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 	//		  CMDR Clicker's Elite Dangerous Enhanced Thrustmaster TARGET Script			//
 	//																						//
 	//		   Contact:  https://forums.frontier.co.uk/members/clicker.19039/				//
-	//--------------------------------------------------------------------------------------//
+	// ------------------------------------------------------------------------------------ //
 
 	//								T16000 + TWCS REQUIRED									//
 
@@ -79,9 +79,9 @@
 
 //-	include "C:\\Thrustmaster\\ED_TargetScript_Warthog\\ScriptFiles\\ED_Development.tmh"
 
-	//--------------//
+	// ------------ //
 	// Main Program //
-	//--------------//
+	// ------------ //
 	
 	int main() {
 
@@ -139,9 +139,6 @@
 																				// Do this before calling stfnMyStates(LOAD) call
 		initUserSettings(0);													// Save default user settings. On the fly customisation available for most settings.
 
-//		printf("\x0a\++	Load MyStates from file...\x0a");
-//		stfnMyStates(LOAD);														// Load my status variables
-
 	// -------------------------- //
 	// Initialise Flight controls //
 	// -------------------------- //
@@ -183,14 +180,14 @@
 
 	}
 
-	//------------------//
+	// ---------------- //
 	// End Main Program //
-	//------------------//
+	// ---------------- //
 
 	
-	//---------------//
+	// ------------- //
 	// Event Handler //
-	//---------------//
+	// ------------- //
 
 	int EventHandle(int type, alias o, int x) {
 	
@@ -198,6 +195,6 @@
 	
 	}
 
-	//---------------//
+	// ------------- //
 	// End of Script //
-	//---------------//
+	// ------------- //
