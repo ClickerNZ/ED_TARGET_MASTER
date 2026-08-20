@@ -29,3 +29,5 @@ TARGET_Script_Analyzer_v8.4.ps1
 SyncScript.cmd
 /Common/Piper/ATCChatter
 Common/Piper/ATCChatter_Filtered/ATCChatter_RecentTopUp_20260620_191037.csv
+ED_TargetScript_Warthog/SupportFiles/ED_Launcher_2.cmd
+ED_TargetScript_Warthog/SupportFiles/ED_Launcher_C.cmd
