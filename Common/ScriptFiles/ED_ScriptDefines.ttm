@@ -374,7 +374,7 @@
 
 	int lOnFoot					=	0;
 	int lInTaxi					=	0;
-	int lInMultiCrew			=	0;	      
+	int lInMultiCrew			=	0;
 	int lOnFootInStation    	=	0;
 
 	int lOnFootOnPlanet     	=	0;

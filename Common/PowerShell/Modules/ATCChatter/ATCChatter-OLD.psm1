@@ -191,6 +191,11 @@ function Format-ATCSpokenText {
   $spoken = $spoken -replace '\b(\d+(?:\.\d+)?)\s*t\b', '$1 tons'
 
   $spoken = $spoken -replace '\s+', ' '
+  # Remove trailing exclamation/question punctuation so Piper does not speak it literally.
+  $spoken = $spoken -replace '!+\s*$', ''
+  $spoken = $spoken -replace '\?+\s*$', ''
+
+
   return $spoken.Trim()
 }
 

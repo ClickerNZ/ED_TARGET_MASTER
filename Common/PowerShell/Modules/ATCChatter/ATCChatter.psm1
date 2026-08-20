@@ -191,10 +191,16 @@ function Format-ATCSpokenText {
   $spoken = $spoken -replace '\b(\d+(?:\.\d+)?)\s*t\b', '$1 tons'
 
   $spoken = $spoken -replace '\s+', ' '
-  # Remove trailing exclamation/question punctuation so Piper does not speak it literally.
-  $spoken = $spoken -replace '!+\s*$', ''
-  $spoken = $spoken -replace '\?+\s*$', ''
 
+  # Convert metre abbreviation after a number.
+  # Examples: 7500m -> 7500 meters, 7500 m -> 7500 meters, 12.5m -> 12.5 meters.
+  $spoken = $spoken -replace '(?i)\b(\d+(?:\.\d+)?)\s*m\b', '$1 meters'
+
+  # Remove trailing exclamation/question punctuation, including spaced forms such as "! !".
+  # Piper can otherwise speak a leftover punctuation mark as "exclamation".
+  $spoken = $spoken -replace '([!?]\s*)+$', ''
+
+  $spoken = $spoken -replace '\s+', ' '
 
   return $spoken.Trim()
 }
@@ -310,7 +316,22 @@ function New-ATCWaveFile {
     $proc.StartInfo = $psi
 
     [void]$proc.Start()
-    $proc.StandardInput.WriteLine($spoken)
+
+	# Debug logging - remove when no longer required.
+	$DebugLog = "C:\Thrustmaster\Common\Logs\ATCSpokenText.log"
+
+	$timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff"
+
+	Add-Content -Path $DebugLog -Value (
+		"[{0}] Voice={1} Group={2}`n    Raw:    {3}`n    Spoken: {4}`n" -f `
+			$timestamp,
+			[System.IO.Path]::GetFileNameWithoutExtension($Voice),
+			$Group,
+			$Text,
+			$spoken
+	)
+
+	$proc.StandardInput.WriteLine($spoken)
     $proc.StandardInput.Close()
     [void]$proc.StandardOutput.ReadToEnd()
     $stdErr = $proc.StandardError.ReadToEnd()

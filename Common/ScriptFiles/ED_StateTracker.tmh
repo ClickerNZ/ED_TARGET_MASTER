@@ -151,6 +151,7 @@
 						fnTextToSpeech("Status Jason Read Error count exceeded", 100);
 						ReadErrorSent = 1;
 					}
+					if(ReadErrorcount > 29) Abort();
 				}
 			}
 			else if (myResult < 0) {
@@ -470,7 +471,7 @@
 
 		lMainShip 			= fMainShip;							// Track in/out of MainShip
 		lFighter 			= fFighter;								// Track in/out of Fighter
-		lSRV 				= fSRV;									// Track in/out of SRV
+		lSRV 				= fSRV;									// Track in/out of SRV or Nomad
 		lHUDAnalysis		= fHUDAnalysis;
 
 		lNightVision		= fNightVision;
@@ -711,9 +712,9 @@
 
 		if (fLanded != lLanded) {
 			if (fLanded) {
-				if (fSRV | fOnFoot) {
-					if (DEBUG > 0) printf("==	Ship Status:		RECALLED\x0a");
-				}
+//-				if ((InSRV) | fOnFoot) {
+//-					if (DEBUG > 0) printf("==	Ship Status:		RECALLED\x0a");
+//-				}
 				strcpy(&LandedTOD, fnGetTOD());
 				printf("==	Landed @ %s\x0a", &LandedTOD);				
 			}
@@ -723,14 +724,14 @@
 				}
 				strcpy(&LiftoffTOD, fnGetTOD());
 				printf("==	Liftoff @ %s\x0a", &LiftoffTOD);
-				if (fSRV | fOnFoot) {
-					if (!ShipDismissed) {
-						fnOverlay("Ship departed", 15, 610, 980, 3, "LandedFlag");		// TTL=15 seconds, pos=centre-bottom, colour=yellow
-						fnVPOutput("Ship has departed");
-					}
+//-				if ((InSRV) | fOnFoot) {
+//-					if (!ShipDismissed) {
+//-						fnOverlay("Ship departed", 15, 610, 980, 3, "LandedFlag");		// TTL=15 seconds, pos=centre-bottom, colour=yellow
+//-						fnVPOutput("Ship has departed");
+//-					}
 					
-					if (DEBUG > 1) printf("==	Ship Status:		DISMISSED\x0a");
-				}
+//-					if (DEBUG > 1) printf("==	Ship Status:		DISMISSED\x0a");
+//-				}
 			}
 		}
 
@@ -747,29 +748,32 @@
 
 		//	LOGIC: fShieldsUp gets reset when shield drops. Set once fully charged
 		if (fShieldsUp != lShieldsUp)	{									// Shields just dropped?
-			if (!fShieldsUp) {
-				fnOverlay("!!! SHIELDS !!!", 20, 607, 980, 0, "ShieldsFlag"); 
-				if (fMainShip & fDanger) {
-					if (!fSilentRunning & !fLanded) {
-						ShieldsDroppedShip = 1;
-						if (AutoStrobe) {
-							DeferCall(750, &fnVPOutput, "Activating Silent Strobe");
-							tgSilentRunning(STROBE);
-						}
-						else {
-							DeferCall(750, &fnTextToSpeech, "Consider using Silent Running commander");
+//				if (!fShieldsUp) {
+			if (!fDocked) {
+				if (!fShieldsUp & !fOnFoot) {
+					fnOverlay("!!! SHIELDS !!!", 20, 607, 980, 0, "ShieldsFlag"); 
+					if (fMainShip & fDanger) {
+						if (!fSilentRunning & !fLanded) {
+							ShieldsDroppedShip = 1;
+							if (AutoStrobe) {
+								DeferCall(750, &fnVPOutput, "Activating Silent Strobe");
+								tgSilentRunning(STROBE);
+							}
+							else {
+								DeferCall(750, &fnTextToSpeech, "Consider using Silent Running commander");
+							}
 						}
 					}
+					else if(fSRV & fDanger) {
+						ShieldsDroppedSRV = 1;
+					}
 				}
-				else if(fSRV & fDanger) {
-					ShieldsDroppedSRV = 1;
-				}
-			}
-			else {
-				if (ShieldsDroppedShip | ShieldsDroppedSRV) {
-					fnVPOutput("Shields restored");
-					ShieldsDroppedShip = 0;
-					ShieldsDroppedSRV = 0;
+				else {
+					if (ShieldsDroppedShip | ShieldsDroppedSRV) {
+						fnVPOutput("Shields restored");
+						ShieldsDroppedShip = 0;
+						ShieldsDroppedSRV = 0;
+					}
 				}
 			}
 		}
@@ -814,7 +818,8 @@
 		}
 
 		if (fFAOff != lFAOff) {															// Handled within tgAdvancedFAOff()	
-			if (fMainShip) {															// Announced via in game setting
+//-			if (fMainShip) {															// Announced via in game setting
+			if (fMainShip | InNomad | fFighter) {			// Announced via in game setting
 				if (fFAOff) {
 					fnVPOutput("Flight Assist:		OFF");
 				}
@@ -828,11 +833,13 @@
 		}
 			
 		if (fHardpoints != lHardpoints) { 
-			if (fHardpoints) {
-				fnVPOutput("Hardpoints:		DEPLOYED");
-			}
-			else {
-				fnVPOutput("Hardpoints:		RETRACTED");				
+			if (fMainShip) {															// Announce only for main ship and not Nomad
+				if (fHardpoints) {
+					fnVPOutput("Hardpoints:		DEPLOYED");
+				}
+				else {
+					fnVPOutput("Hardpoints:		RETRACTED");				
+				}
 			}
 		}
 
@@ -904,7 +911,8 @@
 		}
 		
 		if (fSRVTurretRetracted != lSRVTurretRetracted) {
-			if (fSRV) {																	// Prevents spuriou outputs when boarding/unboarding SRV or Ship
+//-			if (fSRV) {																	// Prevents spurious outputs when boarding/unboarding SRV or Ship
+			if (InSRV) {														// Prevents spurious outputs when boarding/unboarding SRV or Ship
 				if (fSRVTurretRetracted ) {												// Detect turret deploy/retract
 					fnVPOutput("Turret:			RETRACTED");							// 
 				}
@@ -965,13 +973,14 @@
 		if (fLowFuel != lLowFuel) {
 			if (fLowFuel) {
 				if (fMainShip | fSRV) {												// Don't bother announcing LOW FUEL when in fighter 
-					fnOverlay("!! Low fuel !!", 10, 609, 980, 0, "Fuel");			// TTL=10, Center-Bottom, Red, id
+					fnOverlay("!! Low fuel !!", 10, 609, 960, 0, "Fuel");			// TTL=10, Center-Bottom, Red, id
 					fnVPOutput("WARNING! Fuel Low");
 					if (fSupercruiseOvercharge & SCOLowFuelFailsafe) {
 						ActKey(KEYON+PULSE+EngineBoost);							// Low Fuel triggers disconnect of SCO 
+						fnOverlay("SCO Disengaged", 10, 609, 980, 3, "SCO");
 					}
 				}
-				else if (fFighter) {
+				else if (fFighter) {			// TEST fighter fuel
 					//- do nothing 
 				}
 			}
@@ -1007,7 +1016,7 @@
 				//-	in orbit ... HUD changes
 			}
 			else {
-				fnOverlay("Orbital Cruise Boundary Cleared", 10, 586, 980); 
+				fnOverlay("Orbital Cruise Boundary Cleared", 10, 586, 970); 
 			}
 		}
 
@@ -1050,12 +1059,22 @@
 			}
 		}
 
-		if (fSRV != lSRV) {															// Detect when we jump into SRV
+		if (fSRV != lSRV) {															// Detect when we jump into SRV or Nomad
 			if (fSRV) {
-				if (!StartupLock) printf("==	SRV:			BOARDED\x0a");
+				if (InSRV) {
+					if (!StartupLock) printf("==	SRV:			BOARDED\x0a");
+				}
+				else if (InNomad) {
+					if (!StartupLock) printf("==	Nomad:			BOARDED\x0a");
+				}
 			}
 			else {
-				printf("==	SRV:			DISEMBARKED\x0a");
+				if (InSRV) {
+					printf("==	SRV:			DISEMBARKED\x0a");
+				}
+				else if (InNomad) {
+					printf("==	Nomad:			DISEMBARKED\x0a");
+				}
 			}
 		}
 
@@ -1063,9 +1082,11 @@
 			//- NOTHING TO DO
 		}
 			
-		if ((fNightVision != lNightVision) & (fMainShip | fSRV)) {
+//-		if ((fNightVision != lNightVision) & (fMainShip | fSRV)) {
+		if ((fNightVision != lNightVision) & (fMainShip | fSRV | fFighter)) {
 					
-			if (fNightVision & ((fSRV == lSRV) | (fMainShip == lMainShip))) {
+//-			if (fNightVision & ((fSRV == lSRV) | (fMainShip == lMainShip))) {
+			if (fNightVision & ((fSRV == lSRV) | (fMainShip == lMainShip) | (fFighter == lFighter))) {
 				fnVPOutput("Night vision");										
 				if (NVGUI & GUIState) {												// NVGUI is configured in ED_UserSettings.tmh. GUIState initialised in ED_GlobalVars.tmh 
 					ActKey(KEYON+PULSE+HideShipGUI);								// Turn off HUD
@@ -1073,7 +1094,8 @@
 				}
 				
 			}
-			else if (!fNightVision & ((fSRV == lSRV) | (fMainShip == lMainShip))){
+//-			else if (!fNightVision & ((fSRV == lSRV) | (fMainShip == lMainShip))){
+			else if (!fNightVision & ((fSRV == lSRV) | (fMainShip == lMainShip) | (fFighter == lFighter))) {
 				fnVPOutput("Night vision:		OFF");
 				if (NVGUI & GUIState == 0) {
 					ActKey(KEYON+PULSE+HideShipGUI);								// Turn on HUD
@@ -1084,7 +1106,7 @@
 
 		if (fAltFromAvgRad != lAltFromAvgRad) {										// Perhaps grab the altitude and create a char array for the overlay???
 			if (fAltFromAvgRad) {													// This is set when we are in supercruise or at "higher altitudes" (how high???)
-				fnOverlay("fAltFromAvgRad = 1", 15, 603, 980, 3, "AltitudeFlag");	// TTL=15 sec, center-bottom, yellow, id   
+		//		fnOverlay("fAltFromAvgRad = 1", 15, 603, 960, 3, "AltitudeFlag");	// TTL=15 sec, center-bottom, yellow, id   
 //-	DEBUG +++++
 				if (TerrainFollow) {
 					tgTerrainFollow(OFF);
@@ -1092,8 +1114,8 @@
 //-	DEBUG +++++
 			}
 			else {
-				fnOverlay("fAltFromAvgRad = 0", 15, 603, 980, 3, "AltitudeFlag");	// TTL=15 sec, center-bottom, yellow, id  
-			}				
+		//		fnOverlay("fAltFromAvgRad = 0", 15, 603, 960, 3, "AltitudeFlag");	// TTL=15 sec, center-bottom, yellow, id  
+			}
 		}
 
 		
@@ -1143,8 +1165,8 @@
 				}
 			}
 		}
-
-		if (fSRVHiBeam != lSRVHiBeam) {
+/*
+		if (fSRVHiBeam != lSRVHiBeam) {										// This code is somewhat redundant.
 			if (fSRVHiBeam & (fSRV == lSRV)) {
 				//- HI BEAM NOTIFICATION HANDLED IN tgLights()
 			}
@@ -1152,7 +1174,7 @@
 				//- LIGHTS NOTIFICATIONS HANDLED IN tgLights()
 			}
 		}
-			
+*/			
 		OldFlags = Flags;													// Keep track of last Flags Value to track when Flag bits change
 
 		//- END 		OLD ProcessFlags 
@@ -1319,8 +1341,10 @@
 				else {
 					if (DEBUG == LOG) {
 						printf("==	We're inside ");
-						if (fSRV) printf("SRV\x0a");
-						else if(fMainShip) printf("Ship\x0a");			// what about a taxi or dropship?
+//-						if (fSRV) printf("SRV\x0a");
+						if (InSRV) printf("SRV\x0a");
+						else if (InNomad) printf("Nomad\x0a");
+						else if (fMainShip) printf("Ship\x0a");			// what about a taxi or dropship?
 						else printf("somehwere...where are we?\x0a");
 					}
 					if (DEBUG == VERBOSE) fnVPOutput("Flag off: On Foot Exterior");
@@ -1393,7 +1417,7 @@
 
 			if (fRESERVED24 != lRESERVED24) {
 				if (fRESERVED24) {
-					fnOverlay("F2 BIT 24 Detected", 15, 603, 980, 3, "Newflag"); 
+					fnOverlay("F2 BIT 24 Detected", 15, 603, 960, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 24");
 				}
 				else {
@@ -1403,7 +1427,7 @@
 
 			if (fRESERVED25 != lRESERVED25) {
 				if (fRESERVED25) {
-					fnOverlay("F2 BIT 25 Detected", 15, 603, 980, 3, "Newflag"); 
+					fnOverlay("F2 BIT 25 Detected", 15, 603, 960, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 25");
 				}
 				else {
@@ -1413,7 +1437,7 @@
 			
 			if (fRESERVED26 != lRESERVED26) {
 				if (fRESERVED26) {
-					fnOverlay("F2 BIT 26 Detected", 15, 603, 980, 3, "Newflag"); 
+					fnOverlay("F2 BIT 26 Detected", 15, 603, 960, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 26");
 				}
 				else {
@@ -1423,7 +1447,7 @@
 
 			if (fRESERVED27 != lRESERVED27) {
 				if (fRESERVED27) {
-					fnOverlay("F2 BIT 27 Detected", 15, 603, 980, 3, "Newflag"); 
+					fnOverlay("F2 BIT 27 Detected", 15, 603, 960, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 27");
 				}
 				else {
@@ -1433,7 +1457,7 @@
 
 			if (fRESERVED28 != lRESERVED28) {
 				if (fRESERVED28) {
-					fnOverlay("F2 BIT 28 Detected", 15, 603, 980, 3, "Newflag"); 
+					fnOverlay("F2 BIT 28 Detected", 15, 603, 960, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 28");
 				}
 				else {
@@ -1443,7 +1467,7 @@
 
 			if (fRESERVED29 != lRESERVED29) {
 				if (fRESERVED29) {
-					fnOverlay("F2 BIT 29 Detected", 15, 603, 980, 3, "Newflag"); 
+					fnOverlay("F2 BIT 29 Detected", 15, 603, 960, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 29");
 				}
 				else {
@@ -1453,7 +1477,7 @@
 			
 			if (fRESERVED30 != lRESERVED30) {
 				if (fRESERVED30) {
-					fnOverlay("F2 BIT 30 Detected", 15, 603, 980, 3, "Newflag"); 
+					fnOverlay("F2 BIT 30 Detected", 15, 603, 960, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 30");
 				}
 				else {
@@ -1463,7 +1487,7 @@
 
 			if (fRESERVED31 != lRESERVED31) {
 				if (fRESERVED31) {
-					fnOverlay("F2 BIT 31 Detected", 15, 603, 980, 3, "Newflag"); 
+					fnOverlay("F2 BIT 31 Detected", 15, 603, 960, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 31");
 				}
 				else {
@@ -1473,7 +1497,7 @@
 
 			if (fRESERVED32 != lRESERVED32) {
 				if (fRESERVED32) {
-					fnOverlay("F2 BIT 32 Detected", 15, 603, 980, 3, "Newflag"); 
+					fnOverlay("F2 BIT 32 Detected", 15, 603, 960, 3, "Newflag"); 
 					fnVPOutput("F2 Bit 32");
 				}
 				else {
@@ -1485,7 +1509,7 @@
 		if ((lFAOff != fFAOff) | (lLights != fLights) | (lSilentRunning != fSilentRunning) | (lCargoScoop != fCargoScoop) | (lLandingGear != fLandingGear) | (lMainShip != fMainShip) | (lSRV !=  fSRV)) UpdateLEDs = YES;
 
 		if(!GameLoaded) {														// Game started...as opposed to re-started.
-			fnOverlay("Game started", 10, 611, 980, 1, "GameON"); 
+			fnOverlay("Game started", 10, 611, 970, 3, "GameON"); 
 			fnGameStarted();
 		}
 		else if(WARTHOG & UpdateLEDs==YES) {
@@ -1577,6 +1601,9 @@
 		stfnDecodeModules(0);																	// Individual flags used to enable trigger and switch functions etc
 		fnFighterStatus(0);																		// Determines if Fighter is active 
 		fnGetShipType(0);																		// Grabs ShipType and updates if changed
+		fnGetVehicleType(0);																	// Grabs VehicleType and updates if changed
+		fnGetMainShipStatus(0);																	// Grabs MainShipStatus and update is changed 
+		
 		LoadGameDetect = stfnGetKeyValue("LoadGameDetect", INTEGER, 1);
 
 		// Check if InputCMD or CMDParameter have changed...

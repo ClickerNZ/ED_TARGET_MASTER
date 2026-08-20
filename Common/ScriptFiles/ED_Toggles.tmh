@@ -57,7 +57,8 @@
 		int fnName = "Flight Assist";
 		int reason = 0;
 
-		if (fSRV) {
+//-		if (fSRV) {
+		if (InSRV) {
 			if (!fSRVDriveAssist) {
 				fnTextToSpeech("Drive assist");
 			}
@@ -66,7 +67,8 @@
 			}
 			ActKey(KEYON+PULSE+DriveAssist);											// 'z' - Toggles Drive Assist in SRV 
 		}
-		else if (fMainShip) {
+//-		else if (fMainShip) {
+		else if (fMainShip | InNomad) {
 			if (!fSupercruise) {
 				if (fFAOff) {															// Turn FA-OFF OFF, Set JSCurves to default  
 					if (CurveInfo == PRINT) {
@@ -144,7 +146,7 @@
 	
 	// TOGGLE: Ship Lights - LED2
 	// Parameter: 0 = Lights, 1 = Night Vision, 2 = Toggle AutoLandingLights setting tgLights (refer ED_UserSettings.tmh
-	// Uses Flags: fSRV, fLights, fSRVHiBeam, fNightVision
+	// Uses Flags: fSRV, fLights, fSRVHiBeam, fNightVision and &VehicleType
 
 	int tgLights(int x) {
 			
@@ -153,7 +155,8 @@
 		char lmsg; Dim(&lmsg, 20); lmsg[0] = 0;
 		
 		if (x == 0) {						// Toggle Lights
-			if (fSRV) {						// If we're in the SRV...
+//-			if (fSRV) {						// If we're in the SRV...
+			if (InSRV) {
 				ltext = "SRV lights";
 				if (!fLights) {				// Transition: Off to LO
 					lstate = "LO";
@@ -167,7 +170,8 @@
 					}
 				}
 			}
-			else if (fMainShip) {			// ...otherwise, we're in the ship...
+//			else if (fMainShip) {			// ...otherwise, we're in the ship...
+			else if (fMainShip | InNomad) {			// ...otherwise, we're in the ship or Nomad...
 				ltext = "Ship lights";
 				if (!fLights) {				// If lights are off, turn them on...
 					lstate = "";
@@ -182,7 +186,8 @@
 			printf("==	%s:		%s\x0a", ltext, lstate);			
 		}
 		else if (x == 1) {						// Toggle Night Vision
-			if (fMainShip | fSRV) {
+//-			if (fMainShip | fSRV) {
+			if (fMainShip | fSRV | fFighter) {
 				ActKey(KEYON+PULSE+NightVision);
 			}
 			else {
@@ -223,7 +228,8 @@
 			if (fSupercruise) {
 				reason = "we are in supercruise";
 			}
-			else if (fSRV) {
+//-			else if (fSRV) {								// TEST NOMAD functionality
+			else if (InSRV) {
 				reason ="we are in the SRV";
 			}
 			else if (fOnFoot) {
@@ -267,7 +273,7 @@
 		int reason = 0;
 		int ERROR = 0;
 
-		if (fSRV) {
+		if (fSRV) {									// TEST if NOMAD has a cargo scoop! ... otherwise use the following...
 			if ((x & !fCargoScoop) | (!x & fCargoScoop)) {
 				ActKey(KEYON+PULSE+CargoScoop);
 				ERROR = 0;
@@ -328,7 +334,8 @@
 		int reason = 0;
 		int GearString= "Landing Gear";
 		
-		if (!fSupercruise & !fSRV & !fLanded & !fDocked & !fFighter) {							// Test for normal flight mode 
+//-		if (!fSupercruise & !fSRV & !fLanded & !fDocked & !fFighter) {							// Test for normal flight mode 
+		if (!fSupercruise & !(InSRV) & !fLanded & !fDocked & !fFighter) {				// Test for normal flight mode 
 								
 			if(Speedbrake == 1) GearString = "Speed Brake";
 			else if(Speedbrake == 2) {
@@ -367,10 +374,16 @@
 		}
 		else {																		// Landing gear / Speedbrake function not valid  
 			if (fSupercruise) reason = "we are in supercruise";
-			if (fSRV)		reason = "we are in SRV";
+			if (fFighter) {
+				reason = "no landing gear in this fighter";
+				fnOverlay("Fighter", 15, 609, 940, 1, "LG1"); 
+			}
+			if (fSRV) {
+				reason = "we are in SRV";
+				fnOverlay("SRV", 15, 623, 950, 1, "LG2"); 
+			}
 			if (fLanded)	reason = "we are landed";
 			if (fDocked)	reason = "we are docked";
-			if (fFighter) 	reason = "no landing gear in this fighter";
 		}
 		if (reason != 0) fnNotValid(fnName, reason);
 	}
@@ -420,7 +433,8 @@
 				else if (fDocked) reason = "we are docked";
 			}
 		}
-		else if (fFighter) {
+//-		else if (fFighter) {
+		else if (fFighter | fSRV) {
 			ActKey(KEYON+PULSE+ReverseThrottle);											// or press NUMPAD *
 			if (ReverseThrust) {
 				printf("==	Throttle:			REVERSE\x0a");
@@ -429,15 +443,15 @@
 				printf("==	Throttle:			FORWARD\x0a");
 			}		
 		}
-		else if (fSRV) {
-			ActKey(KEYON+PULSE+ReverseThrottle);											// or press NUMPAD *
-			if (ReverseThrust) {
-				printf("==	Throttle:			REVERSE\x0a");
-			}
-			else {
-				printf("==	Throttle:			FORWARD\x0a");
-			}		
-		}
+//-		else if (fSRV) {
+//-			ActKey(KEYON+PULSE+ReverseThrottle);											// or press NUMPAD *
+//-			if (ReverseThrust) {
+//-				printf("==	Throttle:			REVERSE\x0a");
+//-			}
+//-			else {
+//-				printf("==	Throttle:			FORWARD\x0a");
+//-			}		
+//-		}
 		else if (fOnFoot) {													  
 			reason = "we are on foot, just walk backwards, silly!";
 		}
@@ -470,7 +484,7 @@
 				reason = "SCO enabled FSD not installed";
 			}
 		}
-		else if ((fMainShip & !fLandingGear & !fCargoScoop) | fFighter) {			// TEST: for normal flight mode 
+		else if ((fMainShip & !fLandingGear & !fCargoScoop) | fFighter | InNomad) {			// TEST: for normal flight mode 
 			ActKey(KEYON+PULSE+EngineBoost);
 		}
 		else {																		// Boost function not valid 
@@ -494,7 +508,8 @@
 					reason = "Cargo scoop";
 				}
 			}
-			if (fSRV) 			reason = "SRV";
+//-			if (fSRV) 			reason = "SRV";
+			if (InSRV) reason = "SRV";
 			if (fOnFoot)		reason = "On foot";			
 		}		
 		if (reason !=0) fnNotValid(fnName, reason);
@@ -532,7 +547,8 @@
 					//- ???
 				}
 			}
-			if(fSRV) {
+//-			if(fSRV) {
+			if(InSRV) {
 				fnName = "Deploy Turret";
 				if(fSRVTurretRetracted) {
 					reason = "too close to the ship";

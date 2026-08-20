@@ -638,7 +638,7 @@
 		}
 		else {
 			MapKeyUMD(&MyThrottle, EFRNORM,
-				EXEC("fnPrintState();"),																	// U -	Print Status Page
+				EXEC("fnStateDump(1);"),																	// U -	Print Status Page
 				EXEC("fnSetLEDs();"),																		// M -	Reset Status LEDs manually
 				EXEC("stfnMyStates(SAVE);")																	// D -	Save MyStates to &MyStatusFile
 				);																							//		This is usefull when adding or removing vars to json file 

@@ -186,19 +186,20 @@
 			ActKey(KEYON+PULSE+LED(&MyThrottle, LED_ONOFF, LED_CURRENT-LED5)); 			// set LED 5 OFF
 
 			if (Flags != 0) {
-				if (fFAOff & (fMainShip | fSRV)) {
+				if (fFAOff & (fMainShip | fSRV)) {				// TEST Nomad
 					fnFlashLED(LED1);													// [Flight Assist]		LED ON = FA-OFF
 				}
 				if (fLights & (fMainShip | fSRV)) {
 					fnFlashLED(LED2);													// [Ship/SRV Lights]	LED ON = Lights ON
 				}
-				if (fSilentRunning & fMainShip) {
+				if (fSilentRunning & fMainShip) {				// TEST Nomad
 					fnFlashLED(LED3);													// [Silent Running]		LED ON = Silent Running active
 				}
-				if (fCargoScoop & (fMainShip | fSRV)) {
+				if (fCargoScoop & (fMainShip | fSRV)) {			// TEST Nomad
 					fnFlashLED(LED4);													// [Cargo Scoop]		LED ON = Cargo Scoop deployed
 				}
-				if (fLandingGear & fMainShip & !fSRV) {
+//-				if (fLandingGear & fMainShip & !fSRV) {
+				if (fLandingGear) {
 					fnFlashLED(LED5);													// [Landing Gear]		LED ON = Landing Gear deployed
 				}
 			}
@@ -356,11 +357,8 @@
 	//								- 1 normal (default)
 	//								- 2 large
 	//
-	// Usage1:		fnTextToSpeech("This is test number 1");	// says the text at current value of 'VoiceVolume' in %
+	// Usage1:		
 	//
-	// OUTPUT:		Writes JSON queue files for external TTSMonitor.ps1
-	//				Expected JSON format:
-	//				{ "TTSSeq":1, "OverlayText":"text to say", "OverlayTTL":10, "OverlayX":600, "OverlayY":700, "OverlayColor":"Yellow" }
 	
 	int fnOverlay(int OverlayText, int OverlayTTL=10, int OverlayX=600, int OverlayY=980, int OverlayColor=3, int OverlayID=0, int OverlaySize=3) {
 
@@ -412,7 +410,7 @@
 
 	//	FUNCTION:	Writes TTSExport char array as JSON to the TTSQueue
 	//	Parmeters:	Char array TTSExport parsed from fnTextToSpeech() or fvOverlay()
-	//	NOTE:		This was common code within fnTextToSpeech() and fnOverlay()7 in order to write JSON into the common TTSQueue file.
+	//	NOTE:		This was common code within fnTextToSpeech() and fnOverlay() in order to write JSON into the common TTSQueue file.
 	
 	int fnWriteTTSQueue(alias TTSExport) {
 
@@ -573,7 +571,7 @@
 			fnTextToSpeech("Running Odyssey");
 		}
 		
-		fnPrintState();
+		fnStateDump(0);
 		printf("\x0a\++	Game is running....waiting for input...\x0a\x0a");
 
 		LiveKeyMap();													// MapKey profile for 'Game Running'
@@ -861,7 +859,7 @@
 					}
 				}
 				else if (fSupercruise)	reason = "cannot use SCB in supercruise";
-				else if (!fMainShip)	reason = "we are not in the ship";
+				else if (!fMainShip)	reason = "we are not in the main ship";
 				else if (fDocked)		reason = "can not use SCB whilst docked";
 				else if (fLanded)		reason = "can not use SCB whilst landed";
 			}
@@ -906,7 +904,7 @@
 			}
 			else if (fDocked)		reason = "we are docked";
 			else if (fLanded)		reason = "we are landed";
-			else if (!fMainShip)	reason = "we are not in the ship";
+			else if (!fMainShip)	reason = "we are not in the main ship";
 		}
 		if (reason != 0) fnNotValid(fnName, reason);
 	}
@@ -924,13 +922,15 @@
 				ActKey(KEYON+PULSE+FireChaff);
 				printf("!!	Chaff	Fired	!!\x0a");
 			}
-			else {
-				if (fSupercruise)	reason = "we are in supercruise";
-				else if (fDocked)		reason = "we are docked";
-				else if (fLanded)		reason = "we are landed";	
-				else if (fSRV)			reason = "we are in the SRV";
-				else if (fFighter)		reason = "I don't think the fighter has chaff";
-				else if (fOnFoot)		reason = "we are on foot";
+			else {							// DOES THE BELOW EVEN WORK WHEN WE'RE NOT IN THE MAINSHIP ????
+				if (fSupercruise)			reason = "we are in supercruise";
+				else if (fDocked)			reason = "we are docked";
+				else if (fLanded)			reason = "we are landed";	
+//-				else if (fSRV)				reason = "we are in the SRV";
+				else if (InSRV)	reason = "we are in the SRV";
+				else if (InNomad)			reason = "we are in the Nomad";
+				else if (fFighter)			reason = "I don't think the fighter has chaff";
+				else if (fOnFoot)			reason = "we are on foot";
 			}
 		}
 		else {
@@ -944,7 +944,7 @@
 	//	Parameter:	x: DEPLOY (1) = Deploy SRV, RECOVER (0) = Board ship
 
 	int fnDeploySRV(int x) {
-		int fnName = "deploy or recall fighter";
+		int fnName = "deploy or recall SRV";
 		int reason = 0;
 
 		if (x) fnName = "Deploy SRV";
@@ -953,7 +953,8 @@
 		if (!StartupLock & fMainShip) {
 			if (fSRVPresent) {
 				if (x == DEPLOY) {
-					if (!fSRV) {
+//-					if (!fSRV) {
+					if (InSRV) {
 						if (fLanded) {												// DEPLOY
 							if (DEBUG >= LOG) printf("!!	DEBUG: fnDeploySRV() - Call m_DeploySRV line 876\x0a");
 							ActKey(KEYON+PULSE+m_DeploySRV);
@@ -968,17 +969,20 @@
 					}
 				}
 				else {																// RECOVER and set PIPs to shields in case we're under fire 
-					if (fSRV & fSRVTurretRetracted) {
+//-					if (fSRV & fSRVTurretRetracted) {
+					if ((InSRV) & fSRVTurretRetracted) {
 						if (DEBUG >= LOG) printf("!!	DEBUG: fnDeploySRV() - Call m_BoardShip line 890\x0a");
 						ActKey(KEYON+PULSE+m_BoardShip);							// Duration = 1395 + in Game animation
 						printf("==	SRV:			RECOVERED\x0a");
 						DeferCall(8000, &fnPIPMapper, SYS);							// PIPs to Shields ... is 8 seconds long enough (was 14)?
 					}
 					else {
-						if (!fSRV) {
+//-						if (!fSRV) {
+						if (InSRV) {
 							reason = "SRV not deployed";
 						}
-						else if (fSRV & !fSRVTurretRetracted) {
+//-						else if (fSRV & !fSRVTurretRetracted) {
+						else if ((InSRV) & !fSRVTurretRetracted) {
 							reason = "turret not retracted";
 						}
 					}
@@ -1053,19 +1057,21 @@
 	int fnDRShip() {
 		int fnName = "Dismiss or Recall Ship";
 		int reason = 0;
-
-		if (fLanded) {															// This enables fLanded trap in stfmStateTracker to differentiate auto v manual dismissal
-			ShipDismissed = 1;													// I sent the ship away
+/*
+		if (fMainShip) {														// This enables fLanded trap in stfmStateTracker to differentiate auto v manual dismissal
+			if (fLanded) {														// This enables fLanded trap in stfmStateTracker to differentiate auto v manual dismissal
+				ShipDismissed = 1;												// I sent the ship away
+			}
+			else {
+				ShipDismissed = 0;												// I recalled the ship
+			}
 		}
-		else {
-			ShipDismissed = 0;													// I recalled the ship
-		}
-		
+*/		
 		if(fSRV | fOnFootOnPlanet) {											// TESTING: sometimes flag not set for fOnFoot or fOnFootOnPlanet
 			ActKey(KEYON+PULSE+SRVRecallDismissShip);							// 'LeftALT+k'			
 		}
 		else {
-			reason = "we are not in the S R V or on foot";
+			reason = "we are not in the S R V, Noamd or on foot";
 		}
 		if (reason != 0) fnNotValid(fnName, reason);
 	}
@@ -1083,7 +1089,7 @@
 		}
 		else {
 			if(fSupercruise) 		reason = "Supercruise";
-			else if (!fMainShip)	reason = "we are not in the ship";
+			else if (!fMainShip)	reason = "we are not in the main ship";
 			else if (fDocked)		reason = "we are already docked";
 			else if (fLanded)		reason = "we are already landed";
 			else 					reason = "we are in no position to request docking";
@@ -1119,14 +1125,17 @@
 				}
 				
 				if(AutoHangar) {
+					fnOverlay("Arrival mode: Station Services", 20, 587, 990, 3, "ArrivalMode"); // x = (470 - strlen)/2 * 2.67 to centre text string
 					fnVPOutput("Arrival mode station services");
 					return 0;
 				}
 				else if(AutoDisembark) {
+					fnOverlay("Arrival mode: Disembark", 20, 596, 990, 3, "ArrivalMode");
 					fnVPOutput("Arrival mode disembark");
 					return 0;				
 				}
 				else {
+					fnOverlay("Arrival mode: Surface", 20, 598, 990, 3, "ArrivalMode");
 					fnVPOutput("Arrival mode, surface");
 					return 0;
 				}
@@ -1181,7 +1190,8 @@
 		if (fMainShip & fDocked & (GUIMode != GUI_StationSvcs)) {
 			fnHangarServices(x);
 		}
-		else if (fSRV) {
+//-		else if (fSRV) {
+		else if (InSRV) {
 			ActKey(KEYON+PULSE+SRVHandbrake);		// Toggle SRV Handbrake
 		}
 		else {
@@ -1335,8 +1345,12 @@
 		if (fMainShip) {
 			printf("==	Menulog from Ship\x0a");
 		}
-		else if (fSRV) {
+//-		else if (fSRV) {
+		else if (InSRV) {
 			printf("==	Menulog from SRV\x0a");
+		}
+		else if (InNomad) {
+			printf("==	Menulog from Nomad\x0a");
 		}
 		else if (fOnFoot) {
 			printf("==	Menulog on foot\x0a");
@@ -1441,10 +1455,11 @@
 	// -------------------- //
 	// REPORT SCRIPT STATES //										// (Optimised Formatting for TARGET GUI)
 	// -------------------- //
-
-	// FUNCTION: Display header for the status of the macro toggles & user preferences at script start
-
-	int fnPrintState() {
+/*
+	//	FUNCTION: Display header for the status of the macro toggles & user preferences at script start
+	//	Parameter: option 0 print the banner in console. 1 print the banner plus screen overlay
+	
+	int fnPrintState(int option = 0) {
 
 		printf("\x0a");
 		printf("SCRIPT LOADED:	v%d.%d.%d.%s     TARGET Mappings, Macros & Functions Loaded \x0a", VMajor, VMinor, VPoint, VBranch);
@@ -1452,10 +1467,17 @@
 		printf("USER PREFERENCES: JS-Curves: %s     DX-Slider Curve: %d     PIPMode(%d): %s     LED Level: %d\x0a\x0a", JSCurveSetting, DXCurveSetting, PIPMode, PIPTxt, LEDLevel);
 		fnStateDump();
 	}
+*/
 
-	// FUNCTION: Prints state variables to console
+	//	FUNCTION:	Prints state variables to console
+	//	Parameter:	option 0 print the banner in console. 1 print the banner plus screen overlay
 
-	int fnStateDump() {
+	int fnStateDump(int option = 0) {
+
+		printf("\x0a");
+		printf("SCRIPT LOADED:	v%d.%d.%d.%s     TARGET Mappings, Macros & Functions Loaded \x0a", VMajor, VMinor, VPoint, VBranch);
+		printf("==================================================================================\x0a");
+		printf("USER PREFERENCES: JS-Curves: %s     DX-Slider Curve: %d     PIPMode(%d): %s     LED Level: %d\x0a\x0a", JSCurveSetting, DXCurveSetting, PIPMode, PIPTxt, LEDLevel);
 
 		// Must declare all local variables outside of any logical tests
 
@@ -1531,7 +1553,8 @@
 				printf("FSS Mode:	%s		Supercruise:	%s	Silent Running:	%s\x0a", FM, WD, SR);
 				printf("Flight Assist:	%s		Thrust Vector:	%s	Speed Brake:	%s\x0a", FA, RT, SB);
 			}
-			else if (fSRV) {		
+//-			else if (fSRV) {
+			else if (InSRV) {
 				if (!fLights) {
 					BL = "OFF";
 				}
@@ -1608,6 +1631,386 @@
 
 			if (strlen(&myJson) > 68) {
 				printf("-----------------------------------------------------------------------------------------------------------------------------------------------\x0a");
+			}
+		}
+		if (option == 1) fnOverlayFlags(0);
+	}
+
+
+	//	FUNCTION:	Produce on screen overlay of set flags
+	//	PARAMETERS:	dummy. allows REXEC and DeferCall
+	
+	int fnOverlayFlags(int dummy = 0) {
+
+		int ovrx	=	10;			// start top
+		int ovry	= 	10;			// start left
+		int ovrttl	=	10;			// seconds 
+		int ovrclr	=	1;			// green
+		int ovrtxt	= 	0;			// text and id 
+		
+		if (Flags > 0) {
+			// Overlay header 
+			ovrtxt = "Flags";
+			fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			
+			ovrtxt = "=====";
+			ovry = ovry + 10;
+			fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+
+			ovry = ovry + 10;
+
+			// Overlay any set flags
+			if (fDocked) {
+				ovrtxt = "fDocked";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fLanded) {
+				ovrtxt = "fLanded";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fLandingGear) {
+				ovrtxt = "fLandingGear";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fShieldsUp) {
+				ovrtxt = "fShieldsUp";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			
+			if (fSupercruise) {
+				ovrtxt = "fSupercruise";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fFAOff) {
+				ovrtxt = "fFAOff";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fHardpoints) {
+				ovrtxt = "fHardpoints";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}	
+			if (fInWing) {
+				ovrtxt = "fInWing";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+
+			if (fLights) {
+				ovrtxt = "fLights";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);	
+			}
+			if (fCargoScoop) {
+				ovrtxt = "fCargoScoop";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fSilentRunning) {
+				ovrtxt = "fSilentRunning";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fFuelScoop) {
+				ovrtxt = "fFuelScoop";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+
+			if (fSRVHandbrake) {
+				ovrtxt = "fSRVHandbrake";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fSRVTurretView) {
+				ovrtxt = "fSRVTurretView";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fSRVTurretRetracted) {
+				ovrtxt = "fSRVTurretRetracted";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fSRVDriveAssist) {
+				ovrtxt = "fSRVDriveAssist";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+
+			if (fMassLocked) {
+				ovrtxt = "fMassLocked";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fFSDCharging) {
+				ovrtxt = "fFSDCharging";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fFSDCooldown) {
+				ovrtxt = "fFSDCooldown";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fLowFuel) {
+				ovrtxt = "fLowFuel";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);	
+			}
+
+			if (fOverHeating) {
+				ovrtxt = "fOverheating";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fLatLong) {
+				ovrtxt = "fLatLong";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fDanger) {
+				ovrtxt = "fDanger";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fInterdicted) {
+				ovrtxt = "fInterdicted";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+
+			if (fMainShip) {
+				ovrtxt = "fMainShip";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fFighter) {
+				ovrtxt = "fFighter";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fSRV) {
+				ovrtxt = "fSRV";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fHUDAnalysis) {
+				ovrtxt = "fHUDAnalysis";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+
+			if (fNightVision) {
+				ovrtxt = "fNightVision";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fAltFromAvgRad) {
+				ovrtxt = "fAltFromAvgRad";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fFSDJump) {
+				ovrtxt = "fFSDJump";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fSRVHiBeam) {
+				ovrtxt = "fSRVHiBeam";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+
+		}
+		if (Flags2 > 0) {
+			
+			ovrx	= 100;
+			ovry	= 10;
+			
+			// Overlay header 
+			ovrtxt = "Flags2";
+			fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+
+			ovrtxt = "======";
+			ovry = ovry + 10;
+			fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+
+			ovry = ovry + 10;			
+
+			// Overlay any set flags			
+			if (fOnFoot) {
+				ovrtxt = "fOnFoot";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fInTaxi) {
+				ovrtxt = "fInTaxi";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fInMultiCrew) {
+				ovrtxt = "fInMultiCrew";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fOnFootInStation) {
+				ovrtxt = "fOnFootInStation";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+
+			if (fOnFootOnPlanet) {
+				ovrtxt = "fOnFootOnPlanet";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fAimDownSight) {
+				ovrtxt = "fAimDownSight";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fLowOxygen) {
+				ovrtxt = "fLowOxygen";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fLowHealth) {
+				ovrtxt = "fLowHealth";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+
+			if (fCold) {
+				ovrtxt = "fCold";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fHot) {
+				ovrtxt = "fHot";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fVeryCold) {
+				ovrtxt = "fVeryCold";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fVeryHot) {
+				ovrtxt = "fVeryHot";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+
+			if (fGlideMode) {
+				ovrtxt = "fGlideMode";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fOnFootInHangar) {
+				ovrtxt = "fOnFootInHangar";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fOnFootSocialSpace) {
+				ovrtxt = "fOnFootSocialSpace";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fOnFootExterior) {
+				ovrtxt = "fOnFootExterior";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			
+			if (fBreathableAtmosphere) {
+				ovrtxt = "fBreathableAtmosphere";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fTelepresenceMulticrew) {
+				ovrtxt = "fTelepresenceMulticrew";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fPhysicalMulticrew) {
+				ovrtxt = "fPhysicalMulticrew";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fFSDHyperdriveChg) {
+				ovrtxt = "fFSDHyperdriveChg";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+
+			if (fSupercruiseOvercharge) {
+				ovrtxt = "fSupercruiseOvercharge";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fSupercruiseAssist) {
+				ovrtxt = "fSupercruiseAssist";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fNPCCrewActive) {
+				ovrtxt = "fNPCCrewActive";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fRESERVED24) {
+				ovrtxt = "fRESERVED24";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+
+			if (fRESERVED25) {
+				ovrtxt = "fRESERVED25";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fRESERVED26) {
+				ovrtxt = "fRESERVED26";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fRESERVED27) {
+				ovrtxt = "fRESERVED27";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fRESERVED28) {
+				ovrtxt = "fRESERVED28";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			
+			if (fRESERVED29) {
+				ovrtxt = "fRESERVED29";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fRESERVED30) {
+				ovrtxt = "fRESERVED30";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fRESERVED31) {
+				ovrtxt = "fRESERVED31";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
+			}
+			if (fRESERVED32) {
+				ovrtxt = "fRESERVED32";
+				ovry = ovry + 10;
+				fnOverlay(ovrtxt, ovrttl, ovrx, ovry, ovrclr, ovrtxt);
 			}
 		}
 	}
@@ -1840,17 +2243,17 @@
 			if (DEBUG > 0) {			//	TESTING Screen Overlay - screen canvas = 480 chars across
 				if (AutoHangar) {
 					// sprintf &ArrivalTXT instead
-					fnOverlay("Arrival mode: Station Services", 20, 587, 990, 3, "DockingStatus"); // x = (470 - strlen)/2 * 2.67 to centre text string
+					fnOverlay("Arrival mode: Station Services", 20, 587, 980, 3, "ArrivalMode"); // x = (470 - strlen)/2 * 2.67 to centre text string
 					fnTextToSpeech("Arrival mode: Station Services");
 				}
 				else if (AutoDisembark) {
 					// sprintf &ArrivalTXT instead
-					fnOverlay("Arrival mode: Disembark", 20, 596, 990, 3, "DockingStatus");
+					fnOverlay("Arrival mode: Disembark", 20, 596, 980, 3, "ArrivalMode");
 					fnTextToSpeech("Arrival mode: Disembark");
 				}
 				else {
 					// sprintf &ArrivalTXT instead
-					fnOverlay("Arrival mode: Surface", 20, 598, 990, 3, "DockingStatus");
+					fnOverlay("Arrival mode: Surface", 20, 598, 980, 3, "ArrivalMode");
 					fnTextToSpeech("Arrival mode: Surface");
 				}
 			}
@@ -1949,10 +2352,16 @@
 	
 	int fnEngageDC(int dummy) {
 
+		int FlashOverlay = 11;
+		
 		if (fMassLocked) {
 			ActKey(KEYON+PULSE+SetSpeed0);
 			AutoDC = 0;
-			fnOverlay("Auto dock engaged", 10, 605, 980, 3, "AutoDock");		// 15 seconds, centre, near bottom, yellow, id 
+			while (FlashOverlay != 0) {											// Flash Auto Dock message 5 times
+				fnOverlay("Auto dock engaged", 1, 610, 970, 3, "AutoDock");		// 1 second, centre, near bottom, yellow, id 
+				FlashOverlay = FlashOverlay - 1;
+				Sleep(2000);
+			}
 		}
 		else {
 			AutoDC = 1;							// wait for masslock and retry
@@ -2265,6 +2674,93 @@
 			}
 	//-		Specific shiptype code goes here, example...
 	//-		Call KeyMap Profile or set "MapKeyProfile" for specific ship			
+		}
+	}
+
+
+	//	FUNCTION:	Get VehicleType from MyJournalData.json
+	//	Parameter:	dummy - enables DeferCall() or REXEC()
+	//	Globals:	Uses &VehicleType, defined in ED_GlobalVars
+	int InNomad = 0;
+	int InSRV 	= 0;
+	
+	int fnGetVehicleType(int dummy=0) {
+
+		stfnGetKeyValue("VehicleType", STRING, 1);					// sets global &keyvalue
+		Dim(&VehicleType, strlen(&keyvalue)+1);						// init our ShipType char array 
+
+		if (strcmp(&keyvalue, &VehicleType)==0) {					// Do nothing if &VehicleType already matches what's in MyJournalData.json ...
+			return 0;
+		}
+		else {														// ... otherwise update our variable etc.
+			VehicleType[0] = 0;										// Resets char array
+			strcpy(&VehicleType, &keyvalue);						// copy in results from stfnGetKeyValue call above
+			VehicleType[strlen(&VehicleType)] = 0;					// nul terminate char array 
+
+			if (strcmp(&VehicleType, "SLV") == 0) InNomad = 1;		// We are in the Nomad
+			else InNomad = 0;
+			if (strcmp(&VehicleType, "SRV") == 0) InSRV = 1;		// We are in the SRV
+			else InSRV = 0;
+
+			if (DEBUG >= 0) { 
+				if (strlen(&VehicleType) == 0) {					// trap empty string...
+					printf("!!	DEBUG: fnGetVehicleType() - VehicleType has returned as zero length string\x0a");
+				}
+				else {												// if not empty, print result
+					if (strcmp(&VehicleType , "none")==0)		fnOverlay("VehicleType = none", 10, 605, 950, 3, "Vehicle");
+					else if (strcmp(&VehicleType , "Ship")==0)	fnOverlay("VehicleType = MainShip", 10, 600, 950, 3, "Vehicle");
+					else if (InSRV)								fnOverlay("VehicleType = SRV", 10, 606, 950, 3, "Vehicle");
+					else if (InNomad) 							fnOverlay("VehicleType = SLV", 10, 606, 950, 3, "Vehicle");
+						
+					printf("!!	DEBUG: fnGetVehicleType() - VehicleType = %s\x0a", &VehicleType);
+				}
+			}
+			
+	//-		Specific Vehicle type code goes here...
+		}
+	}
+
+
+	//	FUNCTION:	Get MainShipStatus from MyJournalData.json
+	//	Parameter:	dummy - enables DeferCall() or REXEC()
+	//	Globals:	Uses &MainShipStatus, defined in ED_GlobalVars
+
+	int DISMISSED = 0;
+	
+	int fnGetMainShipStatus(int dummy=0) {
+
+		stfnGetKeyValue("MainShipStatus", STRING, 1);						// sets global &keyvalue
+		Dim(&MainShipStatus, strlen(&keyvalue)+1);							// init our ShipType char array 
+
+		if (strcmp(&keyvalue, &MainShipStatus)==0) {						// Do nothing if &VehicleType already matches what's in MyJournalData.json ...
+			return 0;
+		}
+		else {																// ... otherwise update our variable etc.
+			MainShipStatus[0] = 0;											// Resets char array
+			strcpy(&MainShipStatus, &keyvalue);								// copy in results from stfnGetKeyValue call above
+			MainShipStatus[strlen(&MainShipStatus)] = 0;					// nul terminate char array 
+
+			if (strcmp(&MainShipStatus, "Present") == 0) DISMISSED = 0;		// Mainship RECALLED
+			if (strcmp(&MainShipStatus, "Dismissed") == 0) DISMISSED = 1;	// Mainship DISMISSED
+
+			if (DEBUG >= 0) { 
+				if (strlen(&MainShipStatus) == 0) {							// trap empty string...
+					printf("!!	DEBUG: fnGetMainShipStatus() - MainShipStatus has returned as zero length string\x0a");
+				}
+				else {														// if not empty, print result
+					if (strcmp(&MainShipStatus , "Present")==0)			fnOverlay("MainShipStatus = Recalled", 10, 595, 960, 3, "MainShipStatus");
+					else if (strcmp(&MainShipStatus , "Dismissed")==0)	fnOverlay("MainShipStatus = Dismissed", 10, 593, 960, 3, "MainShipStatus");
+						
+					printf("!!	DEBUG: fnGetMainShipStatus() - MainShipStatus = %s\x0a", &MainShipStatus);
+
+//					if (DISMISSED) {
+//						fnOverlay("Ship departed", 15, 610, 980, 3, "LandedFlag");		// TTL=15 seconds, pos=centre-bottom, colour=yellow
+//						fnVPOutput("Ship has departed");
+//					}
+					
+//					if (DEBUG > 1) printf("==	Ship Status:		DISMISSED\x0a");
+				}
+			}
 		}
 	}
 

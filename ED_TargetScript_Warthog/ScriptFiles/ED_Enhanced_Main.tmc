@@ -8,8 +8,8 @@
 	//							THRUSTMASTER WARTHOG REQUIRED								//
 
 	// This file:	ED_Enhanced_Main.tmc	 		v600.0					// New Minor Version
-	// Supports:	Elite Dangerous 				v4.3.3.0				// Does not support Legacy Horizons
-	// Requires:	TARGET 							v3.0.25.603				// https://support.thrustmaster.com/
+	// Supports:	Elite Dangerous 				v4.4.0.3				// Does not support Legacy Horizons
+	// Requires:	TARGET 							v3.0.26.303				// https://support.thrustmaster.com/
 	//				Joystick firmware				v12
 	//				Throttle firmware 				v23
 	//				AVA firmware					v2.07					// NOTE: AVA users opting to stay on older firmware 
@@ -28,7 +28,7 @@
 	// MapKey statements					refer to ED_MapKeyAssignment file
 	// Global State and Boolean Defines		refer to ED_ScriptDefines file
 	// Global Game Key Bind Defines			refer to ED_GameBindings file 
-	// Global Script Variables				refer to ED_GlobalVars file
+	// Global Script Variables				refer to ED_GlobalVars file and in line prior to function
 	// User Configuration Settings			refer to ED_UserSettings file
 	// ==============================================================================================
 
@@ -124,16 +124,20 @@
 		Exclude(&FarmStickLeft);
 		Exclude(&FarmStickXboxRight);
 		Exclude(&FarmStickXboxLeft);
+		Exclude(&FarmStickPSRight);
+		Exclude(&FarmStickPSLeft);
 		Exclude(&AVA_F16L);
 		Exclude(&AVA_F18L);
+		Exclude(&AVA_Airbus);
+		Exclude(&AVA_AirbusL);
 		Exclude(&Sol_F16);
 		Exclude(&Sol_F16L);
 		Exclude(&Sol_F18);
 		Exclude(&Sol_F18L);
 		Exclude(&Sol_SolR);
 		Exclude(&Sol_SolRL);
-		Exclude(&FarmStickPSRight);
-		Exclude(&FarmStickPSLeft);
+		Exclude(&Sol_Airbus);
+		Exclude(&Sol_AirbusL);
 		Exclude(&Sol_Throttle);					// Looks to use same mapfile as TWCSThrottle 
 
 		if(Init(&EventHandle)) return 1;
