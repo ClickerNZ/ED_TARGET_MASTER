@@ -1,4 +1,4 @@
-# v36	-	Incorporating EDMC Overlay to show messages 
+# v38	-	Add MainShipStatus derived from remote Touchdown/Liftoff events (PlayerControlled=false).
 #
 # ProcessJournal.ps1
 #
@@ -22,7 +22,7 @@ param (
     [string]$trackingFilePath   = "C:\Thrustmaster\Common\Output\Tracking.json"
 )
 
-$MyVersion = 36
+$MyVersion = 38
 
 # Path to our output JSON
 $JsonFilePath = Join-Path -Path $outputFolderPath -ChildPath "MyJournalData.json"
@@ -76,7 +76,7 @@ function Initialize-GlobalVariables {
             StationName = "not set"; StationType = "not set"; SystemName = "not set";
             BodyName = "not set"; OrganicFound = "not set";
             DockingStatus = "not set"; DeniedReason = "not set"; LandingPad = "not set";
-			Modules = 0; ActiveFighter = $false;
+			Modules = 0; ActiveFighter = $false; VehicleType = "Ship"; MainShipStatus = "Present";
 			InputCMD = "not set"; CMDParameter = "not set";
         }
         $jsonDefaults = $defaults | ConvertTo-Json -Compress
@@ -87,6 +87,16 @@ function Initialize-GlobalVariables {
 #    $data = Get-Content $JsonFilePath | ConvertFrom-Json
     foreach ($prop in $data.PSObject.Properties) {
         Set-Variable -Name $prop.Name -Value $prop.Value -Scope Global
+    }
+
+    # v37 migration: older MyJournalData.json files will not yet contain VehicleType.
+    if (-not ("VehicleType" -in $data.PSObject.Properties.Name)) {
+        $Global:VehicleType = "Ship"
+    }
+
+    # v38 migration: older MyJournalData.json files will not yet contain MainShipStatus.
+    if (-not ("MainShipStatus" -in $data.PSObject.Properties.Name)) {
+        $Global:MainShipStatus = "Present"
     }
 	
 	# Read the saved bitmask to compare:
@@ -115,13 +125,55 @@ function Convert-ToTargetAscii {
     return [System.Text.Encoding]::ASCII.GetString([System.Text.Encoding]::ASCII.GetBytes($Text))
 }
 
+# Derive a TARGET-friendly vehicle type from Journal state.
+# Values written to MyJournalData.json:
+#   none = on foot
+#   Ship = main ship
+#   SRV  = conventional SRV
+#   SLV  = Nomad ship-launched vehicle
+function Get-VehicleTypeFromShipCode {
+    param([AllowNull()][string]$ShipCode)
+
+    if ([string]::IsNullOrWhiteSpace($ShipCode)) { return "Ship" }
+
+    switch -Regex ($ShipCode.ToLowerInvariant()) {
+        '^lander01$'                  { return "SLV" }   # Nomad
+        '^testbuggy$'                 { return "SRV" }   # Scarab
+        '^scorpion$'                  { return "SRV" }   # Scorpion
+        '^explorationsuit_class'      { return "none" }
+        '^flightsuit_class'           { return "none" }
+        '^tacticalsuit_class'         { return "none" }
+        '^utilitysuit_class'          { return "none" }
+        default                       { return "Ship" }
+    }
+}
+
+# Derive VehicleType from Journal SRVType.
+# Known Journal SRVType values:
+#   testbuggy = SRV Scarab
+#   scorpion  = SRV Scorpion
+#   lander01  = Nomad SLV
+function Get-VehicleTypeFromSRVType {
+    param([AllowNull()][string]$SRVType)
+
+    if ([string]::IsNullOrWhiteSpace($SRVType)) { return $null }
+
+    switch ($SRVType.ToLowerInvariant()) {
+        'testbuggy' { return 'SRV' }
+        'scorpion'  { return 'SRV' }
+        'lander01'  { return 'SLV' }
+        default     { return 'Unknown' }
+    }
+}
+
+
 
 # Compare new vs old, then update JSON
 function Compare-And-UpdateVariables {
     $keys = @(
         'LoadGameDetect','CMDRName','ShipName','ShipType','StationName','StationType',
         'SystemName','BodyName','OrganicFound','DockingStatus',
-        'DeniedReason','LandingPad','Modules','ActiveFighter','InputCMD','CMDParameter',
+        'DeniedReason','LandingPad','Modules','ActiveFighter','VehicleType','MainShipStatus','InputCMD','CMDParameter',
         'destHeading','destDistance'
     )
 
@@ -157,6 +209,8 @@ function Compare-And-UpdateVariables {
             LandingPad     = $Global:LandingPad
             Modules        = $Global:Modules
             ActiveFighter  = $Global:ActiveFighter
+            VehicleType    = $Global:VehicleType
+            MainShipStatus = $Global:MainShipStatus
             InputCMD       = $Global:InputCMD
             CMDParameter   = $Global:CMDParameter
             destHeading    = $Global:destHeading
@@ -312,12 +366,17 @@ function Process-NewLines {
 				if ("Ship" -in $entry.PSObject.Properties.Name) {
 					$ShipType = Get-MappedValue -MapName "ShipType_map" -Key $entry.ship
 					$Global:newShipType = $ShipType
+                    $Global:newVehicleType = Get-VehicleTypeFromShipCode -ShipCode $entry.Ship
+                    if ("ShipID" -in $entry.PSObject.Properties.Name) {
+                        if ($Global:newVehicleType -eq "SLV") { $Global:lastSLVID = $entry.ShipID }
+                        elseif ($Global:newVehicleType -eq "SRV") { $Global:lastSRVID = $entry.ShipID }
+                    }
 					if ($Global:Debug) {
 						if (-not $Global:GameRunning) {
-							Write-Host "[$localtime] : Event: LoadGame, Ship = $Global:newShipType" -ForegroundColor Yellow 
+							Write-Host "[$localtime] : Event: LoadGame, Ship = $Global:newShipType, VehicleType = $Global:newVehicleType" -ForegroundColor Yellow 
 						}
 						else {
-							Write-Host "[$localtime] : Event: LoadGame, Ship = $Global:newShipType" -ForegroundColor Cyan 
+							Write-Host "[$localtime] : Event: LoadGame, Ship = $Global:newShipType, VehicleType = $Global:newVehicleType" -ForegroundColor Cyan 
 						}
 					}
 				}
@@ -326,6 +385,7 @@ function Process-NewLines {
 				if ("StationName" -in $entry.PSObject.Properties.Name) {
 					$Global:newStationName = $entry.StationName
 					$Global:newDockingStatus = "Docked"
+                    $Global:newVehicleType = "Ship"
 					$Global:newDeniedReason = "not denied"
 					if ($Global:Debug) {
 						if (-not $Global:GameRunning) {
@@ -410,6 +470,17 @@ function Process-NewLines {
 	#			Write-Host ("->Encoded mask: DEC:{0}  BIN(msb->lsb):{1}" -f $mask, $bin) -ForegroundColor Magenta
 			}	
 			"Location" {
+                if (("OnFoot" -in $entry.PSObject.Properties.Name) -and $entry.OnFoot) {
+                    $Global:newVehicleType = "none"
+                }
+                elseif (("InSRV" -in $entry.PSObject.Properties.Name) -and $entry.InSRV) {
+                    if ($Global:VehicleType -eq "SLV") {
+                        $Global:newVehicleType = "SLV"
+                    }
+                    else {
+                        $Global:newVehicleType = "SRV"
+                    }
+                }
 				if ("StarSystem" -in $entry.PSObject.Properties.Name) {
 					$Global:newSystemName = $entry.StarSystem
 					if ($Global:Debug) {
@@ -458,16 +529,39 @@ function Process-NewLines {
 			"Touchdown" {
 				if ("Body" -in $entry.PSObject.Properties.Name) {
 					$Global:newBodyName = $entry.Body
-					if ($Global:Debug) {
-						if (-not $Global:GameRunning) {
-							Write-Host "[$localtime] : Event: TouchDown, Body = $Global:newBodyName" -ForegroundColor Yellow 
-						}
-						else {
-							Write-Host "[$localtime] : Event: TouchDown, Body = $Global:newBodyName" -ForegroundColor Cyan
-						}
-					}																					
 				}
+
+                # Remote main-ship recall/arrival.
+                # PlayerControlled=false means the touchdown belongs to the main ship, not the currently controlled SRV/SLV/ship.
+                if (("PlayerControlled" -in $entry.PSObject.Properties.Name) -and ($entry.PlayerControlled -eq $false)) {
+                    $Global:newMainShipStatus = "Present"
+                }
+
+				if ($Global:Debug) {
+					if (-not $Global:GameRunning) {
+						Write-Host "[$localtime] : Event: TouchDown, Body = $Global:newBodyName, PlayerControlled = $($entry.PlayerControlled), MainShipStatus = $Global:newMainShipStatus" -ForegroundColor Yellow 
+					}
+					else {
+						Write-Host "[$localtime] : Event: TouchDown, Body = $Global:newBodyName, PlayerControlled = $($entry.PlayerControlled), MainShipStatus = $Global:newMainShipStatus" -ForegroundColor Cyan
+					}
+				}																					
 			}
+            "Liftoff" {
+                # Remote main-ship dismiss/departure.
+                # PlayerControlled=false means the liftoff belongs to the main ship, not the currently controlled SRV/SLV/ship.
+                if (("PlayerControlled" -in $entry.PSObject.Properties.Name) -and ($entry.PlayerControlled -eq $false)) {
+                    $Global:newMainShipStatus = "Dismissed"
+                }
+
+				if ($Global:Debug) {
+					if (-not $Global:GameRunning) {
+						Write-Host "[$localtime] : Event: Liftoff, PlayerControlled = $($entry.PlayerControlled), MainShipStatus = $Global:newMainShipStatus" -ForegroundColor Yellow 
+					}
+					else {
+						Write-Host "[$localtime] : Event: Liftoff, PlayerControlled = $($entry.PlayerControlled), MainShipStatus = $Global:newMainShipStatus" -ForegroundColor Cyan
+					}
+				}																					
+            }
 			"DockingRequested" {									# Not, strictly speaking, required as we capture this within TARGET already
 				$Global:RequestStation = $entry.StationName
 				$Global:newDockingStatus = "Requested"
@@ -588,36 +682,122 @@ function Process-NewLines {
 					}																					
 				}
 			}
-			"LaunchFighter" {
-				$Global:newActiveFighter = $true
+			"LaunchSRV" {
+                $srvVehicleType = Get-VehicleTypeFromSRVType -SRVType $entry.SRVType
+                if ($srvVehicleType -eq "SLV") {
+                    # Future-proofing: if Frontier ever launches an SLV through LaunchSRV.
+                    $Global:newVehicleType = "SLV"
+                    if ("ID" -in $entry.PSObject.Properties.Name) { $Global:lastSLVID = $entry.ID }
+                }
+                else {
+                    # Known conventional SRVs: testbuggy/Scarab and scorpion/Scorpion.
+                    $Global:newVehicleType = "SRV"
+                    if ("ID" -in $entry.PSObject.Properties.Name) { $Global:lastSRVID = $entry.ID }
+                }
 				if ($Global:Debug) {
 					if (-not $Global:GameRunning) {
-						Write-Host "[$localtime] : Event: LaunchFighter, ActiveFighter = $Global:newActiveFighter" -ForegroundColor Yellow 
+						Write-Host "[$localtime] : Event: LaunchSRV, SRVType = $($entry.SRVType), VehicleType = $Global:newVehicleType" -ForegroundColor Yellow 
 					}
 					else {
-						Write-Host "[$localtime] : Event: LaunchFighter, ActiveFighter = $Global:newActiveFighter" -ForegroundColor Cyan
+						Write-Host "[$localtime] : Event: LaunchSRV, SRVType = $($entry.SRVType), VehicleType = $Global:newVehicleType" -ForegroundColor Cyan
+					}
+				}															
+			}
+			"DockSRV" {
+                $srvVehicleType = Get-VehicleTypeFromSRVType -SRVType $entry.SRVType
+                if ($srvVehicleType -eq "SLV") {
+                    # Nomad docks via DockSRV even though it launched as a fighter.
+                    $Global:newActiveFighter = $false
+                    if ("ID" -in $entry.PSObject.Properties.Name) { $Global:lastSLVID = $entry.ID }
+                }
+                elseif ($srvVehicleType -eq "SRV") {
+                    if ("ID" -in $entry.PSObject.Properties.Name) { $Global:lastSRVID = $entry.ID }
+                }
+				$Global:newVehicleType = "Ship"
+				if ($Global:Debug) {
+					if (-not $Global:GameRunning) {
+						Write-Host "[$localtime] : Event: DockSRV, SRVType = $($entry.SRVType), VehicleType = $Global:newVehicleType" -ForegroundColor Yellow 
+					}
+					else {
+						Write-Host "[$localtime] : Event: DockSRV, SRVType = $($entry.SRVType), VehicleType = $Global:newVehicleType" -ForegroundColor Cyan
+					}
+				}															
+			}
+			"Embark" {
+				if (("SRV" -in $entry.PSObject.Properties.Name) -and $entry.SRV) {
+                    if (("ID" -in $entry.PSObject.Properties.Name) -and ($null -ne $Global:lastSLVID) -and ($entry.ID -eq $Global:lastSLVID)) {
+                        $Global:newVehicleType = "SLV"
+                    }
+                    elseif (("ID" -in $entry.PSObject.Properties.Name) -and ($null -ne $Global:lastSRVID) -and ($entry.ID -eq $Global:lastSRVID)) {
+                        $Global:newVehicleType = "SRV"
+                    }
+                    elseif ($Global:VehicleType -eq "SLV" -or $Global:newActiveFighter) {
+                        $Global:newVehicleType = "SLV"
+                    }
+                    else {
+                        $Global:newVehicleType = "SRV"
+                    }
+				}
+                elseif (("OnFoot" -in $entry.PSObject.Properties.Name) -and $entry.OnFoot) {
+                    $Global:newVehicleType = "none"
+                }
+                else {
+                    $Global:newVehicleType = "Ship"
+                }
+				if ($Global:Debug) {
+					if (-not $Global:GameRunning) {
+						Write-Host "[$localtime] : Event: Embark, VehicleType = $Global:newVehicleType" -ForegroundColor Yellow 
+					}
+					else {
+						Write-Host "[$localtime] : Event: Embark, VehicleType = $Global:newVehicleType" -ForegroundColor Cyan
+					}
+				}																				
+			}
+			"Disembark" {
+				$Global:newVehicleType = "none"
+				if ($Global:Debug) {
+					if (-not $Global:GameRunning) {
+						Write-Host "[$localtime] : Event: Disembark, VehicleType = $Global:newVehicleType" -ForegroundColor Yellow 
+					}
+					else {
+						Write-Host "[$localtime] : Event: Disembark, VehicleType = $Global:newVehicleType" -ForegroundColor Cyan
+					}
+				}																				
+			}
+			"LaunchFighter" {
+				$Global:newActiveFighter = $true
+                $Global:newVehicleType = "SLV"
+                if ("ID" -in $entry.PSObject.Properties.Name) { $Global:lastSLVID = $entry.ID }
+				if ($Global:Debug) {
+					if (-not $Global:GameRunning) {
+						Write-Host "[$localtime] : Event: LaunchFighter, ActiveFighter = $Global:newActiveFighter, VehicleType = $Global:newVehicleType" -ForegroundColor Yellow 
+					}
+					else {
+						Write-Host "[$localtime] : Event: LaunchFighter, ActiveFighter = $Global:newActiveFighter, VehicleType = $Global:newVehicleType" -ForegroundColor Cyan
 					}
 				}																											
 			}
 			"FighterDestroyed" {
-				$Global:newActiveFighter = $false 
+				$Global:newActiveFighter = $false
+                $Global:newVehicleType = "Ship" 
 				if ($Global:Debug) {
 					if (-not $Global:GameRunning) {
-						Write-Host "[$localtime] : Event: FighterDestroyed, ActiveFighter = $Global:newActiveFighter" -ForegroundColor Yellow 
+						Write-Host "[$localtime] : Event: FighterDestroyed, ActiveFighter = $Global:newActiveFighter, VehicleType = $Global:newVehicleType" -ForegroundColor Yellow 
 					}
 					else {
-						Write-Host "[$localtime] : Event: FighterDestroyed, ActiveFighter = $Global:newActiveFighter" -ForegroundColor Cyan
+						Write-Host "[$localtime] : Event: FighterDestroyed, ActiveFighter = $Global:newActiveFighter, VehicleType = $Global:newVehicleType" -ForegroundColor Cyan
 					}
 				}																											
 			}
 			"DockFighter" {
-				$Global:newActiveFighter = $false 
+				$Global:newActiveFighter = $false
+                $Global:newVehicleType = "Ship" 
 				if ($Global:Debug) {
 					if (-not $Global:GameRunning) {
-						Write-Host "[$localtime] : Event: DockFighter, ActiveFighter = $Global:newActiveFighter" -ForegroundColor Yellow 
+						Write-Host "[$localtime] : Event: DockFighter, ActiveFighter = $Global:newActiveFighter, VehicleType = $Global:newVehicleType" -ForegroundColor Yellow 
 					}
 					else {
-						Write-Host "[$localtime] : Event: DockFighter, ActiveFighter = $Global:newActiveFighter" -ForegroundColor Cyan
+						Write-Host "[$localtime] : Event: DockFighter, ActiveFighter = $Global:newActiveFighter, VehicleType = $Global:newVehicleType" -ForegroundColor Cyan
 					}
 				}																											
 			}
@@ -1005,12 +1185,14 @@ foreach ($name in $Global:moduleNames) {
 Initialize-GlobalVariables
 
 # seed new* variables
-foreach ($prop in (Get-Variable -Scope Global | Where-Object Name -match '^(LoadGameDetect|CMDRName|ShipName|ShipType|StationName|StationType|SystemName|BodyName|OrganicFound|DockingStatus|DeniedReason|LandingPad|Modules|ActiveFighter|InputCMD|CMDParameter)$')) {	
+foreach ($prop in (Get-Variable -Scope Global | Where-Object Name -match '^(LoadGameDetect|CMDRName|ShipName|ShipType|StationName|StationType|SystemName|BodyName|OrganicFound|DockingStatus|DeniedReason|LandingPad|Modules|ActiveFighter|VehicleType|MainShipStatus|InputCMD|CMDParameter)$')) {	
     Set-Variable -Name "new$($prop.Name)" -Value $prop.Value -Scope Global
 }
 
 # Not sure this should go here...not sure above will seed this var with the init value of $false
 $Global:newActiveFighter = $false
+if ([string]::IsNullOrWhiteSpace($Global:newVehicleType)) { $Global:newVehicleType = $Global:VehicleType }
+if ([string]::IsNullOrWhiteSpace($Global:newMainShipStatus)) { $Global:newMainShipStatus = $Global:MainShipStatus }
 $Global:newInputCMD = "not set"
 $Global:newCMDParameter = "not set"
 
@@ -1024,6 +1206,9 @@ $Global:destDistance = $null
 $Global:newdestDistance = $null
 
 $Global:APInvalidReason = "not set"
+
+$Global:lastSRVID = $null
+$Global:lastSLVID = $null
 
 # Process existing journal file
 $first = Get-NewestLogFile
