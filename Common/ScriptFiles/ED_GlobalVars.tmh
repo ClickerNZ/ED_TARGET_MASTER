@@ -76,6 +76,6 @@
 
 	int AnnounceTripTime	= DISABLED;	//	Enabled when we set Origin Station Name (&oStation). Disabled when we finish the circuit.
 
-	int TerrainFollow		= 0;		// Global Flag to track Terrain Following ON/OFF	
+ 
 				
 	// END
