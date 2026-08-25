@@ -223,7 +223,7 @@
 	}
 
 
-	// FUNCTION: 	Text to Speech and EDMCOverlay using external powershell script and Windows TTS engine
+	// FUNCTION: 	Text to Speech, EDMCOverlay and command messages for external helper scripts using external TTSMonitor.ps1 and Windows TTS engine
 	// Parameter:	'text' = string to convert to speech
 	//				Optional	- 'VolumeOverride' (1-100) overrides current volume setting
 	//				Optional	- 'Voice' to use. 'DefaultVoice' and 'AltVoice' are defined in ED_UserSettings
@@ -231,22 +231,26 @@
 	//				NOTE:	'Voice' parameter must match a currently installed MS Voice
 	//				See ED_UserSettings file for more information
 	//
-	// Usage1:		fnTextToSpeech("This is test number 1");	// says the text at current value of 'VoiceVolume' in %
+	// Usage1:		fnTextToSpeech("This is test number 1");			// says the text at current value of 'VoiceVolume' in %
 	//
 	// Usage2:		int VoiceTxt = "This is test number 2";
-	//				fnTextToSpeech(VoiceTxt, 100);				// says the text at 100% volume
+	//				fnTextToSpeech(VoiceTxt, 100);						// says the text at 100% volume
 	//
 	// Usage3:		char VoiceTxt; Dim(&VoiceTxt, 16); VoiceTxt[0] = 0;
 	//				int tString = "This is test ";
 	//				int test = 3;
 	//				sprintf(&VoiceTxt, "%s number %d", tString, test);
 	//				VoiceTxt[strlen(&VoiceTxt)] = 0;
-	//				fnTextToSpeech(&VoiceTxt, 50);				// says the text at 50% volume
+	//				fnTextToSpeech(&VoiceTxt, 50);						// says the text at 50% volume
 	//
-	// Usage4:		fnTextToSpeech("Test number 4", 0, &David);	// says the text at default volume using "David" voice
+	// Usage4:		fnTextToSpeech("Test number 4", 0, &David);			// says the text at default volume using "David" voice
 	//
 	// Usage5:		UseAltVoice = YES;									// this option exists to enable use of second voice via a DeferCall() which only allows 1 parameter
 	//				DeferCall(1000, &fnTextToSpeech, "Test number 5");	// 1 second delay then says the text using the AltVoice defined in ED_UserSettings.tmh
+	//
+	// Cmd msgs:	fnTextToSpeech("!ON <variable");					// Trapped by TTSMonitor.ps1 in order to change PowerShell variables on the fly
+	//				fnTextToSpeech("!OFF <variable");
+	//				fnTextToSpeech("!TOGGLE <variable");
 	//
 	// NOTE:		Default 'VoiceVolume' is 100% and can be increased or decreased by using Throttle TBTN4-U (Vol+) or TBTN4-D (Vol-)
 	//
