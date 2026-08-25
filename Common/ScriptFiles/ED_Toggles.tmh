@@ -7,6 +7,8 @@
 /*
 	Index:				FUNCTION
 	Line    41: 		int tgTxt2Speech() {
+	Line	58:			int tgATCChatter() {
+	Line	77:			int tgOverlay() {
 	Line    56: 		int tgEnhancedFAOFF(int dummy = 0) {
 	Line   101: 		int tgTriggerMode(int x) {
 	Line   149: 		int tgLights(int x) {
@@ -46,9 +48,43 @@
 		}
 		else {
 			fnVPOutput("Text to speech will now be disabled", 0, 1);
-			EnableVoice = DISABLED;
+//-			EnableVoice = DISABLED;
 		}
 	}
+
+
+	//	TOGGLE:	ATC Chatter ON/OFF
+	//			External TTSMonitor.ps1 traps this command message and toggles the Global:ATCChatter boolean withiin the ProcessJournal.ps1
+	
+	int tgATCChatter() {
+		
+		ATCChatter = !ATCChatter;
+		
+		if(ATCChatter) {
+			fnVPOutput("A T C Chatter: Enabled", 0, 1);
+			fnTextToSpeech("!ON ATC");
+		}
+		else {
+			fnTextToSpeech("!OFF ATC");
+			fnVPOutput("A T C Chatter will now be disabled", 0, 1);
+		}
+	}
+
+
+	//	TOGGLE:	EDMC Overlay feature ON/OFF
+	
+	int tgOverlay() {
+		
+		EnableOverlay = !EnableOverlay;
+		
+		if(EnableOverlay) {
+			fnVPOutput("E D M C Overlay: Enabled", 0, 1);
+		}
+		else {
+			fnVPOutput("E D M C overlay will now be disabled", 0, 1);
+		}
+	}
+
 
 	// TOGGLE: 		Flight/Drive Assist OFF/ON
 	// Parameter:	0 = Standard FA-Off, 1 = for future development
