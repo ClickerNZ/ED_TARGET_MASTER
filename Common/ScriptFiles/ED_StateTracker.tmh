@@ -1108,9 +1108,9 @@
 			if (fAltFromAvgRad) {													// This is set when we are in supercruise or at "higher altitudes" (how high???)
 		//		fnOverlay("fAltFromAvgRad = 1", 15, 603, 960, 3, "AltitudeFlag");	// TTL=15 sec, center-bottom, yellow, id   
 //-	DEBUG +++++
-				if (TerrainFollow) {
-					tgTerrainFollow(OFF);
-				}				
+//				if (TerrainFollow) {
+//					tgTerrainFollow(OFF);
+//				}				
 //-	DEBUG +++++
 			}
 			else {
