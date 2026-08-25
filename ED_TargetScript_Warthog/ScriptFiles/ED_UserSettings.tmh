@@ -131,6 +131,8 @@
 	int		VoiceRate			= 1;					// Slightly faster than default. You can set this on the fly via "!set VoiceRate 0"  (-10 ... 10) in a chat window
 	int		AltVoiceRate		= 0;					// Default. You can set this on the fly via "!set AltVoiceRate 0" (-10 ... 10) in a chat window
 
+	int		ATCChatter			= ENABLED;				// ENABLED or DISABLED. Enable this if you wish to hear the ATC Chatter comms messages 
+
 	// NOTE:	The below Text-To-Speech reference works well for Windows 10.
 	//			The instructions may not work for Windows 11.
 	//
