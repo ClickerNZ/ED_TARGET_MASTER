@@ -7,7 +7,7 @@
 
 	//							THRUSTMASTER WARTHOG REQUIRED								//
 
-	// This file:	ED_Enhanced_Main.tmc	 		v600.0					// New Minor Version
+	// This file:	ED_Enhanced_Main.tmc	 		v600.0					// New Major Version
 	// Supports:	Elite Dangerous 				v4.4.0.3				// Does not support Legacy Horizons
 	// Requires:	TARGET 							v3.0.26.303				// https://support.thrustmaster.com/
 	//				Joystick firmware				v12
@@ -15,8 +15,6 @@
 	//				AVA firmware					v2.07					// NOTE: AVA users opting to stay on older firmware 
 	//																		// need to use TARGET V3.0.24.618_rev1
 		
-	// Refer Change Log.txt in parent folder
-
 	//	LEGEND:	This script package calls functions using the naming convention set out in the table 
 	//			below and within the following support files
 	// ==============================================================================================
@@ -43,10 +41,10 @@
 	This package contains a single required '.tmc' file (this is it), a '.ttm' which defines MANY constants and variables used by the rest
 	of the script. The whole package is coded within multiple '.tmh' files in order to (hopefully) make the code easier to follow and maintain.
 
-	Please refer to the github repository to understand changes made.
+	Please refer to the github repository to understand the latest changes.
 	
 	A sample Windows batch file is included in the package to assist in lanching this script the game itself and any attendant
-	apps you may wish to use at run time.
+	helper powershell scripts and 3rd party helper apps you may wish to use at run time.
 
 	Indexes near the top of each code file should assist in finding functions of interest.
 
@@ -63,12 +61,12 @@
 
 	include "target.tmh"
 
-	// "include target.tmh" is mandatory for most, if not all .tmc files.
+	// "include target.tmh" is mandatory all .tmc script files.
 	// 		when loaded, target.tmh includes --> "defines.tmh" and "hid.tmh"
 	// 		when loaded, hid.tmh includes --> "sys.tmh"
 	//		...this ensures these critical THRUSTMASTER TARGET script files are loaded in the correct order
 
-	//      The above 4x .tmh files are bundled with the TARGET software and will be replaced each update.
+	//      The above 4x .tmh files are bundled with the TARGET software and are potentially replaced with each update.
 
 	/////////////////////////////////////////////////////////////////////////////
 	///                                                                       ///
@@ -76,7 +74,9 @@
 	///                                                                       ///
 	/////////////////////////////////////////////////////////////////////////////
 
-	include "..\\..\\Common\\ScriptFiles\\ED_ScriptDefines.ttm"					// The order that these files are 'included' matters
+	// NOTE: The order that these files are 'included' matters!
+	
+	include "..\\..\\Common\\ScriptFiles\\ED_ScriptDefines.ttm"					
 	include "..\\..\\Common\\ScriptFiles\\ED_GameBindings.ttm"
 	include "..\\..\\Common\\ScriptFiles\\ED_GlobalVars.tmh"
 	include "ED_UserSettings.tmh"
@@ -86,6 +86,11 @@
 	include "..\\..\\Common\\ScriptFiles\\ED_StateTracker.tmh"
 	include "..\\..\\Common\\ScriptFiles\\ED_Toggles.tmh"
 	include "ED_MapKeyAssignment.tmh"
+
+//- Excluded from github - remove prior to publishing
+//-	DEBUG	+++++
+	include "ED_Development.tmh"
+//-	DEBUG	+++++
 		
 	// ------------ //
 	// Main Program //
@@ -96,7 +101,7 @@
 		printf("\x0a\++	Initialise hardware	...	Start	++\x0a\x0a");			// Eliminates error messages relating to unfound devices
 																				// Check target.tmh alias list
 		
-		// We will get some "device not found messages as we do not exclude devices that this script will support but may not be connected
+		// We exlude all devices not supported by this script...this list must be updated each time THRUSTMASTER releases a new version of TARGET
 		
 		Exclude(&HCougar);
 		Exclude(&T16000);
@@ -153,15 +158,22 @@
 		fnPIPMode(RESET);														// Reset PIPMode before calling stfnMyStates(LOAD). Refer ED_UserSettings.tmh to set your preferred default PIP Mode
 																				
 		initUserSettings(0);													// Save default user settings. On the fly customisation available for most settings.
-		
+
 		fnLEDBrightness();														// Set initial LED Brightness levels
 
 		printf("++	Initialise Sound enhancement functions (if ENABLED)...\x0a\x0a");
 		initTextToSpeech();														// Initialise Text-To-Speech engine
+		initATCChatter();														// Initialise ATC Chatter engine
 		initSoundFX();															// Initialise Sound Effects engine
+		initOverlay();															// Initialise EDMC Overlay function
 
 		printf("\x0a\++	Initialise Macro Chains...\x0a");
 		initMacroChains();														// Initialise Custom Macros (See ED_Macros.tmh)
+
+//- Excluded from github - remove prior to publishing
+//-	DEBUG	+++++
+		initDevMacros();														// Initialise any development macros (refer ED_Development.tmh)
+//-	DEBUG	+++++
 		
 	// -------------------------- //
 	// Initialise Flight controls //
