@@ -399,12 +399,13 @@
 			MapKey(&MyThrottle, BSB, 0);
 		}
 		else {
-			MapKeyUMD(&MyThrottle, BSF, 
-				EXEC("tgWingBeacon(0);"),																	// U - NAV Beacon WING/OFF
-	//-			EXEC("tgTerrainFollow(ON);"),																// M - Terrain following ON
-	//-			EXEC("tgAutoPilot(ON);"),																	// M - Auto Pilot ON
-				EXEC("fnSetOriginStation(1);"),																// M - Set Origin Satation Name
-				EXEC("tgTxt2Speech();")																		// D - Toggle EnableVoice (TextToSpeech)
+			MapKeyIOUMD(&MyThrottle, BSF, 
+				EXEC("tgReportCrimes(0);"),																	// IU - Report crimes against me ON/OFF
+				EXEC("tgWingBeacon(0);"),																	// OU - NAV Beacon WING/OFF
+				EXEC("fnTextToSpeech(\"Not mapped\");"),													// IM - 
+				EXEC("fnSetOriginStation(1);"),																// OM - Set Origin Satation Name
+				EXEC("tgOverlay();"),																		// ID - Toggle EDMC Overlay function 
+				EXEC("tgTxt2Speech();")																		// OD - Toggle EnableVoice (TextToSpeech)
 				);
 			
 	//-		MapKeyR(&MyThrottle, BSF, EXEC("tgTerrainFollow(OFF);"));										// RELEASE				// Terrain following OFF
@@ -413,9 +414,9 @@
 			MapKey(&MyThrottle, BSM, 0);																	// <not currently used>
 			
 			MapKeyUMD(&MyThrottle, BSB, 
-				EXEC("tgReportCrimes(0);"),																	// U - Report crimes against me ON/OFF
+				EXEC("fnTextToSpeech(\"Not mapped\");"),													// U - 
 				EXEC("fnTextToSpeech(\"Not mapped\");"),													// M -
-				EXEC("fnTextToSpeech(\"Not mapped\");")														// D -
+				EXEC("tgATCChatter();")																		// D - Toggle ATCChatter
 				);
 		}
 	
@@ -1046,12 +1047,13 @@
 			MapKey(&MyThrottle, BSB, EXEC("fnVPOutput(\"Not mapped\", 0, 1);"));
 		}
 		else {
-			MapKeyUMD(&MyThrottle, BSF, 
-				EXEC("fnVPOutput(\"Toggle Wing Beacon between wing and off\", 0, 1);"),							// U -
-	//-			EXEC("fnVPOutput(\"Terrain following ON\", 0, 1);"),											// M -
-	//-			EXEC("fnVPOutput(\"Auto pilot ON\", 0, 1);"),													// M -
-				EXEC("fnVPOutput(\"Set Origin Station\", 0, 1);"),												// M -
-				EXEC("fnVPOutput(\"Toggle Text to speech function off and on\", 0, 1);")						// D -
+			MapKeyIOUMD(&MyThrottle, BSF, 
+				EXEC("fnVPOutput(\"Toggle report crimes against me on and off\", 0, 1);"),						// IU -
+				EXEC("fnVPOutput(\"Toggle Wing Beacon between wing and off\", 0, 1);"),							// OU -
+				EXEC("fnTextToSpeech(\"Not mapped\");"),														// IM - 
+				EXEC("fnVPOutput(\"Set Origin Station\", 0, 1);"),												// OM -
+				EXEC("fnVPOutput(\"Toggle E D M C Overlay function off and on\", 0, 1);"),						// ID -
+				EXEC("fnVPOutput(\"Toggle Text to speech function off and on\", 0, 1);")						// OD -
 				);
 	//-		MapKeyR(&MyThrottle, BSF, EXEC("fnVPOutput(\"Terrain following OFF\", 0, 1);"));					// RETURN 
 	//-		MapKeyR(&MyThrottle, BSF, EXEC("fnVPOutput(\"Auto Pilot OFF\", 0, 1);"));							// RETURN 
@@ -1059,7 +1061,7 @@
 			MapKeyUMD(&MyThrottle, BSB, 
 				EXEC("fnVPOutput(\"Toggle report crimes against me on and off\", 0, 1);"),						// U -
 				EXEC("fnVPOutput(\"Not mapped\", 0, 1);"),														// M -
-				EXEC("fnVPOutput(\"Not mapped\", 0, 1);")														// D -
+				EXEC("fnVPOutput(\"Toggle A T C chatter function off and on\", 0, 1);")							// D -
 				);
 		}
 	
