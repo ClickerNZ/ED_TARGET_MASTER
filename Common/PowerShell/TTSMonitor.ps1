@@ -1,4 +1,4 @@
-# TTSMonitor-v28.ps1 - EDMCOverlay module integration
+﻿# TTSMonitor-v29a.ps1 - EDMCOverlay module integration + ATC playback/cache control IPC
 #
 # This script is now the single/preeminent audio processor:
 # 1. TARGET Script TTS queue has priority.
@@ -17,9 +17,12 @@ $edmcOverlayModulePath = "C:\Thrustmaster\Common\PowerShell\Modules\EDMCOverlay"
 
 $atcCacheUpdateScript = Join-Path -Path $PSScriptRoot -ChildPath "Update-ATCChatterCacheFromRecentJournals.ps1"
 
-$MyVersion = "28"
+$MyVersion = "29a"
 
 $EnableEDMCOverlay = $true
+
+# Named pipe used to pass ProcessJournal control commands.
+$ControlPipeName = "EDControlPipe"
 
 # -------------------------
 # Setup
@@ -52,6 +55,7 @@ catch {
 }
 
 $script:ATCCacheMissDetected = $false
+$script:ATCPlaybackEnabled = $true
 
 function Invoke-ATCCacheUpdateIfNeeded {
     if (-not $script:ATCCacheMissDetected) { return }
@@ -114,6 +118,55 @@ function Get-TTSQueueFiles {
         })
 }
 
+function Send-ProcessJournalControlCommand {
+    param([Parameter(Mandatory=$true)][string]$Command)
+
+    $client = $null
+    $writer = $null
+
+    try {
+        $client = [System.IO.Pipes.NamedPipeClientStream]::new(
+            '.',
+            $ControlPipeName,
+            [System.IO.Pipes.PipeDirection]::Out,
+            [System.IO.Pipes.PipeOptions]::None
+        )
+
+        # Keep this short. If ProcessJournal is not ready, leave the queue file
+        # in place so TTSMonitor can retry it on the next pass.
+        $client.Connect(250)
+
+        $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+        $writer = [System.IO.StreamWriter]::new($client, $utf8NoBom, 1024, $true)
+        $writer.AutoFlush = $true
+        $writer.WriteLine($Command)
+
+        Write-Host ("[CTRL - {0}] - {1}" -f (Get-Date -Format 'HH:mm:ss'), $Command) -ForegroundColor Green
+        return $true
+    }
+    catch {
+        Write-Host ("Control command could not be sent to ProcessJournal: {0}" -f $_.Exception.Message) -ForegroundColor Yellow
+        return $false
+    }
+    finally {
+        if ($null -ne $writer) { try { $writer.Dispose() } catch {} }
+        if ($null -ne $client) { try { $client.Dispose() } catch {} }
+    }
+}
+
+function Test-ATCControlCommand {
+    param([AllowNull()][string]$Text)
+
+    if ([string]::IsNullOrWhiteSpace($Text)) { return $false }
+
+    switch ($Text.Trim().ToUpperInvariant()) {
+        '!TOGGLE ATC' { return $true }
+        '!ON ATC'     { return $true }
+        '!OFF ATC'    { return $true }
+        default       { return $false }
+    }
+}
+
 function Invoke-TargetTTSFile {
     param([System.IO.FileInfo]$File)
 
@@ -154,6 +207,39 @@ function Invoke-TargetTTSFile {
     $ttsVoice  = $json.TTSVoice
     $ttsRate   = $json.TTSRate
     $ttsVolume = $json.TTSVolume
+
+    # Control messages use the existing TARGET TTS queue as their transport,
+    # but are not spoken and are not sent to EDMCOverlay.
+    if (Test-ATCControlCommand -Text $ttsString) {
+        $command = $ttsString.Trim().ToUpperInvariant()
+
+        if (Send-ProcessJournalControlCommand -Command $command) {
+            switch ($command) {
+                '!TOGGLE ATC' { $script:ATCPlaybackEnabled = -not $script:ATCPlaybackEnabled }
+                '!ON ATC'     { $script:ATCPlaybackEnabled = $true }
+                '!OFF ATC'    { $script:ATCPlaybackEnabled = $false }
+            }
+
+            if (-not $script:ATCPlaybackEnabled) {
+                # Do not retain any already queued chatter for later playback.
+                Clear-ATCChatterQueue
+
+                # Runtime cache misses cannot be observed while playback is disabled.
+                # Force the existing journal-based cache updater to run at shutdown;
+                # it scans recent journals and creates any missing raw + filtered WAVs.
+                $script:ATCCacheMissDetected = $true
+            }
+
+            Write-Host ("ATC playback {0}" -f $(if ($script:ATCPlaybackEnabled) { 'ON' } else { 'OFF' })) -ForegroundColor Cyan
+
+            Move-TTSFileToArchive -File $File
+            return $true
+        }
+
+        # ProcessJournal may simply not have started yet. Leave this queue file
+        # untouched so the command is retried rather than silently lost.
+        return $false
+    }
 
 	$overlayText  = $json.OverlayText
 	$overlayId    = if ($json.OverlayId)    { $json.OverlayId }    else { "target-overlay" }
@@ -263,6 +349,14 @@ while ($true) {
 
 		# ATC is background chatter. It only runs when TARGET TTS is idle
 		# or when TARGET queue files are present but no TARGET work was actually processed.
+		# When playback is disabled, consume no ATC audio and retain no backlog. The
+		# journal-based cache updater will still top up missing WAVs at shutdown.
+		if (-not $script:ATCPlaybackEnabled) {
+			Clear-ATCChatterQueue
+			Start-Sleep -Milliseconds 250
+			continue
+		}
+
 		try {
 			$atcResult = Invoke-ATCChatter
 

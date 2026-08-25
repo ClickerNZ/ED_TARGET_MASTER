@@ -1,4 +1,4 @@
-# v38	-	Add MainShipStatus derived from remote Touchdown/Liftoff events (PlayerControlled=false).
+﻿# v40 - 2026-08-25: corrected ATC station-name apostrophe normalization and retained ATC playback gate.
 #
 # ProcessJournal.ps1
 #
@@ -22,7 +22,7 @@ param (
     [string]$trackingFilePath   = "C:\Thrustmaster\Common\Output\Tracking.json"
 )
 
-$MyVersion = 38
+$MyVersion = "40"
 
 # Path to our output JSON
 $JsonFilePath = Join-Path -Path $outputFolderPath -ChildPath "MyJournalData.json"
@@ -905,15 +905,17 @@ function Process-NewLines {
 
 					# If the sender matches the current station name tracked by ProcessJournal, force Station group
 					if (-not [string]::IsNullOrWhiteSpace($Global:newStationName)) {
-						$fromNorm = $entry.From.Trim() -replace '[’`]', "'"
-						$stnNorm  = $Global:newStationName.Trim() -replace '[’`]', "'"
+						$fromNorm = $entry.From.Trim().Replace([char]0x2019, [char]39).Replace([char]96, [char]39)
+						$stnNorm  = $Global:newStationName.Trim().Replace([char]0x2019, [char]39).Replace([char]96, [char]39)
 
 						if ($fromNorm.Equals($stnNorm, [System.StringComparison]::InvariantCultureIgnoreCase)) {
 							$group = "Station"
 						}
 					}
 
-					# Option 1 (strict): speak only the message (your requirement)
+					# Playback gate only. When ATC is OFF, do not add the message to the runtime
+					# ATC playback queue. TTSMonitor-v29a will still run the existing journal-based
+					# cache top-up at shutdown so newly encountered phrases can generate WAVs.
 					if ($Global:ATCChatter) {
 						# Write-Host "ATC queued: $($entry.Message_Localised) (Group=$group, From=$($entry.From))" -ForegroundColor Green
 						Add-ATCChatter $entry.Message_Localised $group
@@ -1145,6 +1147,95 @@ function Invoke-AutopilotTick {
     }
 }
 
+# === TARGET/TTSMonitor control pipe ===
+# TTSMonitor uses this named pipe to send lightweight control commands to this process.
+# Initial supported commands:
+#   !TOGGLE ATC
+#   !ON ATC
+#   !OFF ATC
+$Global:ControlPipeName = "EDControlPipe"
+$Global:ControlPipeServer = $null
+$Global:ControlPipeWait = $null
+
+function Start-ControlPipeListener {
+    try {
+        if ($null -ne $Global:ControlPipeServer) {
+            try { $Global:ControlPipeServer.Dispose() } catch {}
+        }
+
+        $Global:ControlPipeServer = [System.IO.Pipes.NamedPipeServerStream]::new(
+            $Global:ControlPipeName,
+            [System.IO.Pipes.PipeDirection]::In,
+            1,
+            [System.IO.Pipes.PipeTransmissionMode]::Byte,
+            [System.IO.Pipes.PipeOptions]::Asynchronous
+        )
+
+        $Global:ControlPipeWait = $Global:ControlPipeServer.BeginWaitForConnection($null, $null)
+    }
+    catch {
+        Write-Host ("Unable to start control pipe '{0}': {1}" -f $Global:ControlPipeName, $_.Exception.Message) -ForegroundColor Red
+        $Global:ControlPipeServer = $null
+        $Global:ControlPipeWait = $null
+    }
+}
+
+function Invoke-ControlCommand {
+    param([AllowNull()][string]$Command)
+
+    if ([string]::IsNullOrWhiteSpace($Command)) { return }
+
+    $normalized = $Command.Trim().ToUpperInvariant()
+
+    switch ($normalized) {
+        '!TOGGLE ATC' {
+            $Global:ATCChatter = -not $Global:ATCChatter
+        }
+        '!ON ATC' {
+            $Global:ATCChatter = $true
+        }
+        '!OFF ATC' {
+            $Global:ATCChatter = $false
+        }
+        default {
+            Write-Host ("Unknown control command received: {0}" -f $Command) -ForegroundColor Yellow
+            return
+        }
+    }
+
+    $state = if ($Global:ATCChatter) { 'ON' } else { 'OFF' }
+    Write-Host ("ATC Chatter {0} [{1}]" -f $state, $normalized) -ForegroundColor Cyan
+}
+
+function Receive-ControlPipeCommand {
+    if ($null -eq $Global:ControlPipeServer -or $null -eq $Global:ControlPipeWait) {
+        Start-ControlPipeListener
+        return
+    }
+
+    if (-not $Global:ControlPipeWait.IsCompleted) { return }
+
+    try {
+        $Global:ControlPipeServer.EndWaitForConnection($Global:ControlPipeWait)
+
+        $reader = [System.IO.StreamReader]::new($Global:ControlPipeServer, [System.Text.Encoding]::UTF8, $false, 1024, $true)
+        try {
+            $command = $reader.ReadLine()
+        }
+        finally {
+            $reader.Dispose()
+        }
+
+        Invoke-ControlCommand -Command $command
+    }
+    catch {
+        Write-Host ("Control pipe read error: {0}" -f $_.Exception.Message) -ForegroundColor Red
+    }
+    finally {
+        Start-ControlPipeListener
+    }
+}
+
 # === Startup processing ===
 
 $Global:GameRunning    = $false
@@ -1210,6 +1301,9 @@ $Global:APInvalidReason = "not set"
 $Global:lastSRVID = $null
 $Global:lastSLVID = $null
 
+Start-ControlPipeListener
+Write-Host ("Control pipe listening: {0}" -f $Global:ControlPipeName) -ForegroundColor DarkCyan
+
 # Process existing journal file
 $first = Get-NewestLogFile
 if ($first) { Process-NewLines -filePath $first.FullName }
@@ -1224,6 +1318,8 @@ $timer.AutoReset = $true
 $timer.Enabled   = $true
 
 Register-ObjectEvent -InputObject $timer -EventName Elapsed -Action {
+    Receive-ControlPipeCommand
+
     # ensure you only ever process the current journal
     $log = Get-NewestLogFile
     if ($log) { Process-NewLines -filePath $log.FullName }
