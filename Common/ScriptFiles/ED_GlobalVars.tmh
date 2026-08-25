@@ -75,7 +75,7 @@
 	int	UseAltVoice			= NO;		// Set UseAltVoice = 'YES'; prior to calling fnTextToSpeech() or fnVPOutput() for situations you cannot parse the voice alias to be used
 
 	int AnnounceTripTime	= DISABLED;	//	Enabled when we set Origin Station Name (&oStation). Disabled when we finish the circuit.
-
+	
 
 				
 	// END
