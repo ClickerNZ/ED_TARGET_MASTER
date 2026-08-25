@@ -372,6 +372,32 @@
 	}
 
 
+	// FUNCTION: Initialise ATC Chatter
+	
+	int initATCChatter() {
+		if (ATCChatter) {
+			fnVPOutput("A T C Chatter function enabled", 0, 1);
+			fnTextToSpeech("!ON ATC");									// Send control message to TTSMonitor to enable ATCChatter
+		}
+		else {
+			fnVPOutput("A T C Chatter function disabled", 0, 1);
+			fnTextToSpeech("!OFF ATC");									// Send control message to TTSMonitor to disable ATCChatter
+		}
+	}
+
+
+	// FUNCTION: Initialise EDMC Overlay feature
+	
+	int initOverlay() {
+		if (EnableOverlay) {
+			fnVPOutput("E D M C overlay function enabled", 0, 1);
+		}
+		else {
+			fnVPOutput("E D M C overlay function disabled", 0, 1);
+		}
+	}
+
+
 	// FUNCTION: Initialise Sound Effacts Engine 
 	
 	int initSoundFX() {
