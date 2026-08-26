@@ -141,7 +141,7 @@ function Send-ProcessJournalControlCommand {
         $writer.AutoFlush = $true
         $writer.WriteLine($Command)
 
-        Write-Host ("[CTRL - {0}] - {1}" -f (Get-Date -Format 'HH:mm:ss'), $Command) -ForegroundColor Green
+        Write-Host ("[CTL - {0}] - {1}" -f (Get-Date -Format 'HH:mm:ss'), $Command) -ForegroundColor Green
         return $true
     }
     catch {
