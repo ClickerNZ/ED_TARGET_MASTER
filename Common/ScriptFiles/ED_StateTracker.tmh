@@ -1751,7 +1751,7 @@
 
 
 	// FUNCTION:	Save certain global variables and states not included in status.json
-	// PURPOSE:		Save current status of certain variables when mode switching or restarting the game
+	// PURPOSE:		Save current status of certain variables to carry over between games or menu logs
 	// REQUIRES:	'MyStatusFile' path must be set correctly within ED_UserSettings.tmh file
 	// PARAMETERS:	action = SAVE or LOAD
 
@@ -1776,7 +1776,7 @@
 
 			UserSettings = fnEncodeUserSettings(0);
 			
-			sprintf(&MyStatesJson, "{\"NewMaxJson\":%d,\"VoiceVolume\":%d,\"VoiceRate\":%d,\"AltVoiceRate\":%d,\"ChatTABs\":%d,\"FAOFFCurves\":%d,\"OldCurves\":%d,\"LEDLevel\":%d,\"PIPMode\":%d,\"ThrustUpTime\":%d,\"PrivateGroup\":%d,\"UserSettings\":%d}", NewMaxJson, VoiceVolume, VoiceRate, AltVoiceRate, ChatTABs, FAOFFCurves, OldCurves, LEDLevel, PIPMode, ThrustUpTime, PrivateGroup, UserSettings);
+			sprintf(&MyStatesJson, "{\"NewMaxJson\":%d,\"VoiceVolume\":%d,\"VoiceRate\":%d,\"AltVoiceRate\":%d,\"EnableVoice\":%d,\"ATCChatter\":%d,\"EnableOverlay\":%d,\"ChatTABs\":%d,\"FAOFFCurves\":%d,\"OldCurves\":%d,\"LEDLevel\":%d,\"PIPMode\":%d,\"ThrustUpTime\":%d,\"PrivateGroup\":%d,\"UserSettings\":%d}", NewMaxJson, VoiceVolume, VoiceRate, AltVoiceRate, EnableVoice, ATCChatter, EnableOverlay, ChatTABs, FAOFFCurves, OldCurves, LEDLevel, PIPMode, ThrustUpTime, PrivateGroup, UserSettings);
 
 			mySIZE = strlen(&MyStatesJson);
 			if (mySIZE > buf) {
@@ -1803,6 +1803,9 @@
 						printf("	VoiceVolume		= %d\x0a", VoiceVolume);
 						printf("	VoiceRate		= %d\x0a", VoiceRate);
 						printf("	AltVoiceRate		= %d\x0a", AltVoiceRate);
+						printf("	EnableVoice		= %d\x0a", EnableVoice);
+						printf("	ATCChatter		= %d\x0a", ATCChatter);
+						printf("	EnableOverlay		= %d\x0a", EnableOverlay);
 						printf("	ChatTABs		= %d\x0a", ChatTABs);
 						printf("	FAOFFCurves		= %d\x0a", FAOFFCurves);
 						printf("	OldCurves		= %d\x0a", OldCurves);
@@ -1841,6 +1844,9 @@
 					VoiceVolume		= stfnGetKeyValue("VoiceVolume", INTEGER, 2);
 					VoiceRate		= stfnGetKeyValue("VoiceRate", INTEGER, 2);
 					AltVoiceRate	= stfnGetKeyValue("AltVoiceRate", INTEGER, 2);
+					EnableVoice		= stfnGetKayValue("EnableVoice", INTEGER, 2);
+					ATCChatter		= stfnGetKayValue("ATCChatter", INTEGER, 2);
+					EnableOverlay	= stfnGetKayValue("EnableOverlay", INTEGER, 2);
 					ChatTABs		= stfnGetKeyValue("ChatTABs", INTEGER, 2);
 					FAOFFCurves		= stfnGetKeyValue("FAOFFCurves", INTEGER, 2);
 					OldCurves		= stfnGetKeyValue("OldCurves", INTEGER, 2);
@@ -1857,6 +1863,9 @@
 						printf("	VoiceVolume		= %d\x0a", VoiceVolume);
 						printf("	VoiceRate		= %d\x0a", VoiceRate);
 						printf("	AltVoiceRate		= %d\x0a", AltVoiceRate);
+						printf("	EnableVoice		= %d\x0a", EnableVoice);
+						printf("	ATCChatter		= %d\x0a", ATCChatter);
+						printf("	EnableOverlay		= %d\x0a", EnableOverlay);
 						printf("	ChatTABs		= %d\x0a", ChatTABs);
 						printf("	FAOFFCurves		= %d\x0a", FAOFFCurves);
 						printf("	OldCurves		= %d\x0a", OldCurves);
