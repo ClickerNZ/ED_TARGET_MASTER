@@ -112,9 +112,10 @@
 		}
 		else {		
 			MapKeyUMD(&MyJoystick, S4,
-				EXEC("tgEnhancedFAOFF(1)"),																	// U - Engage JSMouseEmulation
+	//			EXEC("tgEnhancedFAOFF(1)"),																	// U - (under development)
+				EXEC("fnTextToSpeech(\"Not mapped\");"),													// U - 
 				EXEC("tgEnhancedFAOFF(0);"),																// M - TOGGLE: FA-OFF/ON
-				EXEC("tgXAxis(SET);")																		// D - Toggle Joystick X-Axis between Roll and Yaw
+				EXEC("fnTextToSpeech(\"Not mapped\");")														// D - 
 				);
 		}
 
@@ -162,7 +163,7 @@
 			MapKeyUMD(&MyJoystick, H2U,
 				EXEC("tgPlanetView();"),																	// U - Toggle - Front/Back view of planet
 				PULSE+SelectTargetAhead,																	// M - Target ahead
-				PULSE+SelectTargetAhead																		// D - Target ahead
+				EXEC("fnTextToSpeech(\"Not mapped\");")														// D - 
 				);
 				
 			MapKeyUMD(&MyJoystick, H2D,
@@ -197,7 +198,7 @@
 			MapKeyUMD(&MyJoystick, H3U, 
 				PULSE+FighterAttack,																		// U - Attack my target 
 				EXEC("fnPIPManager(ENG);"),																	// M - Engine focussed PIPs 
-				PULSE+FighterAttack																			// D - PLACEHOLDER
+				EXEC("fnTextToSpeech(\"Not mapped\");")														// D -
 			);
 			MapKeyUMD(&MyJoystick, H3D, 
 				PULSE+FighterNoFire,																		// U - Follow me. hold fire
@@ -212,7 +213,7 @@
 			MapKeyUMD(&MyJoystick, H3R, 
 				PULSE+FighterAggr,																			// U - Engage at will
 				EXEC("fnPIPManager(WEP);"),																	// M - Weapon focussed PIPs
-				PULSE+FighterAggr																			// D - PLACEHOLDER
+				EXEC("fnTextToSpeech(\"Not mapped\");")														// D - 
 			);
 		}
 
@@ -1274,7 +1275,8 @@
 			MapKeyUMD(&MyThrottle, EFRNORM,
 				EXEC("fnVPOutput(\"Print status page to Con-sole\", 0, 1);"),
 				EXEC("fnVPOutput(\"Reset status LEDs\", 0, 1);"),
-				EXEC("fnVPOutput(\"Save my status file\", 0, 1);")
+		//		EXEC("fnVPOutput(\"Save my status file\", 0, 1);")
+				EXEC("stfnMyStates(SAVE);")																	// D -	Save MyStates to &MyStatusFile
 				);
 		}
 				
