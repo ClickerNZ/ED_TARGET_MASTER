@@ -1844,9 +1844,9 @@
 					VoiceVolume		= stfnGetKeyValue("VoiceVolume", INTEGER, 2);
 					VoiceRate		= stfnGetKeyValue("VoiceRate", INTEGER, 2);
 					AltVoiceRate	= stfnGetKeyValue("AltVoiceRate", INTEGER, 2);
-					EnableVoice		= stfnGetKayValue("EnableVoice", INTEGER, 2);
-					ATCChatter		= stfnGetKayValue("ATCChatter", INTEGER, 2);
-					EnableOverlay	= stfnGetKayValue("EnableOverlay", INTEGER, 2);
+					EnableVoice		= stfnGetKeyValue("EnableVoice", INTEGER, 2);
+					ATCChatter		= stfnGetKeyValue("ATCChatter", INTEGER, 2);
+					EnableOverlay	= stfnGetKeyValue("EnableOverlay", INTEGER, 2);
 					ChatTABs		= stfnGetKeyValue("ChatTABs", INTEGER, 2);
 					FAOFFCurves		= stfnGetKeyValue("FAOFFCurves", INTEGER, 2);
 					OldCurves		= stfnGetKeyValue("OldCurves", INTEGER, 2);
