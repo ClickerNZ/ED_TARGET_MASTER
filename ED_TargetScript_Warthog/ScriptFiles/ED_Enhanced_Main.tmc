@@ -8,7 +8,7 @@
 	//							THRUSTMASTER WARTHOG REQUIRED								//
 
 	// This file:	ED_Enhanced_Main.tmc	 		v600.0					// New Major Version
-	// Supports:	Elite Dangerous 				v4.4.0.3				// Does not support Legacy Horizons
+	// Supports:	Elite Dangerous 				v4.4.1.0				// Does not support Legacy Horizons
 	// Requires:	TARGET 							v3.0.26.303				// https://support.thrustmaster.com/
 	//				Joystick firmware				v12
 	//				Throttle firmware 				v23
