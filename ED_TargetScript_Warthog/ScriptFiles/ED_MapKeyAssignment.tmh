@@ -424,8 +424,8 @@
 	//	(China Hat)			// Subsystem Targetting
 	//	-----------
 
-		MapKey(&MyThrottle, CHF, PULSE+TargetNextSubsystem);
-		MapKey(&MyThrottle, CHB, PULSE+TargetPrevSubsystem);
+		MapKey(&MyThrottle, CHF, PULSE+TargetNextSubsystem);												// Target ship subsystem - next
+		MapKey(&MyThrottle, CHB, PULSE+TargetPrevSubsystem);												// Target ship subsystem - previous
 		
 	////////////////////////////////////////////
 	// ////////////////////////////////////// //
@@ -467,7 +467,7 @@
 		else {
 			MapKeyIOUMD(&MyThrottle, EACON,
 				0,																							// IU -	Use to fix mis-aligned switch 
-				EXEC("tgSilentRunning(STROBE);"),															// OU -	Toggle AutoStrobe setting (refer ED_UserSettings.tmh) 
+				EXEC("tgSilentRunning(3);"),																// OU -	Toggle AutoStrobe setting (refer ED_UserSettings.tmh) 
 				EXEC("tgSilentRunning(STROBE);"),															// IM - Strobe Silent running every 2 seconds
 				EXEC("tgSilentRunning(ON);"),																// OM - Engage Silent Running
 				0,																							// ID - 
@@ -767,9 +767,9 @@
 	//		-----------------------------
 
 		MapKeyUMD(&MyJoystick, S4,
-			EXEC("fnVPOutput(\"Toggle Flight Assist with joystick mouse emulation\", 0, 1);"),
+			EXEC("fnVPOutput(\"Not mapped\", 0, 1);"),
 			EXEC("fnVPOutput(\"Toggle Flight Assist\", 0, 1);"),
-			EXEC("fnVPOutput(\"Toggle Joystick X Axis between Roll and Yaw\", 0, 1);")
+			EXEC("fnVPOutput(\"Not mapped\", 0, 1);")
 			);
 
 	//		China Hat (Trim Switch)
@@ -909,10 +909,13 @@
 				EXEC("fnVPOutput(\"Camera blur in\", 0, 1);")
 				);
 				
-			MapKeyUMD(&MyJoystick, H4P,
-				EXEC("fnVPOutput(\"Reset PIP Mode\", 0, 1);"),
-				EXEC("fnVPOutput(\"Increment PIP Mode\", 0, 1);"),
-				EXEC("fnVPOutput(\"Decrement PIP Mode\", 0, 1);")
+			MapKeyIOUMD(&MyJoystick, H4P,
+				0,																	// IU
+				EXEC("fnVPOutput(\"Reset PIP Mode\", 0, 1);"),						// OU 
+				EXEC("fnVPOutput(\"Decrement PIP Mode\", 0, 1);"),					// IM 
+				EXEC("fnVPOutput(\"Increment PIP Mode\", 0, 1);"),					// OM 
+				0,																	// ID 
+				EXEC("fnVPOutput(\"Toggle Auto PIPs\", 0, 1);")						// OD
 				);
 		}
 	
@@ -1237,7 +1240,7 @@
 		}
 
 		if (MapKeyProfile == BASIC) {
-			MapKey(&MyThrottle, EORNORM, EXEC("fnVPOutput(\"Toggle Ship G U I off\", 0, 1);"));
+			MapKey(&MyThrottle, EORMOTOR, EXEC("fnVPOutput(\"Toggle Ship G U I off\", 0, 1);"));
 		}
 		else {
 			MapKeyIO(&MyThrottle, EORMOTOR, 
