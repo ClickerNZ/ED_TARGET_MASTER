@@ -942,7 +942,7 @@
 	int tgAutoPIPS() {
 		
 			AutoPIPS = !AutoPIPS;
-			if(AutoPIPS) {						// PIPs to Shields when leanding...reset when landed/docked 
+			if(AutoPIPS) {						// PIPs to Shields when landing...reset when landed/docked 
 				fnVPOutput("Auto pips set");
 			}
 			else {
